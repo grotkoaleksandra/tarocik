@@ -1,0 +1,356 @@
+import type { TarotCard } from '../types'
+
+export const majorArcana: TarotCard[] = [
+  {
+    id: 'major-0',
+    arcana: 'major',
+    number: 0,
+    name: { pl: 'Głupiec', en: 'The Fool' },
+    keywordsUpright: { pl: 'nowy początek • spontaniczność • wiara', en: 'new beginnings • spontaneity • faith' },
+    keywordsReversed: { pl: 'lekkomyślność • wahanie • naiwność', en: 'recklessness • hesitation • naivety' },
+    upright: {
+      pl: 'Stoisz na progu nowej przygody. Głupiec zachęca, by zaufać drodze, nawet jeśli nie widać jeszcze celu — świeżość i otwartość są teraz Twoją siłą.',
+      en: 'You stand at the threshold of a new adventure. The Fool invites you to trust the path even before the destination is visible — freshness and openness are your strength now.',
+    },
+    reversed: {
+      pl: 'Sprawdź, czy nie skaczesz w nieznane bez zastanowienia — albo czy strach nie trzyma Cię w miejscu. Odwaga tak, brawura nie.',
+      en: 'Check whether you are leaping without looking — or whether fear is keeping you frozen in place. Courage yes, recklessness no.',
+    },
+  },
+  {
+    id: 'major-1',
+    arcana: 'major',
+    number: 1,
+    name: { pl: 'Mag', en: 'The Magician' },
+    keywordsUpright: { pl: 'sprawczość • talent • manifestacja', en: 'willpower • skill • manifestation' },
+    keywordsReversed: { pl: 'manipulacja • rozproszenie • niewykorzystany potencjał', en: 'manipulation • scattered energy • untapped potential' },
+    upright: {
+      pl: 'Masz wszystkie narzędzia, by zamienić pomysł w rzeczywistość. Mag mówi: działaj świadomie, a wola i umiejętności zaczną współpracować.',
+      en: 'You hold every tool needed to turn an idea into reality. The Magician says: act deliberately, and will and skill begin to work together.',
+    },
+    reversed: {
+      pl: 'Energia się rozprasza albo ktoś gra nieczysto. Zbierz uwagę w jednym punkcie i sprawdź intencje — swoje i cudze.',
+      en: 'Energy is scattering, or someone is playing tricks. Gather your focus on one point and examine intentions — yours and others’.',
+    },
+  },
+  {
+    id: 'major-2',
+    arcana: 'major',
+    number: 2,
+    name: { pl: 'Kapłanka', en: 'The High Priestess' },
+    keywordsUpright: { pl: 'intuicja • tajemnica • wewnętrzna wiedza', en: 'intuition • mystery • inner knowing' },
+    keywordsReversed: { pl: 'stłumiona intuicja • sekrety • hałas', en: 'silenced intuition • secrets • noise' },
+    upright: {
+      pl: 'Odpowiedź nie przyjdzie z zewnątrz — już ją znasz. Kapłanka prosi o ciszę, uważność i zaufanie do pierwszego, cichego przeczucia.',
+      en: 'The answer will not come from outside — you already know it. The High Priestess asks for quiet, attention, and trust in that first, soft hunch.',
+    },
+    reversed: {
+      pl: 'Zagłuszasz wewnętrzny głos cudzymi opiniami. Coś może być przed Tobą ukryte — nie ignoruj sygnałów, które czujesz w ciele.',
+      en: 'You are drowning out your inner voice with other people’s opinions. Something may be hidden from you — don’t ignore what your body senses.',
+    },
+  },
+  {
+    id: 'major-3',
+    arcana: 'major',
+    number: 3,
+    name: { pl: 'Cesarzowa', en: 'The Empress' },
+    keywordsUpright: { pl: 'obfitość • troska • twórczość', en: 'abundance • nurturing • creativity' },
+    keywordsReversed: { pl: 'zaniedbanie siebie • zależność • blokada twórcza', en: 'self-neglect • dependence • creative block' },
+    upright: {
+      pl: 'To czas wzrostu i dojrzewania — projektów, relacji, Ciebie. Cesarzowa przypomina, że troska i przyjemność nie są luksusem, lecz glebą, na której wszystko rośnie.',
+      en: 'This is a season of growth and ripening — for projects, relationships, and you. The Empress reminds you that care and pleasure are not luxuries but the soil where everything grows.',
+    },
+    reversed: {
+      pl: 'Dajesz innym więcej, niż zostawiasz sobie. Wróć do własnych potrzeb — pusty dzban nikogo nie napoi.',
+      en: 'You are giving others more than you keep for yourself. Return to your own needs — an empty jug quenches no one’s thirst.',
+    },
+  },
+  {
+    id: 'major-4',
+    arcana: 'major',
+    number: 4,
+    name: { pl: 'Cesarz', en: 'The Emperor' },
+    keywordsUpright: { pl: 'struktura • autorytet • stabilność', en: 'structure • authority • stability' },
+    keywordsReversed: { pl: 'sztywność • kontrola • bunt', en: 'rigidity • control • rebellion' },
+    upright: {
+      pl: 'Porządek i jasne zasady dadzą Ci teraz wolność, nie odbiorą jej. Cesarz radzi: zbuduj ramy, ustal granice i konsekwentnie ich pilnuj.',
+      en: 'Order and clear rules will give you freedom now, not take it away. The Emperor advises: build a framework, set boundaries, and hold them consistently.',
+    },
+    reversed: {
+      pl: 'Kontrola zamienia się w przymus — u Ciebie lub u kogoś nad Tobą. Sprawdź, gdzie dyscyplina przestała służyć celowi.',
+      en: 'Control is turning into coercion — in you or in someone above you. Ask where discipline has stopped serving its purpose.',
+    },
+  },
+  {
+    id: 'major-5',
+    arcana: 'major',
+    number: 5,
+    name: { pl: 'Hierofant', en: 'The Hierophant' },
+    keywordsUpright: { pl: 'tradycja • nauka • wspólnota', en: 'tradition • learning • community' },
+    keywordsReversed: { pl: 'dogmat • konformizm • własna ścieżka', en: 'dogma • conformity • personal path' },
+    upright: {
+      pl: 'Sięgnij po sprawdzoną wiedzę: mentora, kurs, tradycję, wspólnotę. Nie wszystko trzeba wymyślać od zera — czasem mądrość już czeka.',
+      en: 'Reach for proven wisdom: a mentor, a course, a tradition, a community. Not everything must be invented from scratch — sometimes the knowledge is already waiting.',
+    },
+    reversed: {
+      pl: 'Zasady, które kiedyś pomagały, dziś mogą uwierać. Masz prawo zapytać „dlaczego?” i pójść drogą, która jest naprawdę Twoja.',
+      en: 'Rules that once helped may now chafe. You are allowed to ask “why?” and take the road that is genuinely yours.',
+    },
+  },
+  {
+    id: 'major-6',
+    arcana: 'major',
+    number: 6,
+    name: { pl: 'Kochankowie', en: 'The Lovers' },
+    keywordsUpright: { pl: 'miłość • harmonia • wybór z serca', en: 'love • harmony • a choice of the heart' },
+    keywordsReversed: { pl: 'rozdźwięk • pokusa • wartości w konflikcie', en: 'disharmony • temptation • values in conflict' },
+    upright: {
+      pl: 'Prawdziwa bliskość albo ważny wybór, który musi być zgodny z sercem. Kochankowie mówią: wybierz to, co łączy Cię z Twoimi wartościami.',
+      en: 'True closeness, or an important choice that must align with your heart. The Lovers say: choose what unites you with your values.',
+    },
+    reversed: {
+      pl: 'Coś w relacji lub decyzji zgrzyta — być może mówisz „tak”, czując „nie”. Wróć do szczerej rozmowy, przede wszystkim ze sobą.',
+      en: 'Something in a relationship or decision is off-key — perhaps you say “yes” while feeling “no.” Return to an honest conversation, first of all with yourself.',
+    },
+  },
+  {
+    id: 'major-7',
+    arcana: 'major',
+    number: 7,
+    name: { pl: 'Rydwan', en: 'The Chariot' },
+    keywordsUpright: { pl: 'determinacja • zwycięstwo • kierunek', en: 'determination • victory • direction' },
+    keywordsReversed: { pl: 'brak kontroli • rozjazd sił • impas', en: 'loss of control • pulling apart • standstill' },
+    upright: {
+      pl: 'Weź wodze w dłonie: sprzeczne siły da się poprowadzić w jednym kierunku, jeśli wiesz, dokąd jedziesz. To karta zwycięstwa przez skupienie.',
+      en: 'Take the reins: opposing forces can be driven in one direction if you know where you are going. This is the card of victory through focus.',
+    },
+    reversed: {
+      pl: 'Konie ciągną w różne strony — ambicje, obowiązki, emocje. Zatrzymaj rydwan na chwilę i ustal, kto tu naprawdę kieruje.',
+      en: 'The horses pull in different directions — ambitions, duties, emotions. Halt the chariot for a moment and decide who is really steering.',
+    },
+  },
+  {
+    id: 'major-8',
+    arcana: 'major',
+    number: 8,
+    name: { pl: 'Siła', en: 'Strength' },
+    keywordsUpright: { pl: 'łagodna moc • odwaga • cierpliwość', en: 'gentle power • courage • patience' },
+    keywordsReversed: { pl: 'zwątpienie • tłumione emocje • wyczerpanie', en: 'self-doubt • suppressed emotion • depletion' },
+    upright: {
+      pl: 'Prawdziwa siła nie krzyczy. Oswoisz tego lwa — nawyk, lęk, konflikt — łagodnością i wytrwałością, nie przemocą.',
+      en: 'True strength does not roar. You will tame this lion — a habit, a fear, a conflict — with gentleness and persistence, not force.',
+    },
+    reversed: {
+      pl: 'Zwątpienie podgryza odwagę, a tłumione emocje szukają ujścia. Bądź dla siebie tak wyrozumiały, jak byłbyś dla przyjaciela.',
+      en: 'Doubt is gnawing at your courage, and suppressed feelings seek an outlet. Be as kind to yourself as you would be to a friend.',
+    },
+  },
+  {
+    id: 'major-9',
+    arcana: 'major',
+    number: 9,
+    name: { pl: 'Pustelnik', en: 'The Hermit' },
+    keywordsUpright: { pl: 'wycofanie • refleksja • wewnętrzne światło', en: 'retreat • reflection • inner light' },
+    keywordsReversed: { pl: 'izolacja • samotność • unikanie', en: 'isolation • loneliness • avoidance' },
+    upright: {
+      pl: 'Odpowiedzi szukaj w ciszy, nie w zgiełku. Pustelnik zaprasza do świadomego wycofania się, by usłyszeć własne myśli i zapalić własną latarnię.',
+      en: 'Seek answers in silence, not in noise. The Hermit invites a deliberate retreat, so you can hear your own thoughts and light your own lantern.',
+    },
+    reversed: {
+      pl: 'Samotność przestała być wyborem, a stała się murem. Uchyl drzwi — mądrość zdobyta w ciszy nabiera sensu dopiero wśród ludzi.',
+      en: 'Solitude has stopped being a choice and become a wall. Open the door a crack — wisdom gained in silence only finds meaning among people.',
+    },
+  },
+  {
+    id: 'major-10',
+    arcana: 'major',
+    number: 10,
+    name: { pl: 'Koło Fortuny', en: 'Wheel of Fortune' },
+    keywordsUpright: { pl: 'zwrot losu • cykle • szczęśliwy traf', en: 'a turn of fate • cycles • luck' },
+    keywordsReversed: { pl: 'opór wobec zmian • zła passa • powtarzanie schematów', en: 'resisting change • a rough patch • repeating patterns' },
+    upright: {
+      pl: 'Koło się obraca — nadchodzi zmiana, często pomyślna. Nie wszystko zależy od Ciebie, ale od Ciebie zależy, jak wykorzystasz nowy układ.',
+      en: 'The wheel is turning — change is coming, often a fortunate one. Not everything is in your hands, but how you use the new arrangement is.',
+    },
+    reversed: {
+      pl: 'Trzymasz się szprych koła, które i tak się kręci. Zła passa minie szybciej, jeśli przestaniesz walczyć z tym, czego nie da się zatrzymać.',
+      en: 'You are clinging to the spokes of a wheel that turns anyway. A rough patch passes faster once you stop fighting what cannot be stopped.',
+    },
+  },
+  {
+    id: 'major-11',
+    arcana: 'major',
+    number: 11,
+    name: { pl: 'Sprawiedliwość', en: 'Justice' },
+    keywordsUpright: { pl: 'prawda • równowaga • konsekwencje', en: 'truth • balance • consequences' },
+    keywordsReversed: { pl: 'niesprawiedliwość • wymówki • nierozliczone sprawy', en: 'unfairness • excuses • unsettled accounts' },
+    upright: {
+      pl: 'Sprawy znajdą uczciwe rozstrzygnięcie, a decyzje wracają echem. Działaj przejrzyście i nazywaj rzeczy po imieniu — prawda jest po Twojej stronie.',
+      en: 'Matters will find a fair resolution, and decisions echo back. Act transparently and call things by their names — truth is on your side.',
+    },
+    reversed: {
+      pl: 'Coś zostało rozliczone niesprawiedliwie — może przez innych, może przez Ciebie. Zanim wskażesz winnych, zważ własny udział na tej samej wadze.',
+      en: 'Something has been settled unfairly — perhaps by others, perhaps by you. Before naming culprits, weigh your own part on the same scales.',
+    },
+  },
+  {
+    id: 'major-12',
+    arcana: 'major',
+    number: 12,
+    name: { pl: 'Wisielec', en: 'The Hanged Man' },
+    keywordsUpright: { pl: 'zmiana perspektywy • zawieszenie • odpuszczenie', en: 'a new perspective • suspension • letting go' },
+    keywordsReversed: { pl: 'stagnacja • daremna ofiara • zwlekanie', en: 'stagnation • futile sacrifice • stalling' },
+    upright: {
+      pl: 'Nic nie ruszy, dopóki patrzysz po staremu. Wisielec proponuje pauzę i odwrócenie obrazu — to, co wygląda na stratę czasu, jest dojrzewaniem.',
+      en: 'Nothing will move while you look at it the old way. The Hanged Man offers a pause and an inverted view — what looks like wasted time is ripening.',
+    },
+    reversed: {
+      pl: 'Wisisz z przyzwyczajenia, nie z wyboru. Jeśli poświęcenie niczego już nie uczy, czas się odwiązać i postawić stopy na ziemi.',
+      en: 'You are hanging out of habit, not choice. If the sacrifice no longer teaches anything, it is time to untie yourself and touch the ground.',
+    },
+  },
+  {
+    id: 'major-13',
+    arcana: 'major',
+    number: 13,
+    name: { pl: 'Śmierć', en: 'Death' },
+    keywordsUpright: { pl: 'zakończenie • transformacja • nowe otwarcie', en: 'an ending • transformation • a new opening' },
+    keywordsReversed: { pl: 'opór • kurczowe trzymanie • odkładany koniec', en: 'resistance • holding on • a postponed ending' },
+    upright: {
+      pl: 'Coś się kończy, by zrobić miejsce nowemu — etap, rola, przekonanie. Nie chodzi o stratę, lecz o przepoczwarzenie. Pożegnaj z wdzięcznością.',
+      en: 'Something ends to make room for the new — a chapter, a role, a belief. This is not about loss but metamorphosis. Say goodbye with gratitude.',
+    },
+    reversed: {
+      pl: 'Trzymasz drzwi, które i tak się zamykają. Im dłużej odkładasz konieczne zakończenie, tym więcej energii kosztuje udawanie, że nic się nie zmienia.',
+      en: 'You are holding a door that is closing anyway. The longer you postpone a necessary ending, the more it costs to pretend nothing is changing.',
+    },
+  },
+  {
+    id: 'major-14',
+    arcana: 'major',
+    number: 14,
+    name: { pl: 'Umiarkowanie', en: 'Temperance' },
+    keywordsUpright: { pl: 'równowaga • cierpliwość • złoty środek', en: 'balance • patience • the middle path' },
+    keywordsReversed: { pl: 'skrajności • niecierpliwość • rozchwianie', en: 'extremes • impatience • imbalance' },
+    upright: {
+      pl: 'Mieszaj składniki powoli: pracę i odpoczynek, rozum i serce. Umiarkowanie obiecuje, że cierpliwe łączenie przeciwieństw da coś lepszego niż każde z osobna.',
+      en: 'Blend the ingredients slowly: work and rest, head and heart. Temperance promises that patiently combining opposites yields something better than either alone.',
+    },
+    reversed: {
+      pl: 'Życie przechyla się w jedną stronę — za dużo, za szybko, za mocno. Wróć do środka, zanim wahadło samo Cię tam odrzuci.',
+      en: 'Life is tipping to one side — too much, too fast, too hard. Return to the center before the pendulum throws you back itself.',
+    },
+  },
+  {
+    id: 'major-15',
+    arcana: 'major',
+    number: 15,
+    name: { pl: 'Diabeł', en: 'The Devil' },
+    keywordsUpright: { pl: 'uwikłanie • pokusa • cień', en: 'entanglement • temptation • the shadow' },
+    keywordsReversed: { pl: 'wyzwolenie • zerwane łańcuchy • odzyskana moc', en: 'liberation • broken chains • reclaimed power' },
+    upright: {
+      pl: 'Przyjrzyj się łańcuchom: nałogom, układom, myślom, które trzymają Cię krótko. Diabeł jest silny tylko dopóty, dopóki udajesz, że go nie ma.',
+      en: 'Look closely at the chains: habits, arrangements, thoughts that keep you on a short leash. The Devil is only strong while you pretend he isn’t there.',
+    },
+    reversed: {
+      pl: 'Łańcuch właśnie pęka — widzisz mechanizm, który Cię trzymał, a to połowa wolności. Zrób pierwszy krok poza znajomą klatkę.',
+      en: 'The chain is breaking — you can see the mechanism that held you, and that is half of freedom. Take the first step outside the familiar cage.',
+    },
+  },
+  {
+    id: 'major-16',
+    arcana: 'major',
+    number: 16,
+    name: { pl: 'Wieża', en: 'The Tower' },
+    keywordsUpright: { pl: 'nagły wstrząs • prawda • uwolnienie', en: 'sudden upheaval • revelation • release' },
+    keywordsReversed: { pl: 'odsuwany kryzys • strach przed zmianą • wstrząs wewnętrzny', en: 'a delayed crisis • fear of change • an inner quake' },
+    upright: {
+      pl: 'Runęło to, co stało na chwiejnych fundamentach — i dobrze, choć boli. Wieża oczyszcza plac pod budowę czegoś prawdziwszego.',
+      en: 'What stood on shaky foundations has come down — painfully, but rightly. The Tower clears the ground for something truer to be built.',
+    },
+    reversed: {
+      pl: 'Podpierasz mury, które dawno straciły stabilność. Kontrolowana rozbiórka będzie łagodniejsza niż katastrofa, na którą czekasz z zamkniętymi oczami.',
+      en: 'You are propping up walls that lost their stability long ago. A controlled demolition is gentler than the collapse you await with closed eyes.',
+    },
+  },
+  {
+    id: 'major-17',
+    arcana: 'major',
+    number: 17,
+    name: { pl: 'Gwiazda', en: 'The Star' },
+    keywordsUpright: { pl: 'nadzieja • uzdrowienie • inspiracja', en: 'hope • healing • inspiration' },
+    keywordsReversed: { pl: 'zwątpienie • zniechęcenie • odcięcie od źródła', en: 'discouragement • doubt • disconnection' },
+    upright: {
+      pl: 'Po burzy niebo się przeciera. Gwiazda przynosi ciche, pewne światło: nadzieję, która nie jest naiwna, i spokój, który leczy.',
+      en: 'After the storm the sky clears. The Star brings a quiet, steady light: hope that is not naive, and calm that heals.',
+    },
+    reversed: {
+      pl: 'Trudno dziś uwierzyć, że będzie lepiej — ale gwiazdy nie gasną od tego, że ich nie widać. Zadbaj o siebie i poczekaj, aż chmury zejdą.',
+      en: 'It is hard to believe things will improve — but stars do not go out just because clouds hide them. Care for yourself and let the sky clear.',
+    },
+  },
+  {
+    id: 'major-18',
+    arcana: 'major',
+    number: 18,
+    name: { pl: 'Księżyc', en: 'The Moon' },
+    keywordsUpright: { pl: 'niepewność • sny • iluzja', en: 'uncertainty • dreams • illusion' },
+    keywordsReversed: { pl: 'rozwiane mgły • jasność • uwolnienie od lęku', en: 'lifting fog • clarity • fear released' },
+    upright: {
+      pl: 'Droga wiedzie przez mgłę: nie wszystko jest tym, czym się wydaje, a lęki potrafią przybierać kształty na ścianach. Idź powoli i słuchaj intuicji.',
+      en: 'The road leads through fog: not everything is what it seems, and fears cast shapes on the walls. Walk slowly and listen to your intuition.',
+    },
+    reversed: {
+      pl: 'Mgła zaczyna opadać — to, co niejasne, nabiera konturów. Zobaczysz, że część nocnych strachów była tylko grą świateł.',
+      en: 'The fog is lifting — the unclear is gaining contours. You will see that some of the night’s terrors were only a trick of the light.',
+    },
+  },
+  {
+    id: 'major-19',
+    arcana: 'major',
+    number: 19,
+    name: { pl: 'Słońce', en: 'The Sun' },
+    keywordsUpright: { pl: 'radość • sukces • witalność', en: 'joy • success • vitality' },
+    keywordsReversed: { pl: 'przygaszona radość • zwątpienie • chwilowe chmury', en: 'dimmed joy • self-doubt • passing clouds' },
+    upright: {
+      pl: 'Najjaśniejsza karta talii: powodzenie, zdrowie, dziecięca radość istnienia. Wyjdź na światło i pozwól sobie na sukces bez „ale”.',
+      en: 'The brightest card in the deck: success, health, a childlike joy in being. Step into the light and allow yourself a success without a “but.”',
+    },
+    reversed: {
+      pl: 'Słońce świeci, ale Ty stoisz w cieniu — może z przemęczenia, może z przekory. Chmury są chwilowe; nie pomyl ich z klimatem.',
+      en: 'The sun is shining, but you stand in the shade — from tiredness, perhaps, or stubbornness. The clouds are temporary; do not mistake them for the climate.',
+    },
+  },
+  {
+    id: 'major-20',
+    arcana: 'major',
+    number: 20,
+    name: { pl: 'Sąd', en: 'Judgement' },
+    keywordsUpright: { pl: 'przebudzenie • rozliczenie • powołanie', en: 'awakening • reckoning • calling' },
+    keywordsReversed: { pl: 'surowość wobec siebie • odkładana decyzja • głuchota na wezwanie', en: 'self-judgement • a postponed decision • ignoring the call' },
+    upright: {
+      pl: 'Słyszysz wezwanie do czegoś większego: podsumuj przeszłość, wybacz, co trzeba, i wstań odmieniony. To moment przełomowej, dojrzałej decyzji.',
+      en: 'You hear a call to something greater: take stock of the past, forgive what needs forgiving, and rise renewed. This is the moment for a mature, decisive turn.',
+    },
+    reversed: {
+      pl: 'Sędzia we własnej głowie bywa surowszy niż jakikolwiek trybunał. Odłóż młotek — rozliczenie ma prowadzić do odrodzenia, nie do kary.',
+      en: 'The judge inside your head can be harsher than any tribunal. Put down the gavel — a reckoning should lead to rebirth, not punishment.',
+    },
+  },
+  {
+    id: 'major-21',
+    arcana: 'major',
+    number: 21,
+    name: { pl: 'Świat', en: 'The World' },
+    keywordsUpright: { pl: 'spełnienie • domknięcie cyklu • pełnia', en: 'fulfilment • completion • wholeness' },
+    keywordsReversed: { pl: 'niedomknięcie • brakujący krok • odwlekany finał', en: 'loose ends • a missing step • a delayed finale' },
+    upright: {
+      pl: 'Cykl domyka się pełnym kołem: cel osiągnięty, lekcja odrobiona, świat stoi otworem. Świętuj — a potem wybierz nowy horyzont.',
+      en: 'The cycle closes in a full circle: the goal reached, the lesson learned, the world wide open. Celebrate — then choose a new horizon.',
+    },
+    reversed: {
+      pl: 'Do pełni brakuje jednego kroku — rozmowy, podpisu, pożegnania. Domknij to, co wisi, bo niedokończone historie nie robią miejsca nowym.',
+      en: 'One step is missing from completion — a conversation, a signature, a goodbye. Close what hangs open; unfinished stories leave no room for new ones.',
+    },
+  },
+]
