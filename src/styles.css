@@ -448,6 +448,99 @@ main {
   color: var(--gold);
 }
 
+/* ---------- celtic cross ---------- */
+
+.celtic-layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  flex-wrap: wrap;
+  margin-top: 1.8rem;
+}
+
+.celtic-cross {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(3, auto);
+  gap: 0.9rem 1.1rem;
+  align-items: end;
+  justify-items: center;
+}
+
+.ca5 { grid-column: 2; grid-row: 1; }
+.ca4 { grid-column: 1; grid-row: 2; }
+.ca-center { grid-column: 2; grid-row: 2; }
+.ca6 { grid-column: 3; grid-row: 2; }
+.ca3 { grid-column: 2; grid-row: 3; }
+
+.celtic-center {
+  position: relative;
+}
+
+.celtic-crossing {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(90deg);
+  z-index: 2;
+  filter: drop-shadow(0 0 14px rgba(5, 7, 18, 0.9));
+}
+
+/* Once the crossing card has settled face-up it no longer needs clicks —
+   let them pass through (wrapper included) to the card beneath it. */
+.celtic-crossing {
+  pointer-events: none;
+}
+
+.celtic-crossing .flip-card:not(.is-settled) {
+  pointer-events: auto;
+}
+
+.celtic-staff {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+@media (max-width: 720px) {
+  .celtic-cross {
+    display: contents;
+  }
+
+  .celtic-layout {
+    gap: 0.9rem;
+  }
+
+  .celtic-center {
+    display: flex;
+    gap: 0.9rem;
+  }
+
+  .celtic-crossing {
+    position: static;
+    transform: none;
+    filter: none;
+  }
+
+  .celtic-staff {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.summary-card {
+  border-color: rgba(217, 180, 91, 0.55);
+  background: rgba(217, 180, 91, 0.07);
+}
+
+.summary-card p {
+  font-family: var(--serif);
+  font-size: 1.08rem;
+  line-height: 1.65;
+}
+
 .reading-results {
   max-width: 40rem;
   margin: 2.6rem auto 0;

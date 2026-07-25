@@ -27,7 +27,7 @@ export interface DrawnCard {
   reversed: boolean
 }
 
-export type SpreadId = 'one' | 'three' | 'five'
+export type SpreadId = 'one' | 'three' | 'five' | 'celtic'
 
 export interface Spread {
   id: SpreadId

@@ -44,6 +44,7 @@ export const ui = {
   noResults: { pl: 'Nie znaleziono takiej karty.', en: 'No card matches your search.' },
   close: { pl: 'Zamknij', en: 'Close' },
   keywords: { pl: 'Słowa klucze', en: 'Keywords' },
+  summaryTitle: { pl: 'Podsumowanie', en: 'Summary' },
   footerNote: {
     pl: 'Tarocik służy rozrywce i refleksji — ważne decyzje podejmuj sercem i rozumem.',
     en: 'Tarocik is for reflection and fun — make important decisions with your heart and your head.',
@@ -92,6 +93,27 @@ export const spreads: Spread[] = [
       { pl: 'Rada', en: 'Advice' },
       { pl: 'Otoczenie', en: 'Surroundings' },
       { pl: 'Możliwy wynik', en: 'Likely outcome' },
+    ],
+  },
+  {
+    id: 'celtic',
+    cards: 10,
+    name: { pl: 'Krzyż celtycki', en: 'Celtic cross' },
+    description: {
+      pl: 'Klasyczny rozkład dziesięciu kart — dogłębna analiza od korzeni sprawy po jej wynik.',
+      en: 'The classic ten-card spread — an in-depth look from the roots of the matter to its outcome.',
+    },
+    positions: [
+      { pl: 'Sytuacja', en: 'The situation' },
+      { pl: 'Przeszkoda', en: 'The challenge' },
+      { pl: 'Podstawa sprawy', en: 'The foundation' },
+      { pl: 'Przeszłość', en: 'The recent past' },
+      { pl: 'Cel i możliwości', en: 'Goals & possibilities' },
+      { pl: 'Najbliższa przyszłość', en: 'The near future' },
+      { pl: 'Ty', en: 'You' },
+      { pl: 'Otoczenie', en: 'Surroundings' },
+      { pl: 'Nadzieje i obawy', en: 'Hopes & fears' },
+      { pl: 'Wynik', en: 'The outcome' },
     ],
   },
 ]

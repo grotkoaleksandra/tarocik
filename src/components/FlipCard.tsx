@@ -18,7 +18,14 @@ export function FlipCard({ card, lang, revealed, reversed, onReveal, size = 'md'
   const [settled, setSettled] = useState(revealed)
 
   useEffect(() => {
-    if (!revealed) setSettled(false)
+    if (!revealed) {
+      setSettled(false)
+      return
+    }
+    // Slightly longer than the 0.7s flip transition; a timer is more reliable
+    // than transitionend (which never fires when transitions are disabled).
+    const t = setTimeout(() => setSettled(true), 750)
+    return () => clearTimeout(t)
   }, [revealed])
 
   if (settled) {
@@ -39,12 +46,7 @@ export function FlipCard({ card, lang, revealed, reversed, onReveal, size = 'md'
       disabled={revealed || !onReveal}
       aria-label={revealed ? card.name[lang] : undefined}
     >
-      <span
-        className="flip-inner"
-        onTransitionEnd={() => {
-          if (revealed) setSettled(true)
-        }}
-      >
+      <span className="flip-inner">
         <span className="flip-face flip-back">
           <CardBack />
         </span>
