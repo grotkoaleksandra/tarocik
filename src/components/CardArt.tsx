@@ -2,8 +2,8 @@ import type { ComponentType, ReactNode } from 'react'
 import type { Lang, Suit, TarotCard } from '../types'
 import { cardLabel } from '../lib/draw'
 
-const INK = '#2f2b28'
-const PAPER = '#fbf9f2'
+const INK = '#3b3733'
+const PAPER = '#fffdf6'
 const HAND = "'Patrick Hand', 'Comic Sans MS', cursive"
 
 /* ---------- wobbly hand-drawn rectangles ---------- */
@@ -334,10 +334,25 @@ function MajorIcon({ n }: { n: number }) {
 function CardChrome({ seed, children }: { seed: number; children?: ReactNode }) {
   return (
     <>
+      <defs>
+        {/* Rough marker texture: every stroke gets nudged by fractal noise. */}
+        <filter id="markerRough" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.6" />
+        </filter>
+      </defs>
       <rect x="0" y="0" width="200" height="320" rx="10" fill={PAPER} />
-      <g stroke={INK} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-        <path d={sketchRect(6, 6, 188, 308, seed)} />
-        <path d={sketchRect(16, 16, 168, 288, seed + 1, 1.8)} />
+      <g
+        stroke={INK}
+        strokeWidth="3.4"
+        strokeOpacity="0.92"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        filter="url(#markerRough)"
+      >
+        <path d={sketchRect(7, 7, 186, 306, seed, 3.2)} />
+        <path d={sketchRect(17, 17, 166, 286, seed + 1, 2.6)} strokeWidth="2.8" />
         {children}
       </g>
     </>
@@ -359,7 +374,7 @@ export function CardArt({ card, lang }: { card: TarotCard; lang: Lang }) {
           pipLayouts[card.rank].map(([x, y, s], i) => {
             const Glyph = suitGlyph[card.suit as Suit]
             return (
-              <g key={i} transform={`translate(${x} ${y}) scale(${s})`}>
+              <g key={i} transform={`translate(${x} ${y}) scale(${s})`} strokeWidth={(3.2 / s).toFixed(2)}>
                 <Glyph />
               </g>
             )
@@ -367,7 +382,7 @@ export function CardArt({ card, lang }: { card: TarotCard; lang: Lang }) {
         ) : (
           <>
             <CourtMarker rank={card.rank ?? 11} />
-            <g transform="translate(100 152) scale(1.5)">
+            <g transform="translate(100 152) scale(1.5)" strokeWidth="2.2">
               {(() => {
                 const Glyph = suitGlyph[card.suit as Suit]
                 return <Glyph />
