@@ -81,7 +81,7 @@ export const spreads: Spread[] = [
   {
     id: 'five',
     cards: 5,
-    name: { pl: 'Krzyż wskazówek', en: 'Cross of guidance' },
+    name: { pl: 'Mały krzyż', en: 'Small cross' },
     description: {
       pl: 'Głębsze spojrzenie: sytuacja, przeszkoda, rada, otoczenie i możliwy wynik.',
       en: 'A deeper look: the situation, the obstacle, the advice, the surroundings, and the likely outcome.',
