@@ -1,57 +1,147 @@
-import type { Lang, TarotCard } from '../types'
+import type { ComponentType, ReactNode } from 'react'
+import type { Lang, Suit, TarotCard } from '../types'
 import { cardLabel } from '../lib/draw'
 
-const GOLD = '#d9b45b'
-const GOLD_DIM = '#a8874a'
+const INK = '#2f2b28'
+const PAPER = '#fbf9f2'
+const HAND = "'Patrick Hand', 'Comic Sans MS', cursive"
 
-function SuitEmblem({ card }: { card: TarotCard }) {
-  if (card.arcana === 'major') {
-    return (
-      <g stroke={GOLD} strokeWidth="2" fill="none" strokeLinejoin="round">
-        <circle cx="100" cy="150" r="34" opacity="0.55" />
-        <path d="M100 104 L109 137 L146 150 L109 163 L100 196 L91 163 L54 150 L91 137 Z" fill="#141a38" />
-        <path d="M100 122 L105 145 L128 150 L105 155 L100 178 L95 155 L72 150 L95 145 Z" fill={GOLD} stroke="none" opacity="0.9" />
-        <circle cx="100" cy="150" r="46" opacity="0.3" strokeDasharray="2 5" />
-      </g>
-    )
+/* ---------- wobbly hand-drawn rectangles ---------- */
+
+function hashString(s: string): number {
+  let h = 2166136261
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i)
+    h = Math.imul(h, 16777619)
   }
-  switch (card.suit) {
-    case 'wands':
+  return h >>> 0
+}
+
+function makeRand(seed: number) {
+  let a = seed || 1
+  return () => {
+    a = (Math.imul(a, 1103515245) + 12345) & 0x7fffffff
+    return (a / 0x7fffffff) * 2 - 1
+  }
+}
+
+/** A rectangle drawn by an unsteady hand: jittered corners, gently bowed edges. */
+function sketchRect(x: number, y: number, w: number, h: number, seed: number, amp = 2.2): string {
+  const rand = makeRand(seed)
+  const pt = (px: number, py: number): [number, number] => [
+    +(px + rand() * amp).toFixed(1),
+    +(py + rand() * amp).toFixed(1),
+  ]
+  const [ax, ay] = pt(x, y)
+  const [bx, by] = pt(x + w, y)
+  const [cx, cy] = pt(x + w, y + h)
+  const [dx, dy] = pt(x, y + h)
+  const edge = (x2: number, y2: number, mx: number, my: number) =>
+    `Q ${+(mx + rand() * amp * 1.4).toFixed(1)} ${+(my + rand() * amp * 1.4).toFixed(1)} ${x2} ${y2}`
+  return [
+    `M ${ax} ${ay}`,
+    edge(bx, by, (ax + bx) / 2, (ay + by) / 2),
+    edge(cx, cy, (bx + cx) / 2, (by + cy) / 2),
+    edge(dx, dy, (cx + dx) / 2, (cy + dy) / 2),
+    edge(ax, ay, (dx + ax) / 2, (dy + ay) / 2),
+    'Z',
+  ].join(' ')
+}
+
+/* ---------- suit glyphs (local coords, ~40 units tall, centred on 0,0) ---------- */
+
+function WandGlyph() {
+  return (
+    <>
+      <path d="M0 -20 L0 20" />
+      <path d="M0 -11 C -8 -15 -10 -23 -8 -27 C -2 -23 0 -17 0 -11" />
+      <path d="M0 -2 C 8 -6 10 -14 8 -18 C 2 -14 0 -8 0 -2" />
+    </>
+  )
+}
+
+function CupGlyph() {
+  return (
+    <>
+      <path d="M-12 -14 C -12 -2 -6 4 0 4 C 6 4 12 -2 12 -14" />
+      <path d="M-12 -14 L12 -14" />
+      <path d="M0 4 L0 13" />
+      <path d="M-8 16 C -4 13 4 13 8 16" />
+    </>
+  )
+}
+
+function SwordGlyph() {
+  return (
+    <>
+      <path d="M0 -22 L0 8" />
+      <path d="M-3 -15 L0 -23 L3 -15" />
+      <path d="M-8 8 L8 8" />
+      <path d="M0 8 L0 15" />
+      <circle cx="0" cy="17.5" r="2.2" />
+    </>
+  )
+}
+
+function PentacleGlyph() {
+  return (
+    <>
+      <circle cx="0" cy="0" r="14" />
+      <path d="M0 -11 L6.5 8.9 L-10.5 -3.4 L10.5 -3.4 L-6.5 8.9 Z" />
+    </>
+  )
+}
+
+const suitGlyph: Record<Suit, ComponentType> = {
+  wands: WandGlyph,
+  cups: CupGlyph,
+  swords: SwordGlyph,
+  pentacles: PentacleGlyph,
+}
+
+/** Pip arrangements for 1–10, playing-card style: [x, y, scale]. */
+const pipLayouts: Record<number, [number, number, number][]> = {
+  1: [[100, 150, 1.7]],
+  2: [[100, 116, 1], [100, 184, 1]],
+  3: [[70, 150, 1], [100, 150, 1], [130, 150, 1]],
+  4: [[74, 116, 1], [126, 116, 1], [74, 184, 1], [126, 184, 1]],
+  5: [[74, 116, 1], [126, 116, 1], [74, 184, 1], [126, 184, 1], [100, 150, 1]],
+  6: [[74, 112, 1], [126, 112, 1], [74, 150, 1], [126, 150, 1], [74, 188, 1], [126, 188, 1]],
+  7: [[74, 112, 0.9], [126, 112, 0.9], [70, 150, 0.9], [100, 150, 0.9], [130, 150, 0.9], [74, 188, 0.9], [126, 188, 0.9]],
+  8: [[74, 108, 0.9], [126, 108, 0.9], [74, 136, 0.9], [126, 136, 0.9], [74, 164, 0.9], [126, 164, 0.9], [74, 192, 0.9], [126, 192, 0.9]],
+  9: [[70, 112, 0.85], [100, 112, 0.85], [130, 112, 0.85], [70, 150, 0.85], [100, 150, 0.85], [130, 150, 0.85], [70, 188, 0.85], [100, 188, 0.85], [130, 188, 0.85]],
+  10: [[74, 106, 0.85], [126, 106, 0.85], [74, 134, 0.85], [126, 134, 0.85], [74, 162, 0.85], [126, 162, 0.85], [74, 190, 0.85], [126, 190, 0.85], [100, 120, 0.85], [100, 176, 0.85]],
+}
+
+/** Court markers drawn above the big suit glyph. */
+function CourtMarker({ rank }: { rank: number }) {
+  switch (rank) {
+    case 11: // Page — a little four-point sparkle
       return (
-        <g stroke={GOLD} strokeWidth="3" fill="none" strokeLinecap="round">
-          <line x1="100" y1="112" x2="100" y2="188" />
-          <path d="M100 124 C88 118 84 108 86 100 C96 102 102 110 100 124 Z" fill={GOLD} strokeWidth="1.5" />
-          <path d="M100 140 C112 134 116 124 114 116 C104 118 98 126 100 140 Z" fill={GOLD} strokeWidth="1.5" />
-          <path d="M100 158 C88 152 84 142 86 134 C96 136 102 144 100 158 Z" fill="none" strokeWidth="2" opacity="0.7" />
-          <circle cx="100" cy="192" r="4" fill={GOLD} strokeWidth="1" />
+        <g>
+          <path d="M100 94 L102 100 L108 102 L102 104 L100 110 L98 104 L92 102 L98 100 Z" />
         </g>
       )
-    case 'cups':
+    case 12: // Knight — a pennant flag
       return (
-        <g stroke={GOLD} strokeWidth="2.5" fill="none" strokeLinecap="round">
-          <path d="M70 118 C70 148 84 158 100 158 C116 158 130 148 130 118 Z" fill="#141a38" />
-          <path d="M74 122 C74 146 86 154 100 154 C114 154 126 146 126 122" opacity="0.5" />
-          <line x1="100" y1="158" x2="100" y2="178" />
-          <path d="M78 186 C86 178 114 178 122 186" />
-          <path d="M92 106 C96 110 104 110 108 106" opacity="0.7" />
+        <g>
+          <path d="M92 112 L92 88" />
+          <path d="M92 90 L112 95 L92 101" />
         </g>
       )
-    case 'swords':
+    case 13: // Queen — a rounded crown
       return (
-        <g stroke={GOLD} strokeWidth="2.5" fill="none" strokeLinecap="round">
-          <path d="M100 100 L106 112 L106 164 L100 172 L94 164 L94 112 Z" fill="#141a38" />
-          <line x1="76" y1="170" x2="124" y2="170" strokeWidth="3.5" />
-          <path d="M76 170 C76 164 82 162 86 166 M124 170 C124 164 118 162 114 166" strokeWidth="2" />
-          <line x1="100" y1="172" x2="100" y2="192" />
-          <circle cx="100" cy="196" r="4.5" fill={GOLD} strokeWidth="1" />
+        <g>
+          <path d="M88 108 L88 98 C 92 102 96 102 100 96 C 104 102 108 102 112 98 L112 108 Z" />
+          <circle cx="88" cy="94" r="1.6" />
+          <circle cx="100" cy="91" r="1.6" />
+          <circle cx="112" cy="94" r="1.6" />
         </g>
       )
-    case 'pentacles':
+    case 14: // King — a pointed crown
       return (
-        <g stroke={GOLD} strokeWidth="2.5" fill="none" strokeLinejoin="round">
-          <circle cx="100" cy="150" r="42" fill="#141a38" />
-          <circle cx="100" cy="150" r="35" opacity="0.5" strokeWidth="1.5" />
-          <path d="M100 118 L109.4 143.1 L136 144.1 L115.2 160.9 L122.4 186.6 L100 172 L77.6 186.6 L84.8 160.9 L64 144.1 L90.6 143.1 Z" strokeWidth="2" />
+        <g>
+          <path d="M87 108 L87 96 L94 102 L100 92 L106 102 L113 96 L113 108 Z" />
         </g>
       )
     default:
@@ -59,93 +149,271 @@ function SuitEmblem({ card }: { card: TarotCard }) {
   }
 }
 
+/* ---------- major arcana doodles ---------- */
+
+function MajorIcon({ n }: { n: number }) {
+  switch (n) {
+    case 0: // The Fool — a bindle on a stick
+      return (
+        <g>
+          <path d="M82 186 L126 122" />
+          <circle cx="131" cy="116" r="11" />
+          <path d="M78 190 L88 190 M94 190 L102 190" />
+        </g>
+      )
+    case 1: // The Magician — a wand and sparkles
+      return (
+        <g>
+          <path d="M80 182 L120 122" />
+          <path d="M128 106 L128 122 M120 114 L136 114" />
+          <path d="M108 98 L108 108 M103 103 L113 103" />
+        </g>
+      )
+    case 2: // The High Priestess — an open book
+      return (
+        <g>
+          <path d="M70 160 C 82 152 94 152 100 158 C 106 152 118 152 130 160 L130 128 C 118 120 106 120 100 126 C 94 120 82 120 70 128 Z" />
+          <path d="M100 126 L100 158" />
+        </g>
+      )
+    case 3: // The Empress — venus symbol
+      return (
+        <g>
+          <circle cx="100" cy="132" r="16" />
+          <path d="M100 148 L100 176 M88 162 L112 162" />
+        </g>
+      )
+    case 4: // The Emperor — a shield
+      return (
+        <g>
+          <path d="M80 118 L120 118 L120 150 C 120 168 110 178 100 182 C 90 178 80 168 80 150 Z" />
+          <path d="M100 126 L100 172 M86 142 L114 142" />
+        </g>
+      )
+    case 5: // The Hierophant — a key
+      return (
+        <g>
+          <circle cx="100" cy="124" r="11" />
+          <path d="M100 135 L100 180 M100 172 L110 172 M100 162 L107 162" />
+        </g>
+      )
+    case 6: // The Lovers — a heart
+      return (
+        <g>
+          <path d="M100 172 C 76 152 70 132 81 121 C 90 112 100 119 100 130 C 100 119 110 112 119 121 C 130 132 124 152 100 172 Z" />
+        </g>
+      )
+    case 7: // The Chariot — a little cart
+      return (
+        <g>
+          <path d="M78 134 L122 134 L122 156 L78 156 Z" />
+          <path d="M78 134 L85 118 L115 118 L122 134" />
+          <circle cx="87" cy="166" r="8" />
+          <circle cx="113" cy="166" r="8" />
+        </g>
+      )
+    case 8: // Strength — infinity
+      return (
+        <g>
+          <path d="M78 146 C 78 134 93 134 100 146 C 107 158 122 158 122 146 C 122 134 107 134 100 146 C 93 158 78 158 78 146 Z" />
+        </g>
+      )
+    case 9: // The Hermit — a lantern
+      return (
+        <g>
+          <path d="M92 114 C 92 105 108 105 108 114" />
+          <path d="M88 116 L112 116 L110 152 L90 152 Z" />
+          <path d="M100 127 L105 135 L100 143 L95 135 Z" />
+          <path d="M82 134 L74 134 M118 134 L126 134 M100 158 L100 165" />
+        </g>
+      )
+    case 10: // Wheel of Fortune — a wheel with a pointer
+      return (
+        <g>
+          <circle cx="100" cy="148" r="26" />
+          <path d="M100 122 L100 174 M74 148 L126 148 M82 130 L118 166 M118 130 L82 166" />
+          <circle cx="100" cy="148" r="4" />
+          <path d="M95 112 L105 112 L100 119 Z" />
+        </g>
+      )
+    case 11: // Justice — scales
+      return (
+        <g>
+          <path d="M100 116 L100 172 M74 124 L126 124" />
+          <path d="M74 124 L64 142 M74 124 L84 142 M63 143 C 68 151 80 151 85 143" />
+          <path d="M126 124 L116 142 M126 124 L136 142 M115 143 C 120 151 132 151 137 143" />
+          <path d="M90 178 L110 178" />
+        </g>
+      )
+    case 12: // The Hanged Man — upside-down figure
+      return (
+        <g>
+          <path d="M76 112 L124 112 M100 112 L100 124" />
+          <path d="M100 124 L100 140 M100 128 L110 137" />
+          <path d="M100 140 L100 156 M100 145 L90 157 M100 145 L110 157" />
+          <circle cx="100" cy="165" r="8" />
+        </g>
+      )
+    case 13: // Death — a scythe
+      return (
+        <g>
+          <path d="M93 112 L105 190" />
+          <path d="M93 112 C 105 100 124 98 138 106 C 124 108 106 112 96 118" />
+        </g>
+      )
+    case 14: // Temperance — water poured between cups
+      return (
+        <g>
+          <path d="M72 116 L92 110 L94 122 L76 127 Z" />
+          <path d="M90 122 C 94 132 98 138 103 146" />
+          <path d="M94 150 C 94 160 100 165 107 165 C 114 165 120 160 120 150 M94 150 L120 150" />
+        </g>
+      )
+    case 15: // The Devil — a pitchfork
+      return (
+        <g>
+          <path d="M100 118 L100 182" />
+          <path d="M88 116 L88 128 C 88 135 94 138 100 138" />
+          <path d="M112 116 L112 128 C 112 135 106 138 100 138" />
+          <path d="M85 119 L88 113 L91 119 M109 119 L112 113 L115 119 M97 121 L100 115 L103 121" />
+        </g>
+      )
+    case 16: // The Tower — struck by lightning
+      return (
+        <g>
+          <path d="M87 122 L87 182 L113 182 L113 122" />
+          <path d="M85 122 L87 122 L87 115 L93 115 L93 122 L97 122 L97 115 L103 115 L103 122 L107 122 L107 115 L113 115 L113 122 L115 122" />
+          <path d="M124 102 L112 118 L120 120 L106 138" />
+          <circle cx="100" cy="152" r="3" />
+        </g>
+      )
+    case 17: // The Star — with little rays
+      return (
+        <g>
+          <path d="M100 119 L105.9 136.9 L124.7 137 L109.5 148.1 L115.3 166 L100 155 L84.7 166 L90.5 148.1 L75.3 137 L94.1 136.9 Z" />
+          <path d="M100 108 L100 102 M126 122 L131 118 M74 122 L69 118 M124 158 L129 162 M76 158 L71 162" />
+        </g>
+      )
+    case 18: // The Moon — a crescent
+      return (
+        <g>
+          <path d="M110 114 A 34 34 0 1 0 110 178 A 27 27 0 1 1 110 114 Z" />
+        </g>
+      )
+    case 19: // The Sun — with rays
+      return (
+        <g>
+          <circle cx="100" cy="146" r="21" />
+          <path d="M100 115 L100 107 M100 177 L100 185 M69 146 L61 146 M131 146 L139 146 M78 124 L72 118 M122 124 L128 118 M78 168 L72 174 M122 168 L128 174" />
+        </g>
+      )
+    case 20: // Judgement — a trumpet
+      return (
+        <g>
+          <path d="M78 164 L118 132 M84 172 L120 144" />
+          <path d="M118 132 C 124 134 126 140 120 144" />
+          <circle cx="79" cy="167" r="3.5" />
+          <path d="M128 122 C 134 126 136 134 133 140 M135 113 C 143 119 145 131 141 139" />
+        </g>
+      )
+    case 21: // The World — a little globe
+      return (
+        <g>
+          <circle cx="100" cy="146" r="24" />
+          <ellipse cx="100" cy="146" rx="10" ry="24" />
+          <path d="M76 146 L124 146" />
+        </g>
+      )
+    default:
+      return null
+  }
+}
+
+/* ---------- the card faces ---------- */
+
+function CardChrome({ seed, children }: { seed: number; children?: ReactNode }) {
+  return (
+    <>
+      <rect x="0" y="0" width="200" height="320" rx="10" fill={PAPER} />
+      <g stroke={INK} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <path d={sketchRect(6, 6, 188, 308, seed)} />
+        <path d={sketchRect(16, 16, 168, 288, seed + 1, 1.8)} />
+        {children}
+      </g>
+    </>
+  )
+}
+
 export function CardArt({ card, lang }: { card: TarotCard; lang: Lang }) {
+  const seed = hashString(card.id)
   const label = cardLabel(card, lang)
-  const name = card.name[lang].toUpperCase()
-  const longName = name.length > 14
+  const name = card.name[lang]
+  const nameSize = name.length >= 17 ? 12.5 : name.length >= 13 ? 14.5 : 16.5
+
   return (
     <svg viewBox="0 0 200 320" className="card-art" aria-hidden="true">
-      <defs>
-        <linearGradient id="cardBg" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#1a2148" />
-          <stop offset="55%" stopColor="#10142e" />
-          <stop offset="100%" stopColor="#0b0e22" />
-        </linearGradient>
-      </defs>
-      <rect x="0" y="0" width="200" height="320" rx="12" fill="url(#cardBg)" />
-      <rect x="7" y="7" width="186" height="306" rx="8" fill="none" stroke={GOLD} strokeWidth="1.5" />
-      <rect x="13" y="13" width="174" height="294" rx="5" fill="none" stroke={GOLD_DIM} strokeWidth="0.75" opacity="0.7" />
-      {/* corner stars */}
-      {[
-        [24, 26], [176, 26], [24, 294], [176, 294],
-      ].map(([x, y], i) => (
-        <path
-          key={i}
-          d={`M${x} ${y - 5} L${x + 1.6} ${y - 1.6} L${x + 5} ${y} L${x + 1.6} ${y + 1.6} L${x} ${y + 5} L${x - 1.6} ${y + 1.6} L${x - 5} ${y} L${x - 1.6} ${y - 1.6} Z`}
-          fill={GOLD}
-          opacity="0.85"
-        />
-      ))}
-      <text x="100" y="66" textAnchor="middle" fill={GOLD} fontSize="26" fontFamily="'Cormorant Garamond', Georgia, serif" fontWeight="600" letterSpacing="3">
+      <CardChrome seed={seed}>
+        {card.arcana === 'major' ? (
+          <MajorIcon n={card.number ?? 0} />
+        ) : card.rank && card.rank <= 10 ? (
+          pipLayouts[card.rank].map(([x, y, s], i) => {
+            const Glyph = suitGlyph[card.suit as Suit]
+            return (
+              <g key={i} transform={`translate(${x} ${y}) scale(${s})`}>
+                <Glyph />
+              </g>
+            )
+          })
+        ) : (
+          <>
+            <CourtMarker rank={card.rank ?? 11} />
+            <g transform="translate(100 152) scale(1.5)">
+              {(() => {
+                const Glyph = suitGlyph[card.suit as Suit]
+                return <Glyph />
+              })()}
+            </g>
+          </>
+        )}
+        <path d={sketchRect(32, 234, 136, 36, seed + 2, 1.8)} />
+      </CardChrome>
+      <text
+        x="100"
+        y="47"
+        textAnchor="middle"
+        fill={INK}
+        fontSize="19"
+        fontFamily={HAND}
+      >
         {label}
       </text>
-      <line x1="60" y1="82" x2="140" y2="82" stroke={GOLD_DIM} strokeWidth="0.75" opacity="0.8" />
-      <SuitEmblem card={card} />
-      <line x1="60" y1="222" x2="140" y2="222" stroke={GOLD_DIM} strokeWidth="0.75" opacity="0.8" />
-      {longName ? (
-        (() => {
-          const words = name.split(' ')
-          const mid = Math.ceil(words.length / 2)
-          const line1 = words.slice(0, mid).join(' ')
-          const line2 = words.slice(mid).join(' ')
-          return (
-            <>
-              <text x="100" y="252" textAnchor="middle" fill={GOLD} fontSize="15" fontFamily="'Cormorant Garamond', Georgia, serif" fontWeight="600" letterSpacing="1.5">
-                {line1}
-              </text>
-              <text x="100" y="272" textAnchor="middle" fill={GOLD} fontSize="15" fontFamily="'Cormorant Garamond', Georgia, serif" fontWeight="600" letterSpacing="1.5">
-                {line2}
-              </text>
-            </>
-          )
-        })()
-      ) : (
-        <text x="100" y="262" textAnchor="middle" fill={GOLD} fontSize="17" fontFamily="'Cormorant Garamond', Georgia, serif" fontWeight="600" letterSpacing="2">
-          {name}
-        </text>
-      )}
+      <text
+        x="100"
+        y="259"
+        textAnchor="middle"
+        fill={INK}
+        fontSize={nameSize}
+        fontFamily={HAND}
+      >
+        {name}
+      </text>
     </svg>
   )
 }
 
 export function CardBack() {
-  const stars: [number, number, number][] = [
-    [40, 60, 1.4], [160, 48, 1.1], [70, 110, 1], [140, 130, 1.5], [50, 190, 1.2],
-    [155, 210, 1], [95, 250, 1.3], [45, 280, 1], [165, 285, 1.4], [100, 40, 1],
-    [30, 150, 1], [170, 165, 1.2], [120, 85, 1], [80, 300, 1],
-  ]
   return (
     <svg viewBox="0 0 200 320" className="card-art" aria-hidden="true">
-      <defs>
-        <radialGradient id="backGlow" cx="50%" cy="45%" r="70%">
-          <stop offset="0%" stopColor="#232b5c" />
-          <stop offset="100%" stopColor="#0b0e22" />
-        </radialGradient>
-      </defs>
-      <rect x="0" y="0" width="200" height="320" rx="12" fill="url(#backGlow)" />
-      <rect x="7" y="7" width="186" height="306" rx="8" fill="none" stroke={GOLD} strokeWidth="1.5" />
-      <rect x="14" y="14" width="172" height="292" rx="5" fill="none" stroke={GOLD_DIM} strokeWidth="0.75" opacity="0.6" />
-      {stars.map(([x, y, r], i) => (
-        <circle key={i} cx={x} cy={y} r={r} fill={GOLD} opacity="0.7" />
-      ))}
-      <g stroke={GOLD} fill="none" strokeWidth="1.5">
-        <circle cx="100" cy="160" r="40" opacity="0.9" />
-        <circle cx="100" cy="160" r="47" opacity="0.35" strokeDasharray="2 6" />
-        {/* crescent moon */}
-        <path d="M112 134 A32 32 0 1 0 112 186 A26 26 0 1 1 112 134 Z" fill={GOLD} stroke="none" opacity="0.9" />
-      </g>
-      <path d="M100 96 L103 105 L112 108 L103 111 L100 120 L97 111 L88 108 L97 105 Z" fill={GOLD} opacity="0.9" />
-      <path d="M100 200 L103 209 L112 212 L103 215 L100 224 L97 215 L88 212 L97 209 Z" fill={GOLD} opacity="0.9" />
+      <CardChrome seed={77}>
+        <path d="M110 118 A 34 34 0 1 0 110 182 A 27 27 0 1 1 110 118 Z" />
+        <path d="M100 92 L102 98 L108 100 L102 102 L100 108 L98 102 L92 100 L98 98 Z" />
+        <path d="M100 212 L102 218 L108 220 L102 222 L100 228 L98 222 L92 220 L98 218 Z" />
+        <path d="M64 130 L64 140 M59 135 L69 135" />
+        <path d="M138 168 L138 178 M133 173 L143 173" />
+        <circle cx="70" cy="190" r="1.6" />
+        <circle cx="136" cy="128" r="1.6" />
+        <circle cx="58" cy="164" r="1.4" />
+      </CardChrome>
     </svg>
   )
 }
