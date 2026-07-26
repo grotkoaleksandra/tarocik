@@ -5,6 +5,7 @@ import { ui } from '../lib/i18n'
 import { CardArt } from './CardArt'
 import { CardDetail } from './CardDetail'
 import { Reveal } from './Reveal'
+import { Sparkle } from './Doodles'
 
 type Filter = 'all' | 'major' | 'wands' | 'cups' | 'swords' | 'pentacles'
 
@@ -38,6 +39,7 @@ export function Library({ lang }: { lang: Lang }) {
       <Reveal>
         <header className="page-head">
           <span className="page-index" aria-hidden="true">03</span>
+          <Sparkle className="hd hd-head-spark" />
           <h2 className="page-title">{ui.libraryTitle[lang]}</h2>
           <p className="page-sub">{ui.libraryIntro[lang]}</p>
         </header>

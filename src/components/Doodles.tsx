@@ -41,6 +41,86 @@ export function FlowerShape({ petals = 6, seed = 1 }: { petals?: number; seed?: 
   )
 }
 
+/** Four-point sparkle, solid fill via currentColor. */
+export function Sparkle({ className }: { className?: string }) {
+  return (
+    <svg viewBox="-12 -12 24 24" className={className} aria-hidden="true">
+      <path
+        d="M 0 -10.5 L 2.5 -2.5 L 10.5 0 L 2.5 2.5 L 0 10.5 L -2.5 2.5 L -10.5 0 L -2.5 -2.5 Z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}
+
+/** Hand-drawn crescent moon outline. */
+export function MoonDoodle({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} aria-hidden="true">
+      <path
+        d="M30 8 A 17 17 0 1 0 30 40 A 13.5 13.5 0 1 1 30 8 Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+/** A watching eye with lashes. */
+export function EyeDoodle({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 64 44" className={className} aria-hidden="true">
+      <g fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
+        <path d="M6 22 C 16 10 48 10 58 22 C 48 34 16 34 6 22 Z" />
+        <circle cx="32" cy="22" r="6.5" fill="currentColor" stroke="none" />
+        <path d="M18 8 L15 3 M32 6 L32 1 M46 8 L49 3" />
+      </g>
+    </svg>
+  )
+}
+
+/** Loose curved arrow. */
+export function ArrowDoodle({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 60 48" className={className} aria-hidden="true">
+      <g fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 8 C 10 30 30 42 50 36" />
+        <path d="M42 28 L 51 36 L 40 40" />
+      </g>
+    </svg>
+  )
+}
+
+/** Long wavy squiggle, used as a section divider. */
+export function Squiggle({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 300 16" className={className} aria-hidden="true" preserveAspectRatio="none">
+      <path
+        d="M2 9 Q 12 2 22 9 T 42 9 T 62 9 T 82 9 T 102 9 T 122 9 T 142 9 T 162 9 T 182 9 T 202 9 T 222 9 T 242 9 T 262 9 T 282 9 T 298 9"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
+
+/** Soft irregular color blob (borderless, watercolor-ish). */
+export function BlobShape({ color, className }: { color: string; className?: string }) {
+  return (
+    <svg viewBox="-52 -52 104 104" className={className} aria-hidden="true">
+      <path
+        d="M -42 4 C -46 -18 -28 -38 -2 -40 C 26 -42 44 -26 45 -2 C 46 24 28 40 0 41 C -26 42 -38 26 -42 4 Z"
+        fill={color}
+        fillOpacity="0.9"
+      />
+    </svg>
+  )
+}
+
 /** Logo mark: a tilted hand-drawn card with an ink flower on its face. */
 export function LogoMark({ className }: { className?: string }) {
   return (

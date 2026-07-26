@@ -7,6 +7,19 @@ const INK = '#3b3733'
 const PAPER = '#fffdf6'
 const HAND = "'Patrick Hand', 'Comic Sans MS', cursive"
 
+/** Risograph spot color per suit (majors get pink). */
+const SPOT: Record<string, string> = {
+  major: '#ec6a8d',
+  wands: '#f2a541',
+  cups: '#6d87e0',
+  swords: '#93b8d8',
+  pentacles: '#8bbf78',
+}
+
+/** Organic blob printed behind the card's artwork. */
+const BLOB =
+  'M -42 4 C -46 -18 -28 -38 -2 -40 C 26 -42 44 -26 45 -2 C 46 24 28 40 0 41 C -26 42 -38 26 -42 4 Z'
+
 /* ---------- wobbly hand-drawn rectangles ---------- */
 
 function hashString(s: string): number {
@@ -366,10 +379,21 @@ export function CardArt({ card, lang }: { card: TarotCard; lang: Lang }) {
   const label = cardLabel(card, lang)
   const name = card.name[lang]
   const nameSize = name.length >= 17 ? 12.5 : name.length >= 13 ? 14.5 : 16.5
+  const spot = SPOT[card.arcana === 'major' ? 'major' : (card.suit as string)]
+  // vary the blob a little per card so the print feels hand-pulled
+  const blobRotate = (seed % 60) - 30
+  const blobStretch = card.arcana === 'minor' && (card.rank ?? 0) >= 7 && (card.rank ?? 0) <= 10 ? 1.35 : 1.12
 
   return (
     <svg viewBox="0 0 200 320" className="card-art" aria-hidden="true">
       <CardChrome seed={seed}>
+        <path
+          d={BLOB}
+          transform={`translate(100 150) rotate(${blobRotate}) scale(1.05 ${blobStretch})`}
+          fill={spot}
+          fillOpacity="0.5"
+          stroke="none"
+        />
         {card.arcana === 'major' ? (
           <MajorIcon n={card.number ?? 0} />
         ) : card.rank && card.rank <= 10 ? (
@@ -392,7 +416,7 @@ export function CardArt({ card, lang }: { card: TarotCard; lang: Lang }) {
             </g>
           </>
         )}
-        <path d={sketchRect(32, 234, 136, 36, seed + 2, 1.8)} />
+        <path d={sketchRect(32, 234, 136, 36, seed + 2, 1.8)} fill={spot} fillOpacity="0.26" />
       </CardChrome>
       <text
         x="100"
@@ -422,6 +446,9 @@ export function CardBack() {
   return (
     <svg viewBox="0 0 200 320" className="card-art" aria-hidden="true">
       <CardChrome seed={77}>
+        <path d={BLOB} transform="translate(100 110) scale(1.15)" fill="#ec6a8d" fillOpacity="0.42" stroke="none" />
+        <path d={BLOB} transform="translate(64 218) rotate(40) scale(0.72)" fill="#6d87e0" fillOpacity="0.38" stroke="none" />
+        <path d={BLOB} transform="translate(142 248) rotate(-25) scale(0.55)" fill="#f2a541" fillOpacity="0.45" stroke="none" />
         <g transform="translate(100 108) scale(1.08)">
           <FlowerShape petals={6} seed={5} />
         </g>

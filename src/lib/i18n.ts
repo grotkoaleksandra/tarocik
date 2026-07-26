@@ -13,6 +13,8 @@ export const ui = {
   heroLine2: { pl: 'posłuchaj siebie.', en: 'listen to yourself.' },
   ctaReading: { pl: 'Rozłóż karty', en: 'Draw a spread' },
   ctaLibrary: { pl: 'Poznaj znaczenia', en: 'Explore the meanings' },
+  scrollDown: { pl: 'przewiń niżej', en: 'scroll down' },
+  changeSpread: { pl: 'Zmień rozkład', en: 'Change spread' },
   cardOfTheDay: { pl: 'Karta dnia', en: 'Card of the day' },
   cardOfTheDayIntro: {
     pl: 'Jedna karta na dziś — ta sama dla wszystkich, nowa każdego ranka.',

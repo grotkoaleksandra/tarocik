@@ -1,25 +1,40 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { DrawnCard, Lang, Spread } from '../types'
 import { spreads, ui } from '../lib/i18n'
 import { drawCards } from '../lib/draw'
 import { summarizeReading } from '../lib/summary'
 import { FlipCard } from './FlipCard'
 import { Reveal } from './Reveal'
+import { MoonDoodle, Sparkle } from './Doodles'
+
+type Phase = 'pick' | 'shuffle' | 'board'
 
 export function Reading({ lang }: { lang: Lang }) {
+  const [phase, setPhase] = useState<Phase>('pick')
   const [spread, setSpread] = useState<Spread>(spreads[1])
   const [drawn, setDrawn] = useState<DrawnCard[] | null>(null)
   const [revealed, setRevealed] = useState<boolean[]>([])
-  const [shuffling, setShuffling] = useState(false)
+  const timer = useRef<number | undefined>(undefined)
 
-  const startDraw = (s: Spread) => {
-    setShuffling(true)
+  useEffect(() => () => window.clearTimeout(timer.current), [])
+
+  const startReading = (s: Spread) => {
+    setSpread(s)
     setDrawn(null)
-    setTimeout(() => {
+    setPhase('shuffle')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.clearTimeout(timer.current)
+    timer.current = window.setTimeout(() => {
       setDrawn(drawCards(s.cards))
       setRevealed(new Array(s.cards).fill(false))
-      setShuffling(false)
-    }, 900)
+      setPhase('board')
+    }, 1600)
+  }
+
+  const backToPick = () => {
+    window.clearTimeout(timer.current)
+    setDrawn(null)
+    setPhase('pick')
   }
 
   const reveal = (i: number) =>
@@ -27,15 +42,13 @@ export function Reading({ lang }: { lang: Lang }) {
 
   const allRevealed = drawn !== null && revealed.every(Boolean)
 
-  const slot = (i: number, extraClass = '', showLabel = true) =>
+  const slot = (i: number) =>
     drawn && (
-      <div key={drawn[i].card.id} className={`spread-slot ${extraClass}`}>
-        {showLabel && (
-          <span className="position-label">
-            {spread.cards > 5 ? `${i + 1}. ` : ''}
-            {spread.positions[i][lang]}
-          </span>
-        )}
+      <div key={drawn[i].card.id} className="spread-slot">
+        <span className="position-label">
+          {spread.cards > 5 ? `${i + 1}. ` : ''}
+          {spread.positions[i][lang]}
+        </span>
         <FlipCard
           card={drawn[i].card}
           lang={lang}
@@ -47,52 +60,61 @@ export function Reading({ lang }: { lang: Lang }) {
       </div>
     )
 
+  if (phase === 'pick') {
+    return (
+      <section className="reading">
+        <Reveal>
+          <header className="page-head">
+            <span className="page-index" aria-hidden="true">02</span>
+            <Sparkle className="hd hd-head-spark" />
+            <h2 className="page-title">{ui.chooseSpread[lang]}</h2>
+          </header>
+        </Reveal>
+        <Reveal className="spread-picker" delay={100}>
+          {spreads.map((s) => (
+            <button
+              key={s.id}
+              type="button"
+              className="spread-option"
+              onClick={() => startReading(s)}
+            >
+              <span className="spread-name">{s.name[lang]}</span>
+              <span className="spread-desc">{s.description[lang]}</span>
+              <span className="spread-go" aria-hidden="true">→</span>
+            </button>
+          ))}
+        </Reveal>
+      </section>
+    )
+  }
+
+  if (phase === 'shuffle') {
+    return (
+      <section className="reading shuffle-screen" aria-live="polite">
+        <MoonDoodle className="hd hd-shuffle-moon" />
+        <Sparkle className="hd hd-shuffle-spark-1" />
+        <Sparkle className="hd hd-shuffle-spark-2" />
+        <div className="shuffle-cards">
+          <span /><span /><span />
+        </div>
+        <h2 className="shuffle-title">{ui.shuffling[lang]}</h2>
+        <p className="section-sub">{ui.focusHint[lang]}</p>
+      </section>
+    )
+  }
+
   return (
     <section className="reading">
-      <Reveal>
-        <header className="page-head">
-          <span className="page-index" aria-hidden="true">02</span>
-          <h2 className="page-title">{ui.chooseSpread[lang]}</h2>
-        </header>
-      </Reveal>
-      <Reveal className="spread-picker" delay={100}>
-        {spreads.map((s) => (
-          <button
-            key={s.id}
-            type="button"
-            className={`spread-option ${spread.id === s.id ? 'is-active' : ''}`}
-            onClick={() => {
-              setSpread(s)
-              setDrawn(null)
-            }}
-          >
-            <span className="spread-name">{s.name[lang]}</span>
-            <span className="spread-desc">{s.description[lang]}</span>
-          </button>
-        ))}
-      </Reveal>
-
-      {!drawn && !shuffling && (
-        <div className="reading-start">
-          <p className="section-sub">{ui.focusHint[lang]}</p>
-          <button type="button" className="btn-gold" onClick={() => startDraw(spread)}>
-            {ui.drawCards[lang]}
-          </button>
-        </div>
-      )}
-
-      {shuffling && (
-        <div className="shuffle-stage" aria-live="polite">
-          <div className="shuffle-cards">
-            <span /><span /><span />
-          </div>
-          <p className="section-sub">{ui.shuffling[lang]}</p>
-        </div>
-      )}
+      <div className="board-head">
+        <button type="button" className="back-link" onClick={backToPick}>
+          ← {ui.changeSpread[lang]}
+        </button>
+        <h2 className="board-title">{spread.name[lang]}</h2>
+        {!allRevealed && <p className="section-sub">{ui.tapToReveal[lang]}</p>}
+      </div>
 
       {drawn && (
         <>
-          {!allRevealed && <p className="section-sub tap-hint">{ui.tapToReveal[lang]}</p>}
           {spread.id === 'celtic' ? (
             <div className="celtic-layout">
               <div className="celtic-cross">
@@ -123,7 +145,7 @@ export function Reading({ lang }: { lang: Lang }) {
                 </div>
               </div>
               <div className="celtic-staff">
-                {[9, 8, 7, 6].map((i) => slot(i, ''))}
+                {[9, 8, 7, 6].map((i) => slot(i))}
               </div>
             </div>
           ) : (
@@ -155,7 +177,7 @@ export function Reading({ lang }: { lang: Lang }) {
                 <h3>✦ {ui.summaryTitle[lang]}</h3>
                 <p>{summarizeReading(drawn, lang)}</p>
               </article>
-              <button type="button" className="btn-gold" onClick={() => startDraw(spread)}>
+              <button type="button" className="btn-gold" onClick={() => startReading(spread)}>
                 {ui.drawAgain[lang]}
               </button>
             </div>

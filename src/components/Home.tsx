@@ -4,7 +4,15 @@ import { ui } from '../lib/i18n'
 import { cardOfTheDay } from '../lib/draw'
 import { FlipCard } from './FlipCard'
 import { CardBack } from './CardArt'
-import { WatercolorFlowerSvg } from './Doodles'
+import {
+  ArrowDoodle,
+  BlobShape,
+  EyeDoodle,
+  MoonDoodle,
+  Sparkle,
+  Squiggle,
+  WatercolorFlowerSvg,
+} from './Doodles'
 import { Reveal } from './Reveal'
 import { majorArcana } from '../data/major'
 
@@ -28,6 +36,12 @@ export function Home({ lang, onNavigate }: Props) {
   return (
     <>
       <section className="hero">
+        <Sparkle className="hd hd-spark-1" />
+        <Sparkle className="hd hd-spark-2" />
+        <Sparkle className="hd hd-spark-3" />
+        <MoonDoodle className="hd hd-moon" />
+        <EyeDoodle className="hd hd-eye" />
+        <ArrowDoodle className="hd hd-arrow" />
         <Reveal className="hero-text">
           <p className="eyebrow">{ui.heroEyebrow[lang]}</p>
           <h1 className="display">
@@ -46,6 +60,7 @@ export function Home({ lang, onNavigate }: Props) {
           </div>
         </Reveal>
         <Reveal className="hero-stage" delay={150} aria-hidden="true">
+          <BlobShape color="#f2a541" className="hero-blob" />
           <WatercolorFlowerSvg petals={6} seed={9} accent className="hero-flower" />
           <div className="hero-fan">
             <div className="fan-card fan-1"><CardBack /></div>
@@ -53,6 +68,15 @@ export function Home({ lang, onNavigate }: Props) {
             <div className="fan-card fan-3"><CardBack /></div>
           </div>
         </Reveal>
+        <button
+          type="button"
+          className="scroll-cue"
+          onClick={() =>
+            document.querySelector('.daily')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        >
+          {ui.scrollDown[lang]} <span className="scroll-arrow" aria-hidden="true">↓</span>
+        </button>
       </section>
 
       <div className="marquee" aria-hidden="true">
@@ -69,7 +93,13 @@ export function Home({ lang, onNavigate }: Props) {
         </div>
       </div>
 
+      <div className="squiggle-divider" aria-hidden="true">
+        <Squiggle className="squiggle" />
+      </div>
+
       <section className="daily">
+        <Sparkle className="hd hd-daily-spark" />
+        <MoonDoodle className="hd hd-daily-moon" />
         <Reveal className="daily-info">
           <p className="eyebrow">01 · {dateLabel}</p>
           <h2 className="daily-title">{ui.cardOfTheDay[lang]}</h2>
