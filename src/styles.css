@@ -970,6 +970,17 @@ main {
   pointer-events: auto;
 }
 
+/* Once the crossing card is face-up, hovering the centre fades it away
+   so the card underneath can be read. */
+.celtic-crossing {
+  transition: opacity 0.3s ease;
+}
+
+.celtic-center:hover .celtic-crossing:has(.is-settled),
+.celtic-center:focus-within .celtic-crossing:has(.is-settled) {
+  opacity: 0.15;
+}
+
 .celtic-staff {
   display: flex;
   flex-direction: column;
