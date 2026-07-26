@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import type { Lang, TarotCard } from '../types'
 import { ui } from '../lib/i18n'
 import { CardArt } from './CardArt'
@@ -22,7 +23,9 @@ export function CardDetail({ card, lang, onClose }: Props) {
     }
   }, [onClose])
 
-  return (
+  // Portal to <body>: inside the app's stacking contexts the fixed backdrop
+  // gets painted under later siblings (the footer border cut across the modal).
+  return createPortal(
     <div className="modal-backdrop" onClick={onClose} role="dialog" aria-modal="true" aria-label={card.name[lang]}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <button type="button" className="modal-close" onClick={onClose} aria-label={ui.close[lang]}>
@@ -50,6 +53,7 @@ export function CardDetail({ card, lang, onClose }: Props) {
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
