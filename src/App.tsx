@@ -4,6 +4,7 @@ import { loadLang, saveLang, ui } from './lib/i18n'
 import { Home } from './components/Home'
 import { Reading } from './components/Reading'
 import { Library } from './components/Library'
+import { WatercolorFlowerSvg } from './components/Doodles'
 
 type View = 'home' | 'reading' | 'library'
 
@@ -45,6 +46,11 @@ export default function App() {
   return (
     <div className="app">
       <div className="stars-bg" aria-hidden="true" />
+      <div className="doodles" aria-hidden="true">
+        <WatercolorFlowerSvg petals={5} seed={4} accent className="doodle doodle-a" />
+        <WatercolorFlowerSvg petals={6} seed={17} className="doodle doodle-b" />
+        <WatercolorFlowerSvg petals={5} seed={31} className="doodle doodle-c" />
+      </div>
       <header className="site-header">
         <button type="button" className="brand" onClick={() => go('home')}>
           <span className="brand-star">✦</span> Tarocik

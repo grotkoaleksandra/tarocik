@@ -1,6 +1,7 @@
 import type { ComponentType, ReactNode } from 'react'
 import type { Lang, Suit, TarotCard } from '../types'
 import { cardLabel } from '../lib/draw'
+import { FlowerShape } from './Doodles'
 
 const INK = '#3b3733'
 const PAPER = '#fffdf6'
@@ -344,6 +345,7 @@ function CardChrome({ seed, children }: { seed: number; children?: ReactNode }) 
       <rect x="0" y="0" width="200" height="320" rx="10" fill={PAPER} />
       <g
         stroke={INK}
+        color={INK}
         strokeWidth="3.4"
         strokeOpacity="0.92"
         fill="none"
@@ -420,14 +422,19 @@ export function CardBack() {
   return (
     <svg viewBox="0 0 200 320" className="card-art" aria-hidden="true">
       <CardChrome seed={77}>
-        <path d="M110 118 A 34 34 0 1 0 110 182 A 27 27 0 1 1 110 118 Z" />
-        <path d="M100 92 L102 98 L108 100 L102 102 L100 108 L98 102 L92 100 L98 98 Z" />
-        <path d="M100 212 L102 218 L108 220 L102 222 L100 228 L98 222 L92 220 L98 218 Z" />
-        <path d="M64 130 L64 140 M59 135 L69 135" />
-        <path d="M138 168 L138 178 M133 173 L143 173" />
-        <circle cx="70" cy="190" r="1.6" />
-        <circle cx="136" cy="128" r="1.6" />
-        <circle cx="58" cy="164" r="1.4" />
+        <g transform="translate(100 108) scale(1.08)">
+          <FlowerShape petals={6} seed={5} />
+        </g>
+        <g transform="translate(59 213) scale(0.8)">
+          <FlowerShape petals={5} seed={13} />
+        </g>
+        <g transform="translate(143 245) scale(0.64)">
+          <FlowerShape petals={6} seed={29} />
+        </g>
+        <circle cx="150" cy="160" r="2" fill={INK} stroke="none" />
+        <circle cx="54" cy="126" r="2" fill={INK} stroke="none" />
+        <circle cx="104" cy="288" r="2" fill={INK} stroke="none" />
+        <circle cx="42" cy="286" r="1.6" fill={INK} stroke="none" />
       </CardChrome>
     </svg>
   )
