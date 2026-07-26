@@ -4,6 +4,7 @@ import { allCards } from '../data/cards'
 import { ui } from '../lib/i18n'
 import { CardArt } from './CardArt'
 import { CardDetail } from './CardDetail'
+import { Reveal } from './Reveal'
 
 type Filter = 'all' | 'major' | 'wands' | 'cups' | 'swords' | 'pentacles'
 
@@ -34,12 +35,14 @@ export function Library({ lang }: { lang: Lang }) {
 
   return (
     <section className="library">
-      <header className="page-head">
-        <span className="page-index" aria-hidden="true">03</span>
-        <h2 className="page-title">{ui.libraryTitle[lang]}</h2>
-        <p className="page-sub">{ui.libraryIntro[lang]}</p>
-      </header>
-      <div className="library-controls">
+      <Reveal>
+        <header className="page-head">
+          <span className="page-index" aria-hidden="true">03</span>
+          <h2 className="page-title">{ui.libraryTitle[lang]}</h2>
+          <p className="page-sub">{ui.libraryIntro[lang]}</p>
+        </header>
+      </Reveal>
+      <Reveal className="library-controls" delay={80}>
         <input
           type="search"
           className="search-input"
@@ -59,11 +62,11 @@ export function Library({ lang }: { lang: Lang }) {
             </button>
           ))}
         </div>
-      </div>
+      </Reveal>
       {visible.length === 0 ? (
         <p className="section-sub">{ui.noResults[lang]}</p>
       ) : (
-        <div className="card-grid">
+        <Reveal className="card-grid" delay={140}>
           {visible.map((c) => (
             <button
               key={c.id}
@@ -75,7 +78,7 @@ export function Library({ lang }: { lang: Lang }) {
               <span className="grid-card-name">{c.name[lang]}</span>
             </button>
           ))}
-        </div>
+        </Reveal>
       )}
       {selected && <CardDetail card={selected} lang={lang} onClose={() => setSelected(null)} />}
     </section>

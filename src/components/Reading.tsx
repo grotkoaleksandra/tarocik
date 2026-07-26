@@ -4,6 +4,7 @@ import { spreads, ui } from '../lib/i18n'
 import { drawCards } from '../lib/draw'
 import { summarizeReading } from '../lib/summary'
 import { FlipCard } from './FlipCard'
+import { Reveal } from './Reveal'
 
 export function Reading({ lang }: { lang: Lang }) {
   const [spread, setSpread] = useState<Spread>(spreads[1])
@@ -48,11 +49,13 @@ export function Reading({ lang }: { lang: Lang }) {
 
   return (
     <section className="reading">
-      <header className="page-head">
-        <span className="page-index" aria-hidden="true">02</span>
-        <h2 className="page-title">{ui.chooseSpread[lang]}</h2>
-      </header>
-      <div className="spread-picker">
+      <Reveal>
+        <header className="page-head">
+          <span className="page-index" aria-hidden="true">02</span>
+          <h2 className="page-title">{ui.chooseSpread[lang]}</h2>
+        </header>
+      </Reveal>
+      <Reveal className="spread-picker" delay={100}>
         {spreads.map((s) => (
           <button
             key={s.id}
@@ -67,7 +70,7 @@ export function Reading({ lang }: { lang: Lang }) {
             <span className="spread-desc">{s.description[lang]}</span>
           </button>
         ))}
-      </div>
+      </Reveal>
 
       {!drawn && !shuffling && (
         <div className="reading-start">

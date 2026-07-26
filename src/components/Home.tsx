@@ -5,6 +5,7 @@ import { cardOfTheDay } from '../lib/draw'
 import { FlipCard } from './FlipCard'
 import { CardBack } from './CardArt'
 import { WatercolorFlowerSvg } from './Doodles'
+import { Reveal } from './Reveal'
 import { majorArcana } from '../data/major'
 
 interface Props {
@@ -27,7 +28,7 @@ export function Home({ lang, onNavigate }: Props) {
   return (
     <>
       <section className="hero">
-        <div className="hero-text">
+        <Reveal className="hero-text">
           <p className="eyebrow">{ui.heroEyebrow[lang]}</p>
           <h1 className="display">
             {ui.heroLine1[lang]}
@@ -43,15 +44,15 @@ export function Home({ lang, onNavigate }: Props) {
               {ui.ctaLibrary[lang]}
             </button>
           </div>
-        </div>
-        <div className="hero-stage" aria-hidden="true">
+        </Reveal>
+        <Reveal className="hero-stage" delay={150} aria-hidden="true">
           <WatercolorFlowerSvg petals={6} seed={9} accent className="hero-flower" />
           <div className="hero-fan">
             <div className="fan-card fan-1"><CardBack /></div>
             <div className="fan-card fan-2"><CardBack /></div>
             <div className="fan-card fan-3"><CardBack /></div>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       <div className="marquee" aria-hidden="true">
@@ -69,7 +70,7 @@ export function Home({ lang, onNavigate }: Props) {
       </div>
 
       <section className="daily">
-        <div className="daily-info">
+        <Reveal className="daily-info">
           <p className="eyebrow">01 · {dateLabel}</p>
           <h2 className="daily-title">{ui.cardOfTheDay[lang]}</h2>
           <p className="daily-sub">{ui.cardOfTheDayIntro[lang]}</p>
@@ -93,8 +94,8 @@ export function Home({ lang, onNavigate }: Props) {
               </p>
             </div>
           )}
-        </div>
-        <div className="daily-stage">
+        </Reveal>
+        <Reveal className="daily-stage" delay={120}>
           <WatercolorFlowerSvg petals={5} seed={21} className="daily-flower" />
           <FlipCard
             card={daily.card}
@@ -104,7 +105,7 @@ export function Home({ lang, onNavigate }: Props) {
             onReveal={() => setRevealed(true)}
             size="lg"
           />
-        </div>
+        </Reveal>
       </section>
     </>
   )
