@@ -41,6 +41,27 @@ export function FlowerShape({ petals = 6, seed = 1 }: { petals?: number; seed?: 
   )
 }
 
+/** Logo mark: a tilted hand-drawn card with an ink flower on its face. */
+export function LogoMark({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 44 58" className={className} aria-hidden="true">
+      <g
+        stroke="currentColor"
+        strokeWidth="3.2"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        transform="rotate(-8 22 29)"
+      >
+        <path d="M9 6.5 Q22 4.8 35.2 6.8 Q36.8 29 35.6 51.6 Q22 53.4 8.6 51.8 Q7.4 29 9 6.5 Z" />
+        <g transform="translate(22 29) scale(0.34)" strokeWidth="7.5">
+          <FlowerShape petals={5} seed={9} />
+        </g>
+      </g>
+    </svg>
+  )
+}
+
 /**
  * Borderless watercolor flower: soft filled petals, no outlines,
  * an optional deep-blue brush streak, paper-white centre.

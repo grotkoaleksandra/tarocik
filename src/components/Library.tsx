@@ -34,8 +34,11 @@ export function Library({ lang }: { lang: Lang }) {
 
   return (
     <section className="library">
-      <h2 className="section-title">{ui.libraryTitle[lang]}</h2>
-      <p className="section-sub">{ui.libraryIntro[lang]}</p>
+      <header className="page-head">
+        <span className="page-index" aria-hidden="true">03</span>
+        <h2 className="page-title">{ui.libraryTitle[lang]}</h2>
+        <p className="page-sub">{ui.libraryIntro[lang]}</p>
+      </header>
       <div className="library-controls">
         <input
           type="search"

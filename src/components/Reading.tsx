@@ -48,7 +48,10 @@ export function Reading({ lang }: { lang: Lang }) {
 
   return (
     <section className="reading">
-      <h2 className="section-title">{ui.chooseSpread[lang]}</h2>
+      <header className="page-head">
+        <span className="page-index" aria-hidden="true">02</span>
+        <h2 className="page-title">{ui.chooseSpread[lang]}</h2>
+      </header>
       <div className="spread-picker">
         {spreads.map((s) => (
           <button

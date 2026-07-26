@@ -8,6 +8,11 @@ export const ui = {
     pl: 'Twój mały przewodnik po tarocie — karta dnia, rozkłady i znaczenia wszystkich 78 kart.',
     en: 'Your little guide to tarot — a card of the day, spreads, and meanings for all 78 cards.',
   },
+  heroEyebrow: { pl: 'tarot online', en: 'tarot online' },
+  heroLine1: { pl: 'Zapytaj karty,', en: 'Ask the cards,' },
+  heroLine2: { pl: 'posłuchaj siebie.', en: 'listen to yourself.' },
+  ctaReading: { pl: 'Rozłóż karty', en: 'Draw a spread' },
+  ctaLibrary: { pl: 'Poznaj znaczenia', en: 'Explore the meanings' },
   cardOfTheDay: { pl: 'Karta dnia', en: 'Card of the day' },
   cardOfTheDayIntro: {
     pl: 'Jedna karta na dziś — ta sama dla wszystkich, nowa każdego ranka.',
