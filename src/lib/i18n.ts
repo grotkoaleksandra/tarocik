@@ -4,6 +4,7 @@ export const ui = {
   navHome: { pl: 'Karta dnia', en: 'Card of the day' },
   navReading: { pl: 'Rozkłady', en: 'Readings' },
   navLibrary: { pl: 'Znaczenia kart', en: 'Card meanings' },
+  navGuide: { pl: 'Przewodnik', en: 'Guide' },
   tagline: {
     pl: 'Twój mały przewodnik po tarocie — karta dnia, rozkłady i znaczenia wszystkich 78 kart.',
     en: 'Your little guide to tarot — a card of the day, spreads, and meanings for all 78 cards.',

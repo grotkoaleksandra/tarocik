@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import type { CSSProperties } from 'react'
 import type { DrawnCard, Lang, Spread } from '../types'
 import { spreads, ui } from '../lib/i18n'
 import { drawCards } from '../lib/draw'
@@ -42,9 +43,13 @@ export function Reading({ lang }: { lang: Lang }) {
 
   const allRevealed = drawn !== null && revealed.every(Boolean)
 
-  const slot = (i: number) =>
+  const slot = (i: number, dealOrder = i) =>
     drawn && (
-      <div key={drawn[i].card.id} className="spread-slot">
+      <div
+        key={drawn[i].card.id}
+        className="spread-slot"
+        style={{ '--i': dealOrder } as CSSProperties}
+      >
         <span className="position-label">
           {spread.cards > 5 ? `${i + 1}. ` : ''}
           {spread.positions[i][lang]}
@@ -118,15 +123,15 @@ export function Reading({ lang }: { lang: Lang }) {
           {spread.id === 'celtic' ? (
             <div className="celtic-layout">
               <div className="celtic-cross">
-                <div className="spread-slot ca5">
+                <div className="spread-slot ca5" style={{ '--i': 4 } as CSSProperties}>
                   <span className="position-label">5. {spread.positions[4][lang]}</span>
                   <FlipCard card={drawn[4].card} lang={lang} revealed={revealed[4]} reversed={drawn[4].reversed} onReveal={() => reveal(4)} size="sm" />
                 </div>
-                <div className="spread-slot ca4">
+                <div className="spread-slot ca4" style={{ '--i': 3 } as CSSProperties}>
                   <span className="position-label">4. {spread.positions[3][lang]}</span>
                   <FlipCard card={drawn[3].card} lang={lang} revealed={revealed[3]} reversed={drawn[3].reversed} onReveal={() => reveal(3)} size="sm" />
                 </div>
-                <div className="spread-slot ca-center">
+                <div className="spread-slot ca-center" style={{ '--i': 0 } as CSSProperties}>
                   <span className="position-label">1 · 2</span>
                   <div className="celtic-center">
                     <FlipCard card={drawn[0].card} lang={lang} revealed={revealed[0]} reversed={drawn[0].reversed} onReveal={() => reveal(0)} size="sm" />
@@ -135,17 +140,17 @@ export function Reading({ lang }: { lang: Lang }) {
                     </div>
                   </div>
                 </div>
-                <div className="spread-slot ca6">
+                <div className="spread-slot ca6" style={{ '--i': 5 } as CSSProperties}>
                   <span className="position-label">6. {spread.positions[5][lang]}</span>
                   <FlipCard card={drawn[5].card} lang={lang} revealed={revealed[5]} reversed={drawn[5].reversed} onReveal={() => reveal(5)} size="sm" />
                 </div>
-                <div className="spread-slot ca3">
+                <div className="spread-slot ca3" style={{ '--i': 2 } as CSSProperties}>
                   <span className="position-label">3. {spread.positions[2][lang]}</span>
                   <FlipCard card={drawn[2].card} lang={lang} revealed={revealed[2]} reversed={drawn[2].reversed} onReveal={() => reveal(2)} size="sm" />
                 </div>
               </div>
               <div className="celtic-staff">
-                {[9, 8, 7, 6].map((i) => slot(i))}
+                {[9, 8, 7, 6].map((i, order) => slot(i, 6 + order))}
               </div>
             </div>
           ) : (

@@ -4,13 +4,21 @@ import { loadLang, saveLang, ui } from './lib/i18n'
 import { Home } from './components/Home'
 import { Reading } from './components/Reading'
 import { Library } from './components/Library'
+import { Guide } from './components/Guide'
 import { LogoMark, WatercolorFlowerSvg } from './components/Doodles'
 
-type View = 'home' | 'reading' | 'library'
+type View = 'home' | 'reading' | 'library' | 'guide'
 
 const viewFromHash = (): View => {
   const h = window.location.hash.replace('#', '')
-  return h === 'reading' || h === 'library' ? h : 'home'
+  return h === 'reading' || h === 'library' || h === 'guide' ? h : 'home'
+}
+
+const viewTitles: Record<View, { pl: string; en: string }> = {
+  home: { pl: 'Tarocik — tarot online', en: 'Tarocik — tarot online' },
+  reading: { pl: 'Rozkłady — Tarocik', en: 'Readings — Tarocik' },
+  library: { pl: 'Znaczenia kart — Tarocik', en: 'Card meanings — Tarocik' },
+  guide: { pl: 'Jak czytać tarota — Tarocik', en: 'How to read tarot — Tarocik' },
 }
 
 export default function App() {
@@ -27,6 +35,10 @@ export default function App() {
     document.documentElement.lang = lang
   }, [lang])
 
+  useEffect(() => {
+    document.title = viewTitles[view][lang]
+  }, [view, lang])
+
   const go = (v: View) => {
     window.location.hash = v === 'home' ? '' : v
     setView(v)
@@ -41,6 +53,7 @@ export default function App() {
     { id: 'home', label: ui.navHome[lang] },
     { id: 'reading', label: ui.navReading[lang] },
     { id: 'library', label: ui.navLibrary[lang] },
+    { id: 'guide', label: ui.navGuide[lang] },
   ]
 
   return (
@@ -88,10 +101,11 @@ export default function App() {
           </button>
         </div>
       </header>
-      <main>
+      <main key={view}>
         {view === 'home' && <Home lang={lang} onNavigate={go} />}
         {view === 'reading' && <Reading lang={lang} />}
         {view === 'library' && <Library lang={lang} />}
+        {view === 'guide' && <Guide lang={lang} />}
       </main>
       <footer className="site-footer">
         <LogoMark className="footer-mark" />

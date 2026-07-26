@@ -1,18 +1,18 @@
 :root {
-  --bg: #faf3e7;
-  --panel: #fffdf6;
-  --ink: #2a2521;
-  --ink-soft: #554d45;
-  --ink-dim: #8a7f73;
+  --bg: #fdfdfc;
+  --panel: #ffffff;
+  --ink: #232120;
+  --ink-soft: #4f4c48;
+  --ink-dim: #8b8983;
   --accent: #2b4bb5;
   --rose: #e2618b;
   --coral: #f0875f;
   --marigold: #f2a541;
-  --parchment: #f5ecdc;
-  --line: #e8ddcc;
-  --line-strong: #d5c7b2;
-  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
-  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --parchment: #fbf4de;
+  --line: #e9e8e3;
+  --line-strong: #d6d4cc;
+  --serif: 'Unbounded', 'Arial Rounded MT Bold', sans-serif;
+  --sans: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 * {
@@ -132,9 +132,9 @@ body::after {
   align-items: center;
   gap: 0.6rem;
   font-family: var(--serif);
-  font-size: 1.55rem;
-  font-weight: 550;
-  letter-spacing: 0.02em;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   color: var(--ink);
   background: none;
   border: none;
@@ -381,17 +381,17 @@ main {
 
 .display {
   font-family: var(--serif);
-  font-size: clamp(3.2rem, 7.2vw, 6rem);
-  font-weight: 620;
-  line-height: 0.99;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.9rem, 4.6vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.14;
+  letter-spacing: -0.01em;
   color: var(--ink);
-  margin-top: 1.1rem;
+  margin-top: 1.2rem;
 }
 
 .display em {
-  font-style: italic;
-  font-weight: 480;
+  font-style: normal;
+  font-weight: 500;
   color: var(--rose);
 }
 
@@ -555,53 +555,6 @@ main {
 .hero-stage:hover .fan-1 { transform: rotate(-15deg) translate(-66px, 20px); }
 .hero-stage:hover .fan-2 { transform: rotate(0.5deg) translateY(-12px); }
 .hero-stage:hover .fan-3 { transform: rotate(15deg) translate(66px, 21px); }
-
-/* ---------- home: marquee ---------- */
-
-.marquee {
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%) rotate(-1.3deg);
-  width: 104vw;
-  margin: 0.5rem 0 1rem;
-  background: var(--accent);
-  padding: 0.65rem 0;
-  overflow: hidden;
-  box-shadow: 0 8px 22px rgba(43, 75, 181, 0.25);
-}
-
-.marquee-track {
-  display: inline-flex;
-  white-space: nowrap;
-  animation: marquee 55s linear infinite;
-  will-change: transform;
-}
-
-.marquee-seg {
-  display: inline-flex;
-}
-
-.marquee-item {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 1.12rem;
-  color: var(--bg);
-  margin-right: 2.1rem;
-}
-
-.marquee-item i {
-  font-style: normal;
-  color: var(--marigold);
-  margin-left: 2.1rem;
-}
-
-@keyframes marquee {
-  to { transform: translateX(-50%); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track { animation: none; }
-}
 
 /* ---------- squiggle divider ---------- */
 
@@ -1379,4 +1332,174 @@ main {
 
   .flip-lg { width: 175px; }
   .flip-md { width: 120px; }
+}
+
+/* =========================================================
+   Unbounded type-scale tuning + motion layer
+   ========================================================= */
+
+/* Unbounded runs much wider than a serif — pull sizes down */
+.section-title { font-size: clamp(1.6rem, 3.4vw, 2.2rem); font-weight: 600; }
+.page-title { font-size: clamp(1.5rem, 3.4vw, 2.4rem); font-weight: 600; }
+.page-index { font-size: clamp(4.2rem, 10vw, 6.8rem); font-weight: 700; -webkit-text-stroke: 1.25px var(--line-strong); }
+.daily-title { font-size: clamp(1.4rem, 2.9vw, 2.1rem); font-weight: 600; }
+.board-title { font-size: clamp(1.3rem, 2.8vw, 1.9rem); font-weight: 600; }
+.shuffle-title { font-size: clamp(1.3rem, 2.6vw, 1.8rem); font-weight: 600; }
+.spread-name { font-size: 0.98rem; font-weight: 600; line-height: 1.3; }
+.result-card h3 { font-size: 1rem; font-weight: 600; line-height: 1.4; }
+.modal-title { font-size: 1.45rem; font-weight: 600; line-height: 1.25; }
+.modal-text h3 { font-size: 0.92rem; font-weight: 600; }
+.daily-name { font-size: 1.25rem; font-weight: 600; line-height: 1.35; }
+.footer-brand { font-size: 0.95rem; font-weight: 600; }
+
+.keywords {
+  font-family: var(--sans);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+}
+
+.grid-card-name {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.hero-sub,
+.daily-sub,
+.spread-desc,
+.section-sub,
+.page-sub {
+  font-weight: 500;
+}
+
+/* cards deal onto the board one by one */
+.spread-slot {
+  animation: dealIn 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+@keyframes dealIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) rotate(-4deg);
+  }
+}
+
+/* view-to-view transition */
+main {
+  animation: viewIn 0.4s ease both;
+}
+
+@keyframes viewIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* press feedback */
+.btn-ink:active,
+.btn-gold:active,
+.btn-ghost:active,
+.spread-option:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spread-slot,
+  main {
+    animation: none;
+  }
+}
+
+/* mobile pass */
+@media (max-width: 640px) {
+  .hd-eye,
+  .hd-arrow,
+  .hd-daily-moon,
+  .hd-moon {
+    display: none;
+  }
+
+  .display {
+    font-size: clamp(1.55rem, 7.4vw, 1.9rem);
+  }
+
+  .hero {
+    min-height: calc(100svh - 170px);
+    padding-bottom: 4rem;
+  }
+
+  .daily-stage {
+    padding: 1rem 0.5rem 1.2rem 0;
+  }
+
+  .daily-flower {
+    width: 110px;
+    right: -12px;
+  }
+
+  .page-index {
+    left: -0.3rem;
+  }
+
+  .site-nav {
+    gap: 0.1rem 1rem;
+  }
+
+  .nav-link {
+    font-size: 0.82rem;
+    padding: 0.2rem 0.1rem;
+  }
+
+  .modal {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .reading-results {
+    margin-top: 2rem;
+  }
+}
+
+/* ---------- guide page ---------- */
+
+.guide-body {
+  position: relative;
+  max-width: 40rem;
+  margin: 0.5rem auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.9rem;
+}
+
+.guide-section p {
+  margin-top: 0.5rem;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.guide-heading {
+  font-family: var(--serif);
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.guide-num {
+  color: var(--rose);
+  margin-right: 0.7rem;
+  font-size: 0.85rem;
+}
+
+.hd-guide-moon {
+  position: static;
+  display: block;
+  width: 42px;
+  margin: 0 auto;
+  transform: rotate(-10deg);
+  color: var(--accent);
 }

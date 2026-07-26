@@ -14,7 +14,6 @@ import {
   WatercolorFlowerSvg,
 } from './Doodles'
 import { Reveal } from './Reveal'
-import { majorArcana } from '../data/major'
 
 interface Props {
   lang: Lang
@@ -30,8 +29,6 @@ export function Home({ lang, onNavigate }: Props) {
     day: 'numeric',
     month: 'long',
   })
-
-  const names = majorArcana.map((c) => c.name[lang])
 
   return (
     <>
@@ -78,20 +75,6 @@ export function Home({ lang, onNavigate }: Props) {
           {ui.scrollDown[lang]} <span className="scroll-arrow" aria-hidden="true">↓</span>
         </button>
       </section>
-
-      <div className="marquee" aria-hidden="true">
-        <div className="marquee-track">
-          {[0, 1].map((k) => (
-            <span key={k} className="marquee-seg">
-              {names.map((n) => (
-                <span key={n} className="marquee-item">
-                  {n} <i>·</i>
-                </span>
-              ))}
-            </span>
-          ))}
-        </div>
-      </div>
 
       <div className="squiggle-divider" aria-hidden="true">
         <Squiggle className="squiggle" />
