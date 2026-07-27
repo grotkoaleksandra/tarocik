@@ -3,9 +3,9 @@ import type { Lang, TarotCard } from '../types'
 import { allCards } from '../data/cards'
 import { ui } from '../lib/i18n'
 import { CardArt } from './CardArt'
-import { CardDetail } from './CardDetail'
 import { Reveal } from './Reveal'
 import { Sparkle } from './Doodles'
+import { cardSlug } from '../lib/slugs'
 
 type Filter = 'all' | 'major' | 'wands' | 'cups' | 'swords' | 'pentacles'
 
@@ -18,10 +18,9 @@ const filters: { id: Filter; label: keyof typeof ui }[] = [
   { id: 'pentacles', label: 'filterPentacles' },
 ]
 
-export function Library({ lang }: { lang: Lang }) {
+export function Library({ lang, onOpenCard }: { lang: Lang; onOpenCard: (card: TarotCard) => void }) {
   const [filter, setFilter] = useState<Filter>('all')
   const [query, setQuery] = useState('')
-  const [selected, setSelected] = useState<TarotCard | null>(null)
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -70,19 +69,21 @@ export function Library({ lang }: { lang: Lang }) {
       ) : (
         <Reveal className="card-grid" delay={140}>
           {visible.map((c) => (
-            <button
+            <a
               key={c.id}
-              type="button"
               className="grid-card"
-              onClick={() => setSelected(c)}
+              href={`/karta/${cardSlug(c)}/`}
+              onClick={(e) => {
+                e.preventDefault()
+                onOpenCard(c)
+              }}
             >
               <CardArt card={c} lang={lang} />
               <span className="grid-card-name">{c.name[lang]}</span>
-            </button>
+            </a>
           ))}
         </Reveal>
       )}
-      {selected && <CardDetail card={selected} lang={lang} onClose={() => setSelected(null)} />}
     </section>
   )
 }

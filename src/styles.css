@@ -1520,3 +1520,103 @@ main {
 .nav-link {
   text-decoration: none;
 }
+
+/* ---------- card page ---------- */
+
+.card-page {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding-top: 1.8rem;
+}
+
+.card-page-body {
+  position: relative;
+  display: flex;
+  gap: 2.6rem;
+  align-items: flex-start;
+  margin-top: 1.4rem;
+}
+
+.card-page-art {
+  flex: 0 0 220px;
+}
+
+.card-page-art .card-art {
+  border-radius: 12px;
+  box-shadow: 0 14px 34px rgba(60, 50, 40, 0.18);
+}
+
+.card-page-title {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.card-page-h2 {
+  font-family: var(--serif);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.2rem;
+}
+
+.card-page-text section {
+  margin-top: 1.15rem;
+}
+
+.card-page-text section p {
+  font-size: 0.93rem;
+  color: var(--ink-soft);
+  margin-top: 0.3rem;
+}
+
+.hd-card-spark {
+  top: -0.5rem;
+  right: 0;
+  width: 22px;
+  color: var(--marigold);
+}
+
+.card-page-cta {
+  margin-top: 1.8rem;
+  text-decoration: none;
+}
+
+.card-page-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+
+.card-nav-link {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.card-nav-link:hover {
+  color: var(--accent);
+}
+
+.grid-card {
+  text-decoration: none;
+}
+
+@media (max-width: 620px) {
+  .card-page-body {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card-page-art {
+    flex-basis: auto;
+    width: 180px;
+  }
+}

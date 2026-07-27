@@ -5,13 +5,22 @@ import { Home } from './components/Home'
 import { Reading } from './components/Reading'
 import { Library } from './components/Library'
 import { Guide } from './components/Guide'
+import { CardPage } from './components/CardPage'
 import { LogoMark, WatercolorFlowerSvg } from './components/Doodles'
+import { cardBySlug, cardSlug } from './lib/slugs'
+import { cardById } from './data/cards'
+import type { TarotCard } from './types'
 
-type View = 'home' | 'reading' | 'library' | 'guide'
+type View = 'home' | 'reading' | 'library' | 'guide' | 'card'
+
+interface Route {
+  view: View
+  cardId?: string
+}
 
 const SITE = 'https://tarocik.com'
 
-const viewPaths: Record<View, string> = {
+const viewPaths: Record<Exclude<View, 'card'>, string> = {
   home: '/',
   reading: '/rozklady/',
   library: '/znaczenia-kart/',
@@ -20,28 +29,37 @@ const viewPaths: Record<View, string> = {
 
 const normalize = (p: string) => p.replace(/\/+$/, '') || '/'
 
-const legacyHashes: Record<string, View> = {
+const legacyHashes: Record<string, Exclude<View, 'card'>> = {
   reading: 'reading',
   library: 'library',
   guide: 'guide',
 }
 
-const viewFromLocation = (): View => {
+type StaticView = Exclude<View, 'card'>
+
+const routeFromLocation = (): Route => {
   const hash = window.location.hash.replace('#', '')
-  if (legacyHashes[hash]) return legacyHashes[hash]
+  if (legacyHashes[hash]) return { view: legacyHashes[hash] }
   const path = normalize(window.location.pathname)
-  const match = (Object.keys(viewPaths) as View[]).find((v) => normalize(viewPaths[v]) === path)
-  return match ?? 'home'
+  if (path.startsWith('/karta/')) {
+    const card = cardBySlug(path.slice('/karta/'.length))
+    if (card) return { view: 'card', cardId: card.id }
+    return { view: 'library' }
+  }
+  const match = (Object.keys(viewPaths) as StaticView[]).find(
+    (v) => normalize(viewPaths[v]) === path,
+  )
+  return { view: match ?? 'home' }
 }
 
-const viewTitles: Record<View, { pl: string; en: string }> = {
+const viewTitles: Record<StaticView, { pl: string; en: string }> = {
   home: { pl: 'Tarocik — tarot online', en: 'Tarocik — tarot online' },
   reading: { pl: 'Rozkłady tarota — Tarocik', en: 'Tarot readings — Tarocik' },
   library: { pl: 'Znaczenia 78 kart tarota — Tarocik', en: 'All 78 tarot card meanings — Tarocik' },
   guide: { pl: 'Jak czytać tarota — przewodnik — Tarocik', en: 'How to read tarot — a guide — Tarocik' },
 }
 
-const viewDescriptions: Record<View, { pl: string; en: string }> = {
+const viewDescriptions: Record<StaticView, { pl: string; en: string }> = {
   home: {
     pl: 'Tarot online: karta dnia, interaktywne rozkłady i znaczenia wszystkich 78 kart tarota — po polsku i angielsku.',
     en: 'Tarot online: a card of the day, interactive spreads, and meanings for all 78 tarot cards — in Polish and English.',
@@ -60,7 +78,7 @@ const viewDescriptions: Record<View, { pl: string; en: string }> = {
   },
 }
 
-function setMeta(view: View, lang: Lang) {
+function setMeta(view: StaticView, lang: Lang) {
   document.title = viewTitles[view][lang]
   document
     .querySelector('meta[name="description"]')
@@ -74,7 +92,8 @@ function setMeta(view: View, lang: Lang) {
 
 export default function App() {
   const [lang, setLang] = useState<Lang>(loadLang)
-  const [view, setView] = useState<View>(viewFromLocation)
+  const [route, setRoute] = useState<Route>(routeFromLocation)
+  const view = route.view
 
   // Migrate legacy #hash URLs to real paths once, on load.
   useEffect(() => {
@@ -85,7 +104,7 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    const onPop = () => setView(viewFromLocation())
+    const onPop = () => setRoute(routeFromLocation())
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
   }, [])
@@ -95,18 +114,27 @@ export default function App() {
   }, [lang])
 
   useEffect(() => {
-    setMeta(view, lang)
+    if (view !== 'card') setMeta(view, lang)
   }, [view, lang])
 
-  const go = (v: View) => {
+  const go = (v: StaticView) => {
     if (normalize(window.location.pathname) !== normalize(viewPaths[v])) {
       window.history.pushState(null, '', viewPaths[v])
     }
-    setView(v)
+    setRoute({ view: v })
     window.scrollTo(0, 0)
   }
 
-  const navigate = (v: View) => (e: React.MouseEvent) => {
+  const goCard = (card: TarotCard) => {
+    const path = `/karta/${cardSlug(card)}/`
+    if (normalize(window.location.pathname) !== normalize(path)) {
+      window.history.pushState(null, '', path)
+    }
+    setRoute({ view: 'card', cardId: card.id })
+    window.scrollTo(0, 0)
+  }
+
+  const navigate = (v: StaticView) => (e: React.MouseEvent) => {
     e.preventDefault()
     go(v)
   }
@@ -116,7 +144,7 @@ export default function App() {
     saveLang(l)
   }
 
-  const navItems: { id: View; label: string }[] = [
+  const navItems: { id: StaticView; label: string }[] = [
     { id: 'home', label: ui.navHome[lang] },
     { id: 'reading', label: ui.navReading[lang] },
     { id: 'library', label: ui.navLibrary[lang] },
@@ -168,11 +196,20 @@ export default function App() {
           </button>
         </div>
       </header>
-      <main key={view}>
+      <main key={view + (route.cardId ?? '')}>
         {view === 'home' && <Home lang={lang} onNavigate={go} />}
         {view === 'reading' && <Reading lang={lang} />}
-        {view === 'library' && <Library lang={lang} />}
+        {view === 'library' && <Library lang={lang} onOpenCard={goCard} />}
         {view === 'guide' && <Guide lang={lang} />}
+        {view === 'card' && route.cardId && cardById.get(route.cardId) && (
+          <CardPage
+            card={cardById.get(route.cardId)!}
+            lang={lang}
+            onOpenCard={goCard}
+            onOpenLibrary={() => go('library')}
+            onOpenReading={() => go('reading')}
+          />
+        )}
       </main>
       <footer className="site-footer">
         <LogoMark className="footer-mark" />

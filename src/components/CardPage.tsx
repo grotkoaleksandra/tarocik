@@ -1,0 +1,98 @@
+import { useEffect } from 'react'
+import type { Lang, TarotCard } from '../types'
+import { allCards } from '../data/cards'
+import { ui } from '../lib/i18n'
+import { cardSlug } from '../lib/slugs'
+import { CardArt } from './CardArt'
+import { Sparkle } from './Doodles'
+
+const SITE = 'https://tarocik.com'
+
+interface Props {
+  card: TarotCard
+  lang: Lang
+  onOpenCard: (card: TarotCard) => void
+  onOpenLibrary: () => void
+  onOpenReading: () => void
+}
+
+export function CardPage({ card, lang, onOpenCard, onOpenLibrary, onOpenReading }: Props) {
+  const idx = allCards.findIndex((c) => c.id === card.id)
+  const prev = allCards[(idx + allCards.length - 1) % allCards.length]
+  const next = allCards[(idx + 1) % allCards.length]
+
+  useEffect(() => {
+    const suffix = lang === 'pl' ? 'znaczenie karty tarota' : 'tarot card meaning'
+    document.title = `${card.name[lang]} — ${suffix} — Tarocik`
+    const desc = `${card.keywordsUpright[lang]} · ${card.upright[lang]}`.slice(0, 155)
+    document.querySelector('meta[name="description"]')?.setAttribute('content', desc)
+    const url = `${SITE}/karta/${cardSlug(card)}/`
+    document.querySelector('link[rel="canonical"]')?.setAttribute('href', url)
+    document.querySelector('meta[property="og:url"]')?.setAttribute('content', url)
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', document.title)
+  }, [card, lang])
+
+  const link = (target: TarotCard, label: string, cls: string) => (
+    <a
+      className={cls}
+      href={`/karta/${cardSlug(target)}/`}
+      onClick={(e) => {
+        e.preventDefault()
+        onOpenCard(target)
+      }}
+    >
+      {label}
+    </a>
+  )
+
+  return (
+    <section className="card-page">
+      <a
+        className="back-link"
+        href="/znaczenia-kart/"
+        onClick={(e) => {
+          e.preventDefault()
+          onOpenLibrary()
+        }}
+      >
+        ← {ui.libraryTitle[lang]}
+      </a>
+      <div className="card-page-body">
+        <div className="card-page-art">
+          <CardArt card={card} lang={lang} />
+        </div>
+        <div className="card-page-text">
+          <Sparkle className="hd hd-card-spark" />
+          <h1 className="card-page-title">{card.name[lang]}</h1>
+          <p className="modal-sub">
+            {card.arcana === 'major' ? ui.majorArcana[lang] : ui.minorArcana[lang]}
+          </p>
+          <section>
+            <h2 className="card-page-h2">{ui.uprightMeaning[lang]}</h2>
+            <p className="keywords">{card.keywordsUpright[lang]}</p>
+            <p>{card.upright[lang]}</p>
+          </section>
+          <section>
+            <h2 className="card-page-h2">{ui.reversedMeaning[lang]}</h2>
+            <p className="keywords">{card.keywordsReversed[lang]}</p>
+            <p>{card.reversed[lang]}</p>
+          </section>
+          <a
+            className="btn-ink card-page-cta"
+            href="/rozklady/"
+            onClick={(e) => {
+              e.preventDefault()
+              onOpenReading()
+            }}
+          >
+            {ui.ctaReading[lang]} <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+      <nav className="card-page-nav" aria-label="cards">
+        {link(prev, `← ${prev.name[lang]}`, 'card-nav-link')}
+        {link(next, `${next.name[lang]} →`, 'card-nav-link')}
+      </nav>
+    </section>
+  )
+}
