@@ -13,10 +13,12 @@ const SITE = 'https://tarocik.com'
 
 const viewPaths: Record<View, string> = {
   home: '/',
-  reading: '/rozklady',
-  library: '/znaczenia-kart',
-  guide: '/przewodnik',
+  reading: '/rozklady/',
+  library: '/znaczenia-kart/',
+  guide: '/przewodnik/',
 }
+
+const normalize = (p: string) => p.replace(/\/+$/, '') || '/'
 
 const legacyHashes: Record<string, View> = {
   reading: 'reading',
@@ -27,8 +29,8 @@ const legacyHashes: Record<string, View> = {
 const viewFromLocation = (): View => {
   const hash = window.location.hash.replace('#', '')
   if (legacyHashes[hash]) return legacyHashes[hash]
-  const path = window.location.pathname.replace(/\/+$/, '') || '/'
-  const match = (Object.keys(viewPaths) as View[]).find((v) => viewPaths[v] === path)
+  const path = normalize(window.location.pathname)
+  const match = (Object.keys(viewPaths) as View[]).find((v) => normalize(viewPaths[v]) === path)
   return match ?? 'home'
 }
 
@@ -63,12 +65,8 @@ function setMeta(view: View, lang: Lang) {
   document
     .querySelector('meta[name="description"]')
     ?.setAttribute('content', viewDescriptions[view][lang])
-  document
-    .querySelector('link[rel="canonical"]')
-    ?.setAttribute('href', SITE + (viewPaths[view] === '/' ? '/' : viewPaths[view]))
-  document
-    .querySelector('meta[property="og:url"]')
-    ?.setAttribute('content', SITE + (viewPaths[view] === '/' ? '/' : viewPaths[view]))
+  document.querySelector('link[rel="canonical"]')?.setAttribute('href', SITE + viewPaths[view])
+  document.querySelector('meta[property="og:url"]')?.setAttribute('content', SITE + viewPaths[view])
   document
     .querySelector('meta[property="og:title"]')
     ?.setAttribute('content', viewTitles[view][lang])
@@ -101,7 +99,7 @@ export default function App() {
   }, [view, lang])
 
   const go = (v: View) => {
-    if (window.location.pathname !== viewPaths[v]) {
+    if (normalize(window.location.pathname) !== normalize(viewPaths[v])) {
       window.history.pushState(null, '', viewPaths[v])
     }
     setView(v)
