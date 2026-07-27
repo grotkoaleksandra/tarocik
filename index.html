@@ -8,12 +8,26 @@
     <title>Tarocik — tarot online</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="canonical" href="https://tarocik.com/" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Tarocik" />
     <meta property="og:title" content="Tarocik — tarot online" />
     <meta property="og:description" content="Karta dnia, rozkłady i znaczenia wszystkich 78 kart tarota. / Card of the day, spreads, and meanings for all 78 tarot cards." />
     <meta property="og:image" content="https://tarocik.com/og.png" />
     <meta property="og:url" content="https://tarocik.com/" />
+    <meta property="og:locale" content="pl_PL" />
+    <meta property="og:locale:alternate" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Tarocik",
+        "url": "https://tarocik.com/",
+        "description": "Tarot online: karta dnia, rozkłady i znaczenia wszystkich 78 kart tarota.",
+        "inLanguage": ["pl", "en"]
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -23,6 +37,19 @@
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <h1>Tarocik — tarot online</h1>
+      <p>
+        Karta dnia, interaktywne rozkłady i znaczenia wszystkich 78 kart tarota — po polsku i angielsku.
+        Card of the day, interactive spreads, and meanings for all 78 tarot cards — in Polish and English.
+      </p>
+      <ul>
+        <li><a href="/rozklady">Rozkłady tarota / Tarot spreads</a></li>
+        <li><a href="/znaczenia-kart">Znaczenia kart / Card meanings</a></li>
+        <li><a href="/przewodnik">Jak czytać tarota / How to read tarot</a></li>
+      </ul>
+      <p>Ta strona wymaga JavaScriptu. / This site requires JavaScript.</p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

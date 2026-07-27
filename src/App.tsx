@@ -9,26 +9,87 @@ import { LogoMark, WatercolorFlowerSvg } from './components/Doodles'
 
 type View = 'home' | 'reading' | 'library' | 'guide'
 
-const viewFromHash = (): View => {
-  const h = window.location.hash.replace('#', '')
-  return h === 'reading' || h === 'library' || h === 'guide' ? h : 'home'
+const SITE = 'https://tarocik.com'
+
+const viewPaths: Record<View, string> = {
+  home: '/',
+  reading: '/rozklady',
+  library: '/znaczenia-kart',
+  guide: '/przewodnik',
+}
+
+const legacyHashes: Record<string, View> = {
+  reading: 'reading',
+  library: 'library',
+  guide: 'guide',
+}
+
+const viewFromLocation = (): View => {
+  const hash = window.location.hash.replace('#', '')
+  if (legacyHashes[hash]) return legacyHashes[hash]
+  const path = window.location.pathname.replace(/\/+$/, '') || '/'
+  const match = (Object.keys(viewPaths) as View[]).find((v) => viewPaths[v] === path)
+  return match ?? 'home'
 }
 
 const viewTitles: Record<View, { pl: string; en: string }> = {
   home: { pl: 'Tarocik — tarot online', en: 'Tarocik — tarot online' },
-  reading: { pl: 'Rozkłady — Tarocik', en: 'Readings — Tarocik' },
-  library: { pl: 'Znaczenia kart — Tarocik', en: 'Card meanings — Tarocik' },
-  guide: { pl: 'Jak czytać tarota — Tarocik', en: 'How to read tarot — Tarocik' },
+  reading: { pl: 'Rozkłady tarota — Tarocik', en: 'Tarot readings — Tarocik' },
+  library: { pl: 'Znaczenia 78 kart tarota — Tarocik', en: 'All 78 tarot card meanings — Tarocik' },
+  guide: { pl: 'Jak czytać tarota — przewodnik — Tarocik', en: 'How to read tarot — a guide — Tarocik' },
+}
+
+const viewDescriptions: Record<View, { pl: string; en: string }> = {
+  home: {
+    pl: 'Tarot online: karta dnia, interaktywne rozkłady i znaczenia wszystkich 78 kart tarota — po polsku i angielsku.',
+    en: 'Tarot online: a card of the day, interactive spreads, and meanings for all 78 tarot cards — in Polish and English.',
+  },
+  reading: {
+    pl: 'Rozłóż karty online: jedna karta, trzy karty, mały krzyż lub krzyż celtycki — z interpretacją i podsumowaniem.',
+    en: 'Draw tarot cards online: one card, three cards, small cross, or Celtic cross — with interpretations and a summary.',
+  },
+  library: {
+    pl: 'Znaczenia wszystkich 78 kart tarota — proste i odwrócone, ze słowami kluczami. Wielkie i Małe Arkana.',
+    en: 'Meanings of all 78 tarot cards — upright and reversed, with keywords. Major and Minor Arcana.',
+  },
+  guide: {
+    pl: 'Przewodnik dla początkujących: czym jest tarot, jak zadawać pytania, jak czytać rozkłady i karty odwrócone.',
+    en: 'A beginner’s guide: what tarot is, how to ask questions, how to read spreads and reversed cards.',
+  },
+}
+
+function setMeta(view: View, lang: Lang) {
+  document.title = viewTitles[view][lang]
+  document
+    .querySelector('meta[name="description"]')
+    ?.setAttribute('content', viewDescriptions[view][lang])
+  document
+    .querySelector('link[rel="canonical"]')
+    ?.setAttribute('href', SITE + (viewPaths[view] === '/' ? '/' : viewPaths[view]))
+  document
+    .querySelector('meta[property="og:url"]')
+    ?.setAttribute('content', SITE + (viewPaths[view] === '/' ? '/' : viewPaths[view]))
+  document
+    .querySelector('meta[property="og:title"]')
+    ?.setAttribute('content', viewTitles[view][lang])
 }
 
 export default function App() {
   const [lang, setLang] = useState<Lang>(loadLang)
-  const [view, setView] = useState<View>(viewFromHash)
+  const [view, setView] = useState<View>(viewFromLocation)
+
+  // Migrate legacy #hash URLs to real paths once, on load.
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '')
+    if (legacyHashes[hash]) {
+      window.history.replaceState(null, '', viewPaths[legacyHashes[hash]])
+    }
+  }, [])
 
   useEffect(() => {
-    const onHash = () => setView(viewFromHash())
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
+    const onPop = () => setView(viewFromLocation())
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
   }, [])
 
   useEffect(() => {
@@ -36,12 +97,20 @@ export default function App() {
   }, [lang])
 
   useEffect(() => {
-    document.title = viewTitles[view][lang]
+    setMeta(view, lang)
   }, [view, lang])
 
   const go = (v: View) => {
-    window.location.hash = v === 'home' ? '' : v
+    if (window.location.pathname !== viewPaths[v]) {
+      window.history.pushState(null, '', viewPaths[v])
+    }
     setView(v)
+    window.scrollTo(0, 0)
+  }
+
+  const navigate = (v: View) => (e: React.MouseEvent) => {
+    e.preventDefault()
+    go(v)
   }
 
   const switchLang = (l: Lang) => {
@@ -67,20 +136,20 @@ export default function App() {
         </div>
       )}
       <header className="site-header">
-        <button type="button" className="brand" onClick={() => go('home')}>
+        <a className="brand" href="/" onClick={navigate('home')}>
           <LogoMark className="brand-mark" />
           <span className="brand-word">Tarocik</span>
-        </button>
+        </a>
         <nav className="site-nav">
           {navItems.map((item) => (
-            <button
+            <a
               key={item.id}
-              type="button"
               className={`nav-link ${view === item.id ? 'is-active' : ''}`}
-              onClick={() => go(item.id)}
+              href={viewPaths[item.id]}
+              onClick={navigate(item.id)}
             >
               {item.label}
-            </button>
+            </a>
           ))}
         </nav>
         <div className="lang-switch" role="group" aria-label="Language">

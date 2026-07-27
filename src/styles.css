@@ -1514,3 +1514,9 @@ main {
   transform: rotate(-10deg);
   color: var(--accent);
 }
+
+/* nav + brand are anchors now (crawlable links) */
+.brand,
+.nav-link {
+  text-decoration: none;
+}
