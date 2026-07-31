@@ -43,6 +43,29 @@ export function Reading({ lang }: { lang: Lang }) {
 
   const allRevealed = drawn !== null && revealed.every(Boolean)
 
+  // The interpretations are the payoff — bring them into view once the
+  // last card has flipped (after the flip animation settles).
+  useEffect(() => {
+    if (!allRevealed) return
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    let fallback: number | undefined
+    const t = window.setTimeout(() => {
+      const el = document.querySelector('.reading-results')
+      if (!el) return
+      el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' })
+      // If smooth scrolling is throttled and never moves, jump instead.
+      fallback = window.setTimeout(() => {
+        if (Math.abs(el.getBoundingClientRect().top) > 150) {
+          el.scrollIntoView({ behavior: 'auto', block: 'start' })
+        }
+      }, 1000)
+    }, 550)
+    return () => {
+      window.clearTimeout(t)
+      window.clearTimeout(fallback)
+    }
+  }, [allRevealed])
+
   const slot = (i: number, dealOrder = i) =>
     drawn && (
       <div

@@ -3,9 +3,10 @@
   --panel: #ffffff;
   --ink: #232120;
   --ink-soft: #4f4c48;
-  --ink-dim: #8b8983;
+  --ink-dim: #706d67;
   --accent: #2b4bb5;
   --rose: #e2618b;
+  --rose-text: #c2456f;
   --coral: #f0875f;
   --marigold: #f2a541;
   --parchment: #fbf4de;
@@ -169,7 +170,7 @@ body::after {
   font-size: 0.86rem;
   font-weight: 500;
   letter-spacing: 0.02em;
-  padding: 0.35rem 0.1rem;
+  padding: 0.55rem 0.1rem;
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
 }
@@ -200,7 +201,12 @@ body::after {
   font-weight: 600;
   letter-spacing: 0.08em;
   cursor: pointer;
-  padding: 0.3rem 0.15rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
 }
 
 .lang-switch button.is-active {
@@ -420,7 +426,8 @@ main {
 
 .scroll-cue {
   position: absolute;
-  bottom: 1.3rem;
+  bottom: 0.6rem;
+  padding: 0.7rem 1rem;
   left: 50%;
   transform: translateX(-50%);
   display: inline-flex;
@@ -1363,12 +1370,14 @@ main {
 .daily-name { font-size: 1.25rem; font-weight: 600; line-height: 1.35; }
 .footer-brand { font-size: 0.95rem; font-weight: 600; }
 
-.keywords {
+.keywords,
+p.keywords {
   font-family: var(--sans);
   font-style: italic;
   font-weight: 600;
   font-size: 0.95rem;
   letter-spacing: 0.01em;
+  color: var(--rose-text);
 }
 
 .grid-card-name {
@@ -1501,7 +1510,7 @@ main {
 }
 
 .guide-num {
-  color: var(--rose);
+  color: var(--rose-text);
   margin-right: 0.7rem;
   font-size: 0.85rem;
 }
