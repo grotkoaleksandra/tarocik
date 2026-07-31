@@ -1,51 +1,59 @@
-// Post-build for GitHub Pages SEO:
-// - copies index.html into every route directory (real HTTP 200s)
-// - generates dist/sitemap.xml including all 78 card pages
-// - copies index.html to 404.html as the SPA fallback
+// Post-build for GitHub Pages SEO + AI visibility:
+// - prerenders every route to static HTML (content visible to non-JS crawlers)
+// - bakes each route's title/description/canonical into its HTML file
+// - generates sitemap.xml and llms.txt
+// - writes 404.html (plain SPA shell) as the fallback for unknown paths
 import { cpSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const dist = path.join(root, 'dist')
-const index = path.join(dist, 'index.html')
 const SITE = 'https://tarocik.com'
 
-/* Keep in sync with src/lib/slugs.ts. */
-const PL_CHARS = { ą: 'a', ć: 'c', ę: 'e', ł: 'l', ń: 'n', ó: 'o', ś: 's', ź: 'z', ż: 'z' }
-const slugify = (name) =>
-  name
-    .toLowerCase()
-    .split('')
-    .map((ch) => PL_CHARS[ch] ?? ch)
-    .join('')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
+const { listRoutes, renderPage, listCards } = await import(
+  path.join(root, 'dist-server', 'entry-server.js')
+)
 
-// Extract every card's Polish name from the data files.
-const dataFiles = ['major.ts', 'wands.ts', 'cups.ts', 'swords.ts', 'pentacles.ts']
-const names = []
-for (const file of dataFiles) {
-  const src = readFileSync(path.join(root, 'src', 'data', file), 'utf8')
-  for (const m of src.matchAll(/name: \{ pl: '([^']+)'/g)) names.push(m[1])
+const template = readFileSync(path.join(dist, 'index.html'), 'utf8')
+
+// 404 fallback stays a plain shell (no prerendered content from a wrong page).
+writeFileSync(path.join(dist, '404.html'), template)
+
+const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;')
+
+function buildPage(info) {
+  let html = template
+  html = html.replace(/<title>[^<]*<\/title>/, `<title>${esc(info.title)}</title>`)
+  html = html.replace(
+    /(<meta name="description" content=")[^"]*(")/,
+    `$1${esc(info.description)}$2`,
+  )
+  html = html.replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${info.canonical}$2`)
+  html = html.replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${info.canonical}$2`)
+  html = html.replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(info.title)}$2`)
+  html = html.replace('<div id="root"></div>', `<div id="root">${info.html}</div>`)
+  return html
 }
-if (names.length !== 78) {
-  throw new Error(`expected 78 cards, found ${names.length}`)
+
+const routes = listRoutes()
+for (const route of routes) {
+  const info = renderPage(route)
+  const out = buildPage(info)
+  if (route === '/') {
+    writeFileSync(path.join(dist, 'index.html'), out)
+  } else {
+    const dir = path.join(dist, route.replace(/^\/|\/$/g, ''))
+    mkdirSync(dir, { recursive: true })
+    writeFileSync(path.join(dir, 'index.html'), out)
+  }
 }
 
-const staticRoutes = ['karta-dnia', 'rozklady', 'znaczenia-kart', 'przewodnik']
-const cardRoutes = names.map((n) => `karta/${slugify(n)}`)
-
-for (const route of [...staticRoutes, ...cardRoutes]) {
-  const dir = path.join(dist, route)
-  mkdirSync(dir, { recursive: true })
-  cpSync(index, path.join(dir, 'index.html'))
-}
-cpSync(index, path.join(dist, '404.html'))
-
+// --- sitemap ---
 const urlEntry = (loc, priority, changefreq) =>
   `  <url>\n    <loc>${loc}</loc>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`
 
+const cards = listCards()
 const sitemap = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
@@ -54,10 +62,38 @@ const sitemap = [
   urlEntry(`${SITE}/znaczenia-kart/`, '0.9', 'monthly'),
   urlEntry(`${SITE}/rozklady/`, '0.8', 'monthly'),
   urlEntry(`${SITE}/przewodnik/`, '0.7', 'monthly'),
-  ...cardRoutes.map((r) => urlEntry(`${SITE}/${r}/`, '0.6', 'monthly')),
+  ...cards.map((c) => urlEntry(`${SITE}/karta/${c.slug}/`, '0.6', 'monthly')),
   '</urlset>',
   '',
 ].join('\n')
 writeFileSync(path.join(dist, 'sitemap.xml'), sitemap)
 
-console.log(`postbuild: ${staticRoutes.length} static + ${cardRoutes.length} card routes, sitemap.xml, 404.html`)
+// --- llms.txt: a plain-markdown map of the site for AI crawlers ---
+const llms = [
+  '# Tarocik',
+  '',
+  '> Tarot online po polsku i po angielsku: darmowa karta dnia, interaktywne rozkłady',
+  '> (jedna karta, trzy karty, mały krzyż, krzyż celtycki) z automatycznym podsumowaniem',
+  '> oraz znaczenia wszystkich 78 kart tarota — proste i odwrócone.',
+  '> Free bilingual (Polish/English) tarot: card of the day, interactive spreads, and',
+  '> meanings for all 78 tarot cards, upright and reversed.',
+  '',
+  '## Główne strony / Main pages',
+  '',
+  `- [Karta dnia / Card of the day](${SITE}/karta-dnia/): darmowa karta tarota na dziś, nowa każdego ranka`,
+  `- [Rozkłady / Readings](${SITE}/rozklady/): interaktywne rozkłady tarota z interpretacją i podsumowaniem`,
+  `- [Znaczenia kart / Card meanings](${SITE}/znaczenia-kart/): katalog wszystkich 78 kart`,
+  `- [Jak czytać tarota / How to read tarot](${SITE}/przewodnik/): przewodnik dla początkujących`,
+  '',
+  '## Znaczenia kart / Card meanings (78)',
+  '',
+  ...cards.map(
+    (c) => `- [${c.namePl} / ${c.nameEn}](${SITE}/karta/${c.slug}/): ${c.keywordsPl}`,
+  ),
+  '',
+].join('\n')
+writeFileSync(path.join(dist, 'llms.txt'), llms)
+
+console.log(
+  `postbuild: prerendered ${routes.length} routes, sitemap (${cards.length + 5} URLs), llms.txt, 404.html`,
+)

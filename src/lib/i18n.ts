@@ -127,6 +127,7 @@ export const spreads: Spread[] = [
 ]
 
 export function loadLang(): Lang {
+  if (typeof window === 'undefined') return 'pl'
   const saved = localStorage.getItem('tarocik-lang')
   if (saved === 'pl' || saved === 'en') return saved
   // Polish by default for every first-time visit — crawlers identify as

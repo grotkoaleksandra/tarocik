@@ -15,7 +15,9 @@ interface RevealProps extends HTMLAttributes<HTMLDivElement> {
  */
 export function Reveal({ children, delay = 0, className = '', ...rest }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
+  // Visible when server-rendered: crawlers and the pre-hydration paint
+  // must never get opacity-0 content.
+  const [visible, setVisible] = useState(() => typeof window === 'undefined')
 
   useEffect(() => {
     const el = ref.current

@@ -10,6 +10,7 @@ import { CardPage } from './components/CardPage'
 import { LogoMark, WatercolorFlowerSvg } from './components/Doodles'
 import { cardBySlug, cardSlug } from './lib/slugs'
 import { cardById } from './data/cards'
+import { SITE, viewPaths, viewTitles, viewDescriptions } from './lib/meta'
 import type { TarotCard } from './types'
 
 type View = 'home' | 'daily' | 'reading' | 'library' | 'guide' | 'card'
@@ -17,16 +18,6 @@ type View = 'home' | 'daily' | 'reading' | 'library' | 'guide' | 'card'
 interface Route {
   view: View
   cardId?: string
-}
-
-const SITE = 'https://tarocik.com'
-
-const viewPaths: Record<Exclude<View, 'card'>, string> = {
-  home: '/',
-  daily: '/karta-dnia/',
-  reading: '/rozklady/',
-  library: '/znaczenia-kart/',
-  guide: '/przewodnik/',
 }
 
 const normalize = (p: string) => p.replace(/\/+$/, '') || '/'
@@ -39,10 +30,10 @@ const legacyHashes: Record<string, Exclude<View, 'card'>> = {
 
 type StaticView = Exclude<View, 'card'>
 
-const routeFromLocation = (): Route => {
-  const hash = window.location.hash.replace('#', '')
+const routeFromLocation = (ssrPath?: string): Route => {
+  const hash = typeof window === 'undefined' ? '' : window.location.hash.replace('#', '')
   if (legacyHashes[hash]) return { view: legacyHashes[hash] }
-  const path = normalize(window.location.pathname)
+  const path = normalize(ssrPath ?? window.location.pathname)
   if (path.startsWith('/karta/')) {
     const card = cardBySlug(path.slice('/karta/'.length))
     if (card) return { view: 'card', cardId: card.id }
@@ -52,37 +43,6 @@ const routeFromLocation = (): Route => {
     (v) => normalize(viewPaths[v]) === path,
   )
   return { view: match ?? 'home' }
-}
-
-const viewTitles: Record<StaticView, { pl: string; en: string }> = {
-  home: { pl: 'Tarocik — tarot online', en: 'Tarocik — tarot online' },
-  daily: { pl: 'Karta dnia — darmowy tarot online — Tarocik', en: 'Card of the day — free tarot online — Tarocik' },
-  reading: { pl: 'Rozkłady tarota — Tarocik', en: 'Tarot readings — Tarocik' },
-  library: { pl: 'Znaczenia 78 kart tarota — Tarocik', en: 'All 78 tarot card meanings — Tarocik' },
-  guide: { pl: 'Jak czytać tarota — przewodnik — Tarocik', en: 'How to read tarot — a guide — Tarocik' },
-}
-
-const viewDescriptions: Record<StaticView, { pl: string; en: string }> = {
-  daily: {
-    pl: 'Wylosuj darmową kartę dnia: jedna karta tarota na dziś, ta sama dla wszystkich, nowa każdego ranka — ze znaczeniem prostym i odwróconym.',
-    en: 'Draw a free card of the day: one tarot card for today, the same for everyone, fresh every morning — with upright and reversed meanings.',
-  },
-  home: {
-    pl: 'Tarot online: karta dnia, interaktywne rozkłady i znaczenia wszystkich 78 kart tarota — po polsku i angielsku.',
-    en: 'Tarot online: a card of the day, interactive spreads, and meanings for all 78 tarot cards — in Polish and English.',
-  },
-  reading: {
-    pl: 'Rozłóż karty online: jedna karta, trzy karty, mały krzyż lub krzyż celtycki — z interpretacją i podsumowaniem.',
-    en: 'Draw tarot cards online: one card, three cards, small cross, or Celtic cross — with interpretations and a summary.',
-  },
-  library: {
-    pl: 'Znaczenia wszystkich 78 kart tarota — proste i odwrócone, ze słowami kluczami. Wielkie i Małe Arkana.',
-    en: 'Meanings of all 78 tarot cards — upright and reversed, with keywords. Major and Minor Arcana.',
-  },
-  guide: {
-    pl: 'Przewodnik dla początkujących: czym jest tarot, jak zadawać pytania, jak czytać rozkłady i karty odwrócone.',
-    en: 'A beginner’s guide: what tarot is, how to ask questions, how to read spreads and reversed cards.',
-  },
 }
 
 function setMeta(view: StaticView, lang: Lang) {
@@ -97,9 +57,9 @@ function setMeta(view: StaticView, lang: Lang) {
     ?.setAttribute('content', viewTitles[view][lang])
 }
 
-export default function App() {
+export default function App({ ssrPath }: { ssrPath?: string } = {}) {
   const [lang, setLang] = useState<Lang>(loadLang)
-  const [route, setRoute] = useState<Route>(routeFromLocation)
+  const [route, setRoute] = useState<Route>(() => routeFromLocation(ssrPath))
   const view = route.view
 
   // Migrate legacy #hash URLs to real paths once, on load.

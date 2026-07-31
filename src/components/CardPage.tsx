@@ -6,8 +6,7 @@ import { cardSlug } from '../lib/slugs'
 import { CardArt } from './CardArt'
 import { Sparkle } from './Doodles'
 import { setJsonLd } from '../lib/jsonld'
-
-const SITE = 'https://tarocik.com'
+import { SITE, cardMeta } from '../lib/meta'
 
 interface Props {
   card: TarotCard
@@ -23,11 +22,8 @@ export function CardPage({ card, lang, onOpenCard, onOpenLibrary, onOpenReading 
   const next = allCards[(idx + 1) % allCards.length]
 
   useEffect(() => {
-    const suffix = lang === 'pl' ? 'znaczenie karty tarota' : 'tarot card meaning'
-    document.title = `${card.name[lang]} — ${suffix} — Tarocik`
-    const desc = `${card.keywordsUpright[lang]} · ${card.upright[lang]}`.slice(0, 155)
-    document.querySelector('meta[name="description"]')?.setAttribute('content', desc)
-    const url = `${SITE}/karta/${cardSlug(card)}/`
+    const { title, description: desc, url } = cardMeta(card, lang)
+    document.title = title
     document.querySelector('link[rel="canonical"]')?.setAttribute('href', url)
     document.querySelector('meta[property="og:url"]')?.setAttribute('content', url)
     document.querySelector('meta[property="og:title"]')?.setAttribute('content', document.title)
