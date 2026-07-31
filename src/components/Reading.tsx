@@ -44,7 +44,8 @@ export function Reading({ lang }: { lang: Lang }) {
   const allRevealed = drawn !== null && revealed.every(Boolean)
 
   // The interpretations are the payoff — bring them into view once the
-  // last card has flipped (after the flip animation settles).
+  // last card has flipped, but only after a pause long enough to actually
+  // look at that final card.
   useEffect(() => {
     if (!allRevealed) return
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -59,7 +60,7 @@ export function Reading({ lang }: { lang: Lang }) {
           el.scrollIntoView({ behavior: 'auto', block: 'start' })
         }
       }, 1000)
-    }, 550)
+    }, 2600)
     return () => {
       window.clearTimeout(t)
       window.clearTimeout(fallback)
