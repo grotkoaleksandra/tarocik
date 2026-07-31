@@ -5,6 +5,7 @@ import { ui } from '../lib/i18n'
 import { cardSlug } from '../lib/slugs'
 import { CardArt } from './CardArt'
 import { Sparkle } from './Doodles'
+import { setJsonLd } from '../lib/jsonld'
 
 const SITE = 'https://tarocik.com'
 
@@ -30,6 +31,34 @@ export function CardPage({ card, lang, onOpenCard, onOpenLibrary, onOpenReading 
     document.querySelector('link[rel="canonical"]')?.setAttribute('href', url)
     document.querySelector('meta[property="og:url"]')?.setAttribute('content', url)
     document.querySelector('meta[property="og:title"]')?.setAttribute('content', document.title)
+    setJsonLd('ld-card', {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Article',
+          headline: document.title,
+          description: desc,
+          inLanguage: lang,
+          mainEntityOfPage: url,
+          author: { '@type': 'Organization', name: 'Tarocik', url: SITE },
+          publisher: { '@type': 'Organization', name: 'Tarocik', url: SITE },
+        },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Tarocik', item: `${SITE}/` },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: lang === 'pl' ? 'Znaczenia kart' : 'Card meanings',
+              item: `${SITE}/znaczenia-kart/`,
+            },
+            { '@type': 'ListItem', position: 3, name: card.name[lang], item: url },
+          ],
+        },
+      ],
+    })
+    return () => setJsonLd('ld-card', null)
   }, [card, lang])
 
   const link = (target: TarotCard, label: string, cls: string) => (

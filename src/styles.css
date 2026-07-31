@@ -1629,3 +1629,34 @@ main {
     width: 180px;
   }
 }
+
+/* ---------- daily page + guide links ---------- */
+
+.daily-page .daily {
+  padding-top: 1.5rem;
+}
+
+.daily-how {
+  margin-top: 1.6rem;
+  font-size: 0.9rem;
+  color: var(--ink-dim);
+  max-width: 30rem;
+}
+
+.guide-see-also {
+  margin-top: 0.6rem;
+  font-size: 0.88rem;
+  color: var(--ink-dim);
+}
+
+.guide-see-also a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1.5px solid rgba(43, 75, 181, 0.3);
+  transition: border-color 0.2s;
+}
+
+.guide-see-also a:hover {
+  border-bottom-color: var(--accent);
+}

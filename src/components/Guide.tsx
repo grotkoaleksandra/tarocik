@@ -1,10 +1,14 @@
-import type { Lang } from '../types'
+import { useEffect } from 'react'
+import type { Lang, TarotCard } from '../types'
 import { Reveal } from './Reveal'
 import { MoonDoodle, Sparkle, Squiggle } from './Doodles'
+import { setJsonLd } from '../lib/jsonld'
+import { cardBySlug } from '../lib/slugs'
 
 interface Section {
   title: { pl: string; en: string }
   body: { pl: string; en: string }
+  cards?: string[]
 }
 
 const intro = {
@@ -22,6 +26,7 @@ const sections: Section[] = [
       pl: 'Talia dzieli się na 22 Wielkie Arkana — wielkie tematy życia, jak Śmierć, Kochankowie czy Koło Fortuny — oraz 56 Małych Arkanów w czterech kolorach: Buławy (energia i działanie), Kielichy (uczucia), Miecze (myśli i słowa) i Pentakle (ciało, praca, pieniądze). Karty nie przepowiadają przyszłości; działają jak lustro — pokazują sytuację pod innym kątem i podsuwają pytania, których sami byśmy sobie nie zadali.',
       en: 'The deck splits into 22 Major Arcana — life’s big themes, like Death, the Lovers, or the Wheel of Fortune — and 56 Minor Arcana in four suits: Wands (energy and action), Cups (feelings), Swords (thoughts and words), and Pentacles (body, work, money). The cards don’t predict the future; they work like a mirror — showing your situation from a new angle and asking questions you wouldn’t have asked yourself.',
     },
+    cards: ['smierc', 'kochankowie', 'kolo-fortuny'],
   },
   {
     title: { pl: 'Jak zadać dobre pytanie', en: 'How to ask a good question' },
@@ -43,6 +48,7 @@ const sections: Section[] = [
       pl: 'Karta odwrócona to nie „zła wróżba”. Najczęściej oznacza tę samą energię, ale zablokowaną, wewnętrzną albo przesadzoną — Siła odwrócona to nie brak siły, tylko zwątpienie w nią. Jeśli odwrócenia Cię stresują, możesz je po prostu ignorować; wielu tarocistów czyta wyłącznie karty proste.',
       en: 'A reversed card is not a “bad omen”. Most often it is the same energy, but blocked, turned inward, or overdone — reversed Strength is not weakness, it is doubting your strength. If reversals stress you out, you can simply ignore them; many readers work with upright cards only.',
     },
+    cards: ['sila'],
   },
   {
     title: { pl: 'Mały rytuał na co dzień', en: 'A small daily ritual' },
@@ -53,14 +59,34 @@ const sections: Section[] = [
   },
 ]
 
-export function Guide({ lang }: { lang: Lang }) {
+interface GuideProps {
+  lang: Lang
+  onOpenCard: (card: TarotCard) => void
+}
+
+export function Guide({ lang, onOpenCard }: GuideProps) {
+  useEffect(() => {
+    setJsonLd('ld-guide-faq', {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: sections.map((s) => ({
+        '@type': 'Question',
+        name: s.title[lang],
+        acceptedAnswer: { '@type': 'Answer', text: s.body[lang] },
+      })),
+    })
+    return () => setJsonLd('ld-guide-faq', null)
+  }, [lang])
+
+  const seeAlso = { pl: 'Zobacz karty:', en: 'See the cards:' }
+
   return (
     <section className="guide">
       <Reveal>
         <header className="page-head">
           <span className="page-index" aria-hidden="true">04</span>
           <Sparkle className="hd hd-head-spark" />
-          <h2 className="page-title">{intro.title[lang]}</h2>
+          <h1 className="page-title">{intro.title[lang]}</h1>
           <p className="page-sub">{intro.lead[lang]}</p>
         </header>
       </Reveal>
@@ -72,6 +98,29 @@ export function Guide({ lang }: { lang: Lang }) {
               {s.title[lang]}
             </h3>
             <p>{s.body[lang]}</p>
+            {s.cards && (
+              <p className="guide-see-also">
+                {seeAlso[lang]}{' '}
+                {s.cards.map((slug, k) => {
+                  const card = cardBySlug(slug)
+                  if (!card) return null
+                  return (
+                    <span key={slug}>
+                      {k > 0 && ' · '}
+                      <a
+                        href={`/karta/${slug}/`}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          onOpenCard(card)
+                        }}
+                      >
+                        {card.name[lang]}
+                      </a>
+                    </span>
+                  )
+                })}
+              </p>
+            )}
           </Reveal>
         ))}
         <div className="squiggle-divider" aria-hidden="true">

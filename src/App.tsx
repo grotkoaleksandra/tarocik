@@ -5,13 +5,14 @@ import { Home } from './components/Home'
 import { Reading } from './components/Reading'
 import { Library } from './components/Library'
 import { Guide } from './components/Guide'
+import { DailyPage } from './components/DailyPage'
 import { CardPage } from './components/CardPage'
 import { LogoMark, WatercolorFlowerSvg } from './components/Doodles'
 import { cardBySlug, cardSlug } from './lib/slugs'
 import { cardById } from './data/cards'
 import type { TarotCard } from './types'
 
-type View = 'home' | 'reading' | 'library' | 'guide' | 'card'
+type View = 'home' | 'daily' | 'reading' | 'library' | 'guide' | 'card'
 
 interface Route {
   view: View
@@ -22,6 +23,7 @@ const SITE = 'https://tarocik.com'
 
 const viewPaths: Record<Exclude<View, 'card'>, string> = {
   home: '/',
+  daily: '/karta-dnia/',
   reading: '/rozklady/',
   library: '/znaczenia-kart/',
   guide: '/przewodnik/',
@@ -54,12 +56,17 @@ const routeFromLocation = (): Route => {
 
 const viewTitles: Record<StaticView, { pl: string; en: string }> = {
   home: { pl: 'Tarocik — tarot online', en: 'Tarocik — tarot online' },
+  daily: { pl: 'Karta dnia — darmowy tarot online — Tarocik', en: 'Card of the day — free tarot online — Tarocik' },
   reading: { pl: 'Rozkłady tarota — Tarocik', en: 'Tarot readings — Tarocik' },
   library: { pl: 'Znaczenia 78 kart tarota — Tarocik', en: 'All 78 tarot card meanings — Tarocik' },
   guide: { pl: 'Jak czytać tarota — przewodnik — Tarocik', en: 'How to read tarot — a guide — Tarocik' },
 }
 
 const viewDescriptions: Record<StaticView, { pl: string; en: string }> = {
+  daily: {
+    pl: 'Wylosuj darmową kartę dnia: jedna karta tarota na dziś, ta sama dla wszystkich, nowa każdego ranka — ze znaczeniem prostym i odwróconym.',
+    en: 'Draw a free card of the day: one tarot card for today, the same for everyone, fresh every morning — with upright and reversed meanings.',
+  },
   home: {
     pl: 'Tarot online: karta dnia, interaktywne rozkłady i znaczenia wszystkich 78 kart tarota — po polsku i angielsku.',
     en: 'Tarot online: a card of the day, interactive spreads, and meanings for all 78 tarot cards — in Polish and English.',
@@ -145,7 +152,7 @@ export default function App() {
   }
 
   const navItems: { id: StaticView; label: string }[] = [
-    { id: 'home', label: ui.navHome[lang] },
+    { id: 'daily', label: ui.navHome[lang] },
     { id: 'reading', label: ui.navReading[lang] },
     { id: 'library', label: ui.navLibrary[lang] },
     { id: 'guide', label: ui.navGuide[lang] },
@@ -198,9 +205,10 @@ export default function App() {
       </header>
       <main key={view + (route.cardId ?? '')}>
         {view === 'home' && <Home lang={lang} onNavigate={go} />}
+        {view === 'daily' && <DailyPage lang={lang} />}
         {view === 'reading' && <Reading lang={lang} />}
         {view === 'library' && <Library lang={lang} onOpenCard={goCard} />}
-        {view === 'guide' && <Guide lang={lang} />}
+        {view === 'guide' && <Guide lang={lang} onOpenCard={goCard} />}
         {view === 'card' && route.cardId && cardById.get(route.cardId) && (
           <CardPage
             card={cardById.get(route.cardId)!}

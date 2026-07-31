@@ -96,7 +96,7 @@ export function Reading({ lang }: { lang: Lang }) {
           <header className="page-head">
             <span className="page-index" aria-hidden="true">02</span>
             <Sparkle className="hd hd-head-spark" />
-            <h2 className="page-title">{ui.chooseSpread[lang]}</h2>
+            <h1 className="page-title">{ui.chooseSpread[lang]}</h1>
           </header>
         </Reveal>
         <Reveal className="spread-picker" delay={100}>
@@ -126,7 +126,7 @@ export function Reading({ lang }: { lang: Lang }) {
         <div className="shuffle-cards">
           <span /><span /><span />
         </div>
-        <h2 className="shuffle-title">{ui.shuffling[lang]}</h2>
+        <h1 className="shuffle-title">{ui.shuffling[lang]}</h1>
         <p className="section-sub">{ui.focusHint[lang]}</p>
       </section>
     )
@@ -138,7 +138,7 @@ export function Reading({ lang }: { lang: Lang }) {
         <button type="button" className="back-link" onClick={backToPick}>
           ← {ui.changeSpread[lang]}
         </button>
-        <h2 className="board-title">{spread.name[lang]}</h2>
+        <h1 className="board-title">{spread.name[lang]}</h1>
         {!allRevealed && <p className="section-sub">{ui.tapToReveal[lang]}</p>}
       </div>
 

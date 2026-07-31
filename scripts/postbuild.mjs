@@ -33,7 +33,7 @@ if (names.length !== 78) {
   throw new Error(`expected 78 cards, found ${names.length}`)
 }
 
-const staticRoutes = ['rozklady', 'znaczenia-kart', 'przewodnik']
+const staticRoutes = ['karta-dnia', 'rozklady', 'znaczenia-kart', 'przewodnik']
 const cardRoutes = names.map((n) => `karta/${slugify(n)}`)
 
 for (const route of [...staticRoutes, ...cardRoutes]) {
@@ -50,6 +50,7 @@ const sitemap = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
   urlEntry(`${SITE}/`, '1.0', 'daily'),
+  urlEntry(`${SITE}/karta-dnia/`, '0.9', 'daily'),
   urlEntry(`${SITE}/znaczenia-kart/`, '0.9', 'monthly'),
   urlEntry(`${SITE}/rozklady/`, '0.8', 'monthly'),
   urlEntry(`${SITE}/przewodnik/`, '0.7', 'monthly'),

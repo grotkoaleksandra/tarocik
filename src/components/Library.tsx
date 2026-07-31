@@ -39,7 +39,7 @@ export function Library({ lang, onOpenCard }: { lang: Lang; onOpenCard: (card: T
         <header className="page-head">
           <span className="page-index" aria-hidden="true">03</span>
           <Sparkle className="hd hd-head-spark" />
-          <h2 className="page-title">{ui.libraryTitle[lang]}</h2>
+          <h1 className="page-title">{ui.libraryTitle[lang]}</h1>
           <p className="page-sub">{ui.libraryIntro[lang]}</p>
         </header>
       </Reveal>
