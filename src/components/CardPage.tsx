@@ -7,6 +7,7 @@ import { CardArt } from './CardArt'
 import { Sparkle } from './Doodles'
 import { setJsonLd } from '../lib/jsonld'
 import { SITE, cardMeta } from '../lib/meta'
+import { majorDetails } from '../data/majorDetails'
 
 interface Props {
   card: TarotCard
@@ -102,6 +103,26 @@ export function CardPage({ card, lang, onOpenCard, onOpenLibrary, onOpenReading 
             <p className="keywords">{card.keywordsReversed[lang]}</p>
             <p>{card.reversed[lang]}</p>
           </section>
+          {majorDetails[card.id] && (
+            <>
+              <section>
+                <h2 className="card-page-h2">{ui.cardLove[lang]}</h2>
+                <p>{majorDetails[card.id].love[lang]}</p>
+              </section>
+              <section>
+                <h2 className="card-page-h2">{ui.cardWork[lang]}</h2>
+                <p>{majorDetails[card.id].work[lang]}</p>
+              </section>
+              <section>
+                <h2 className="card-page-h2">{ui.cardHealth[lang]}</h2>
+                <p>{majorDetails[card.id].health[lang]}</p>
+              </section>
+              <section>
+                <h2 className="card-page-h2">{ui.cardAdvice[lang]}</h2>
+                <p>{majorDetails[card.id].advice[lang]}</p>
+              </section>
+            </>
+          )}
           <a
             className="btn-ink card-page-cta"
             href="/rozklady/"

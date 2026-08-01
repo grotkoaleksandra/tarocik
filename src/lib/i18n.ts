@@ -53,6 +53,10 @@ export const ui = {
   close: { pl: 'Zamknij', en: 'Close' },
   keywords: { pl: 'Słowa klucze', en: 'Keywords' },
   summaryTitle: { pl: 'Podsumowanie', en: 'Summary' },
+  cardLove: { pl: 'Miłość i relacje', en: 'Love & relationships' },
+  cardWork: { pl: 'Praca i pieniądze', en: 'Work & money' },
+  cardHealth: { pl: 'Zdrowie i energia', en: 'Health & energy' },
+  cardAdvice: { pl: 'Rada karty', en: 'The card’s advice' },
   footerNote: {
     pl: 'Tarocik służy rozrywce i refleksji — ważne decyzje podejmuj sercem i rozumem.',
     en: 'Tarocik is for reflection and fun — make important decisions with your heart and your head.',
