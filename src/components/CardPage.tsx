@@ -8,6 +8,7 @@ import { Sparkle } from './Doodles'
 import { setJsonLd } from '../lib/jsonld'
 import { SITE, cardMeta } from '../lib/meta'
 import { majorDetails } from '../data/majorDetails'
+import { minorDetails } from '../data/minorDetails'
 
 interface Props {
   card: TarotCard
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export function CardPage({ card, lang, onOpenCard, onOpenLibrary, onOpenReading }: Props) {
+  const details = majorDetails[card.id] ?? minorDetails[card.id]
   const idx = allCards.findIndex((c) => c.id === card.id)
   const prev = allCards[(idx + allCards.length - 1) % allCards.length]
   const next = allCards[(idx + 1) % allCards.length]
@@ -103,23 +105,23 @@ export function CardPage({ card, lang, onOpenCard, onOpenLibrary, onOpenReading 
             <p className="keywords">{card.keywordsReversed[lang]}</p>
             <p>{card.reversed[lang]}</p>
           </section>
-          {majorDetails[card.id] && (
+          {details && (
             <>
               <section>
                 <h2 className="card-page-h2">{ui.cardLove[lang]}</h2>
-                <p>{majorDetails[card.id].love[lang]}</p>
+                <p>{details.love[lang]}</p>
               </section>
               <section>
                 <h2 className="card-page-h2">{ui.cardWork[lang]}</h2>
-                <p>{majorDetails[card.id].work[lang]}</p>
+                <p>{details.work[lang]}</p>
               </section>
               <section>
                 <h2 className="card-page-h2">{ui.cardHealth[lang]}</h2>
-                <p>{majorDetails[card.id].health[lang]}</p>
+                <p>{details.health[lang]}</p>
               </section>
               <section>
                 <h2 className="card-page-h2">{ui.cardAdvice[lang]}</h2>
-                <p>{majorDetails[card.id].advice[lang]}</p>
+                <p>{details.advice[lang]}</p>
               </section>
             </>
           )}

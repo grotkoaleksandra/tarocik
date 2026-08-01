@@ -57,6 +57,12 @@ export const ui = {
   cardWork: { pl: 'Praca i pieniądze', en: 'Work & money' },
   cardHealth: { pl: 'Zdrowie i energia', en: 'Health & energy' },
   cardAdvice: { pl: 'Rada karty', en: 'The card’s advice' },
+  yesnoYes: { pl: 'TAK', en: 'YES' },
+  yesnoNo: { pl: 'NIE', en: 'NO' },
+  yesnoHint: {
+    pl: 'Karta prosta oznacza „tak”, odwrócona — „nie”. Niuans odpowiedzi kryje się w znaczeniu karty poniżej.',
+    en: 'An upright card means “yes,” a reversed one “no.” The nuance of the answer lives in the card’s meaning below.',
+  },
   footerNote: {
     pl: 'Tarocik służy rozrywce i refleksji — ważne decyzje podejmuj sercem i rozumem.',
     en: 'Tarocik is for reflection and fun — make important decisions with your heart and your head.',
@@ -67,6 +73,16 @@ export const ui = {
 export type UiKey = keyof typeof ui
 
 export const spreads: Spread[] = [
+  {
+    id: 'yesno',
+    cards: 1,
+    name: { pl: 'Tak czy nie', en: 'Yes or no' },
+    description: {
+      pl: 'Masz konkretne pytanie? Jedna karta, jedna odpowiedź: prosta znaczy „tak”, odwrócona — „nie”.',
+      en: 'Got a concrete question? One card, one answer: upright means “yes,” reversed means “no.”',
+    },
+    positions: [{ pl: 'Odpowiedź', en: 'The answer' }],
+  },
   {
     id: 'one',
     cards: 1,
@@ -89,6 +105,22 @@ export const spreads: Spread[] = [
       { pl: 'Przeszłość', en: 'Past' },
       { pl: 'Teraźniejszość', en: 'Present' },
       { pl: 'Przyszłość', en: 'Future' },
+    ],
+  },
+  {
+    id: 'love',
+    cards: 5,
+    name: { pl: 'Tarot miłosny', en: 'Love tarot' },
+    description: {
+      pl: 'Rozkład na miłość i relacje: Ty, druga osoba, co Was łączy, co blokuje i dokąd to zmierza.',
+      en: 'A spread for love and relationships: you, the other person, what connects you, what blocks you, and where it is heading.',
+    },
+    positions: [
+      { pl: 'Ty', en: 'You' },
+      { pl: 'Druga osoba', en: 'The other person' },
+      { pl: 'Co Was łączy', en: 'What connects you' },
+      { pl: 'Co Was blokuje', en: 'What blocks you' },
+      { pl: 'Dokąd to zmierza', en: 'Where it is heading' },
     ],
   },
   {

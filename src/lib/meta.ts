@@ -31,8 +31,8 @@ export const viewDescriptions: Record<StaticViewId, { pl: string; en: string }> 
     en: 'Tarot online: a card of the day, interactive spreads, and meanings for all 78 tarot cards — in Polish and English.',
   },
   reading: {
-    pl: 'Rozłóż karty online: jedna karta, trzy karty, mały krzyż lub krzyż celtycki — z interpretacją i podsumowaniem.',
-    en: 'Draw tarot cards online: one card, three cards, small cross, or Celtic cross — with interpretations and a summary.',
+    pl: 'Rozłóż karty online: tak czy nie, jedna karta, trzy karty, tarot miłosny, mały krzyż lub krzyż celtycki — z interpretacją i podsumowaniem.',
+    en: 'Draw tarot cards online: yes or no, one card, three cards, love tarot, small cross, or Celtic cross — with interpretations and a summary.',
   },
   library: {
     pl: 'Znaczenia wszystkich 78 kart tarota — proste i odwrócone, ze słowami kluczami. Wielkie i Małe Arkana.',

@@ -184,6 +184,14 @@ export function Reading({ lang }: { lang: Lang }) {
           )}
           {allRevealed && (
             <div className="reading-results">
+              {spread.id === 'yesno' && (
+                <div className="yesno-verdict">
+                  <span className={`yesno-word ${drawn[0].reversed ? 'is-no' : 'is-yes'}`}>
+                    {drawn[0].reversed ? ui.yesnoNo[lang] : ui.yesnoYes[lang]}
+                  </span>
+                  <p className="section-sub">{ui.yesnoHint[lang]}</p>
+                </div>
+              )}
               {drawn.map((d, i) => (
                 <article key={d.card.id} className="result-card">
                   <h3>
