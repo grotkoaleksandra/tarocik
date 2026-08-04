@@ -224,6 +224,10 @@ export function Reading({ lang }: { lang: Lang }) {
                 <h3>✦ {ui.summaryTitle[lang]}</h3>
                 <p>{summarizeReading(drawn, lang)}</p>
               </article>
+              <p className="personal-cta">
+                {ui.personalReading[lang]}{' '}
+                <a href="mailto:brzywczy@gmail.com">brzywczy@gmail.com</a>
+              </p>
               <button type="button" className="btn-gold" onClick={() => startReading(spread)}>
                 {ui.drawAgain[lang]}
               </button>

@@ -1740,3 +1740,29 @@ main {
   color: var(--accent);
   border-bottom-color: var(--accent);
 }
+
+/* ---------- personal reading CTA ---------- */
+
+.personal-cta {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin-top: 0.6rem;
+}
+
+.daily-info .personal-cta {
+  text-align: left;
+  margin-top: 1.2rem;
+}
+
+.personal-cta a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1.5px solid rgba(43, 75, 181, 0.3);
+  transition: border-color 0.2s;
+}
+
+.personal-cta a:hover {
+  border-bottom-color: var(--accent);
+}

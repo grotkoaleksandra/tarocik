@@ -74,6 +74,10 @@ export const ui = {
   },
   disclaimerShort: { pl: 'dla przyjemności i zadumy', en: 'for delight and reflection' },
   madeBy: { pl: 'Projekt i wykonanie', en: 'Design & build' },
+  personalReading: {
+    pl: 'Chcesz osobistej, pogłębionej interpretacji od człowieka, nie od strony? Napisz:',
+    en: 'Want a personal, in-depth reading from a human, not a website? Write to:',
+  },
   contact: { pl: 'Kontakt', en: 'Contact' },
 } satisfies Record<string, CardText>
 

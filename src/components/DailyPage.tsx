@@ -62,6 +62,10 @@ export function DailyPage({ lang }: { lang: Lang }) {
             </div>
           )}
           <p className="daily-how">{copy.how[lang]}</p>
+          <p className="personal-cta">
+            {ui.personalReading[lang]}{' '}
+            <a href="mailto:brzywczy@gmail.com">brzywczy@gmail.com</a>
+          </p>
         </div>
         <div className="daily-stage">
           <WatercolorFlowerSvg petals={5} seed={21} className="daily-flower" />
