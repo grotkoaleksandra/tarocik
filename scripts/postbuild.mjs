@@ -32,6 +32,12 @@ function buildPage(info) {
   html = html.replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${info.canonical}$2`)
   html = html.replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${info.canonical}$2`)
   html = html.replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(info.title)}$2`)
+  if (info.jsonld) {
+    html = html.replace(
+      '</head>',
+      `<script type="application/ld+json" id="${info.jsonld.id}">${info.jsonld.json}</script></head>`,
+    )
+  }
   html = html.replace('<div id="root"></div>', `<div id="root">${info.html}</div>`)
   return html
 }

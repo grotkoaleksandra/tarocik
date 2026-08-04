@@ -15,6 +15,7 @@ export function Reading({ lang }: { lang: Lang }) {
   const [spread, setSpread] = useState<Spread>(spreads[1])
   const [drawn, setDrawn] = useState<DrawnCard[] | null>(null)
   const [revealed, setRevealed] = useState<boolean[]>([])
+  const [peek, setPeek] = useState(false)
   const timer = useRef<number | undefined>(undefined)
 
   useEffect(() => () => window.clearTimeout(timer.current), [])
@@ -22,6 +23,7 @@ export function Reading({ lang }: { lang: Lang }) {
   const startReading = (s: Spread) => {
     setSpread(s)
     setDrawn(null)
+    setPeek(false)
     setPhase('shuffle')
     window.scrollTo({ top: 0, behavior: 'smooth' })
     window.clearTimeout(timer.current)
@@ -140,6 +142,9 @@ export function Reading({ lang }: { lang: Lang }) {
         </button>
         <h1 className="board-title">{spread.name[lang]}</h1>
         {!allRevealed && <p className="section-sub">{ui.tapToReveal[lang]}</p>}
+        {spread.id === 'celtic' && revealed[1] && (
+          <p className="section-sub celtic-hint">{ui.celticHint[lang]}</p>
+        )}
       </div>
 
       {drawn && (
@@ -157,7 +162,12 @@ export function Reading({ lang }: { lang: Lang }) {
                 </div>
                 <div className="spread-slot ca-center" style={{ '--i': 0 } as CSSProperties}>
                   <span className="position-label">1 · 2</span>
-                  <div className="celtic-center">
+                  <div
+                    className={`celtic-center ${peek ? 'is-peek' : ''}`}
+                    onClick={() => {
+                      if (revealed[0] && revealed[1]) setPeek((v) => !v)
+                    }}
+                  >
                     <FlipCard card={drawn[0].card} lang={lang} revealed={revealed[0]} reversed={drawn[0].reversed} onReveal={() => reveal(0)} size="sm" />
                     <div className="celtic-crossing">
                       <FlipCard card={drawn[1].card} lang={lang} revealed={revealed[1]} reversed={drawn[1].reversed} onReveal={() => reveal(1)} size="sm" />

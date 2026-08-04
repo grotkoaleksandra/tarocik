@@ -19,7 +19,7 @@ const intro = {
   },
 }
 
-const sections: Section[] = [
+export const guideSections: Section[] = [
   {
     title: { pl: 'Czym właściwie jest tarot?', en: 'What is tarot, really?' },
     body: {
@@ -69,7 +69,7 @@ export function Guide({ lang, onOpenCard }: GuideProps) {
     setJsonLd('ld-guide-faq', {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
-      mainEntity: sections.map((s) => ({
+      mainEntity: guideSections.map((s) => ({
         '@type': 'Question',
         name: s.title[lang],
         acceptedAnswer: { '@type': 'Answer', text: s.body[lang] },
@@ -91,7 +91,7 @@ export function Guide({ lang, onOpenCard }: GuideProps) {
         </header>
       </Reveal>
       <div className="guide-body">
-        {sections.map((s, i) => (
+        {guideSections.map((s, i) => (
           <Reveal key={s.title.en} className="guide-section" delay={i * 60}>
             <h3 className="guide-heading">
               <span className="guide-num">{String(i + 1).padStart(2, '0')}</span>

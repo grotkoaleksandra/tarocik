@@ -64,6 +64,13 @@ export function Library({ lang, onOpenCard }: { lang: Lang; onOpenCard: (card: T
           ))}
         </div>
       </Reveal>
+      {visible.length > 0 && (
+        <p className="section-sub library-count">
+          {lang === 'pl'
+            ? `${visible.length} ${visible.length === 1 ? 'karta' : [2, 3, 4].includes(visible.length % 10) && ![12, 13, 14].includes(visible.length % 100) ? 'karty' : 'kart'}`
+            : `${visible.length} card${visible.length === 1 ? '' : 's'}`}
+        </p>
+      )}
       {visible.length === 0 ? (
         <p className="section-sub">{ui.noResults[lang]}</p>
       ) : (

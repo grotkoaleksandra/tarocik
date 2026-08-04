@@ -1682,3 +1682,40 @@ main {
 .yesno-word.is-no {
   color: var(--rose-text);
 }
+
+/* ---------- final polish: celtic peek, library count, related cards ---------- */
+
+.celtic-center.is-peek .celtic-crossing:has(.is-settled) {
+  opacity: 0.15;
+}
+
+.celtic-hint {
+  font-size: 0.82rem;
+  margin-top: 0.4rem;
+}
+
+.library-count {
+  margin-top: 1.2rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.card-related {
+  margin-top: 2.4rem;
+  font-size: 0.88rem;
+  color: var(--ink-dim);
+  text-align: center;
+}
+
+.card-related a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1.5px solid rgba(43, 75, 181, 0.3);
+  transition: border-color 0.2s;
+}
+
+.card-related a:hover {
+  border-bottom-color: var(--accent);
+}

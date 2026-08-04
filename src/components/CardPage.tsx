@@ -20,6 +20,10 @@ interface Props {
 
 export function CardPage({ card, lang, onOpenCard, onOpenLibrary, onOpenReading }: Props) {
   const details = majorDetails[card.id] ?? minorDetails[card.id]
+  const siblings =
+    card.arcana === 'minor'
+      ? allCards.filter((c) => c.arcana === 'minor' && c.rank === card.rank && c.suit !== card.suit)
+      : []
   const idx = allCards.findIndex((c) => c.id === card.id)
   const prev = allCards[(idx + allCards.length - 1) % allCards.length]
   const next = allCards[(idx + 1) % allCards.length]
@@ -137,6 +141,17 @@ export function CardPage({ card, lang, onOpenCard, onOpenLibrary, onOpenReading 
           </a>
         </div>
       </div>
+      {siblings.length > 0 && (
+        <p className="card-related">
+          {ui.seeAlsoRank[lang]}{' '}
+          {siblings.map((s, k) => (
+            <span key={s.id}>
+              {k > 0 && ' · '}
+              {link(s, s.name[lang], 'card-related-link')}
+            </span>
+          ))}
+        </p>
+      )}
       <nav className="card-page-nav" aria-label="cards">
         {link(prev, `← ${prev.name[lang]}`, 'card-nav-link')}
         {link(next, `${next.name[lang]} →`, 'card-nav-link')}

@@ -57,6 +57,11 @@ export const ui = {
   cardWork: { pl: 'Praca i pieniądze', en: 'Work & money' },
   cardHealth: { pl: 'Zdrowie i energia', en: 'Health & energy' },
   cardAdvice: { pl: 'Rada karty', en: 'The card’s advice' },
+  celticHint: {
+    pl: 'Wskazówka: najedź lub dotknij środka krzyża, aby zobaczyć kartę pod spodem.',
+    en: 'Tip: hover or tap the centre of the cross to see the card beneath.',
+  },
+  seeAlsoRank: { pl: 'Ta sama ranga w innych kolorach:', en: 'The same rank in other suits:' },
   yesnoYes: { pl: 'TAK', en: 'YES' },
   yesnoNo: { pl: 'NIE', en: 'NO' },
   yesnoHint: {
