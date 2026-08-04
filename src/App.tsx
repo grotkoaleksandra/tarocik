@@ -183,6 +183,18 @@ export default function App({ ssrPath }: { ssrPath?: string } = {}) {
         <LogoMark className="footer-mark" />
         <p className="footer-brand">Tarocik</p>
         <p className="footer-note">{ui.footerNote[lang]}</p>
+        <p className="footer-credit">
+          {ui.madeBy[lang]}:{' '}
+          <a href="https://cotoaleksandra.com" target="_blank" rel="noopener">
+            cotoaleksandra.com
+          </a>
+          {' · '}
+          <a href="https://instagram.com/cotoaleksandra" target="_blank" rel="noopener">
+            Instagram
+          </a>
+          {' · '}
+          <a href="mailto:cotoaleksandra@gmail.com">cotoaleksandra@gmail.com</a>
+        </p>
         <p className="footer-meta">© 2026 Tarocik · {ui.disclaimerShort[lang]}</p>
       </footer>
     </div>

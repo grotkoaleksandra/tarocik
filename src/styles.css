@@ -1719,3 +1719,24 @@ main {
 .card-related a:hover {
   border-bottom-color: var(--accent);
 }
+
+/* ---------- footer credit ---------- */
+
+.footer-credit {
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  color: var(--ink-dim);
+}
+
+.footer-credit a {
+  color: var(--ink-soft);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--line-strong);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.footer-credit a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}

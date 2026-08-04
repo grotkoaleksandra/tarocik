@@ -73,6 +73,7 @@ export const ui = {
     en: 'Tarocik is for reflection and fun — make important decisions with your heart and your head.',
   },
   disclaimerShort: { pl: 'dla przyjemności i zadumy', en: 'for delight and reflection' },
+  madeBy: { pl: 'Projekt i wykonanie', en: 'Design & build' },
 } satisfies Record<string, CardText>
 
 export type UiKey = keyof typeof ui
