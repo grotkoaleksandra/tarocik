@@ -186,11 +186,13 @@ export default function App({ ssrPath }: { ssrPath?: string } = {}) {
         <p className="footer-credit">
           {ui.madeBy[lang]}:{' '}
           <a href="https://cotoaleksandra.com" target="_blank" rel="noopener">
-            cotoaleksandra.com
+            cotoaleksandra
           </a>
-          {' · '}
+        </p>
+        <p className="footer-credit">
+          {ui.contact[lang]}:{' '}
           <a href="https://instagram.com/cotoaleksandra" target="_blank" rel="noopener">
-            Instagram
+            @cotoaleksandra
           </a>
           {' · '}
           <a href="mailto:cotoaleksandra@gmail.com">cotoaleksandra@gmail.com</a>

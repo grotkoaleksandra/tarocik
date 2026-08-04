@@ -74,6 +74,7 @@ export const ui = {
   },
   disclaimerShort: { pl: 'dla przyjemności i zadumy', en: 'for delight and reflection' },
   madeBy: { pl: 'Projekt i wykonanie', en: 'Design & build' },
+  contact: { pl: 'Kontakt', en: 'Contact' },
 } satisfies Record<string, CardText>
 
 export type UiKey = keyof typeof ui
