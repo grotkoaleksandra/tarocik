@@ -1766,3 +1766,25 @@ main {
 .personal-cta a:hover {
   border-bottom-color: var(--accent);
 }
+
+/* ---------- critique fixes: mobile flower, picker rows, tall-screen hero ---------- */
+
+@media (max-width: 520px) {
+  .doodle-a {
+    display: none;
+  }
+}
+
+.spread-picker {
+  align-items: stretch;
+}
+
+.spread-option {
+  height: 100%;
+}
+
+@media (min-width: 641px) {
+  .hero {
+    min-height: min(calc(100svh - 120px), 880px);
+  }
+}
