@@ -53,6 +53,7 @@ export const ui = {
   close: { pl: 'Zamknij', en: 'Close' },
   keywords: { pl: 'Słowa klucze', en: 'Keywords' },
   summaryTitle: { pl: 'Podsumowanie', en: 'Summary' },
+  explanationTitle: { pl: 'Jak to rozumieć', en: 'How to read it' },
   cardLove: { pl: 'Miłość i relacje', en: 'Love & relationships' },
   cardWork: { pl: 'Praca i pieniądze', en: 'Work & money' },
   cardHealth: { pl: 'Zdrowie i energia', en: 'Health & energy' },

@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react'
 import type { DrawnCard, Lang, Spread } from '../types'
 import { spreads, ui } from '../lib/i18n'
 import { drawCards } from '../lib/draw'
-import { summarizeReading } from '../lib/summary'
+import { explainReading, summarizeReading } from '../lib/summary'
 import { FlipCard } from './FlipCard'
 import { Reveal } from './Reveal'
 import { MoonDoodle, Sparkle } from './Doodles'
@@ -220,6 +220,10 @@ export function Reading({ lang }: { lang: Lang }) {
                   <p>{d.reversed ? d.card.reversed[lang] : d.card.upright[lang]}</p>
                 </article>
               ))}
+              <article className="result-card summary-card">
+                <h3>✦ {ui.explanationTitle[lang]}</h3>
+                <p>{explainReading(spread, drawn, lang)}</p>
+              </article>
               <article className="result-card summary-card">
                 <h3>✦ {ui.summaryTitle[lang]}</h3>
                 <p>{summarizeReading(drawn, lang)}</p>
