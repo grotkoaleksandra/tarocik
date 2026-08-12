@@ -38,3 +38,28 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping IndexNow with all site URLs
+        run: |
+          sleep 20
+          curl -s https://tarocik.com/sitemap.xml | grep -o '<loc>[^<]*' | sed 's/<loc>//' > urls.txt
+          COUNT=$(wc -l < urls.txt)
+          echo "Submitting $COUNT URLs to IndexNow"
+          node -e "
+            const fs = require('fs');
+            const urls = fs.readFileSync('urls.txt', 'utf8').trim().split('\n');
+            fetch('https://api.indexnow.org/indexnow', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json; charset=utf-8' },
+              body: JSON.stringify({
+                host: 'tarocik.com',
+                key: '9454241dbd15bae0b4ebd450c91b0c95',
+                keyLocation: 'https://tarocik.com/9454241dbd15bae0b4ebd450c91b0c95.txt',
+                urlList: urls,
+              }),
+            }).then((r) => { console.log('IndexNow response:', r.status); if (r.status >= 400) process.exit(1); });
+          "
