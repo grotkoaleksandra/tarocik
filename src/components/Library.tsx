@@ -6,6 +6,9 @@ import { CardArt } from './CardArt'
 import { Reveal } from './Reveal'
 import { Sparkle } from './Doodles'
 import { cardSlug } from '../lib/slugs'
+import { FaqSection } from './FaqSection'
+import { libraryFaqs } from '../lib/faq'
+import { cardsLabel } from '../lib/plural'
 
 type Filter = 'all' | 'major' | 'wands' | 'cups' | 'swords' | 'pentacles'
 
@@ -66,9 +69,7 @@ export function Library({ lang, onOpenCard }: { lang: Lang; onOpenCard: (card: T
       </Reveal>
       {visible.length > 0 && (
         <p className="section-sub library-count">
-          {lang === 'pl'
-            ? `${visible.length} ${visible.length === 1 ? 'karta' : [2, 3, 4].includes(visible.length % 10) && ![12, 13, 14].includes(visible.length % 100) ? 'karty' : 'kart'}`
-            : `${visible.length} card${visible.length === 1 ? '' : 's'}`}
+          {cardsLabel(visible.length, lang)}
         </p>
       )}
       {visible.length === 0 ? (
@@ -91,6 +92,7 @@ export function Library({ lang, onOpenCard }: { lang: Lang; onOpenCard: (card: T
           ))}
         </Reveal>
       )}
+      <FaqSection faqs={libraryFaqs} lang={lang} ldId="ld-library-faq" />
     </section>
   )
 }

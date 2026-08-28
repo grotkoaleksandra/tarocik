@@ -5,6 +5,8 @@ import { cardOfTheDay } from '../lib/draw'
 import { FlipCard } from './FlipCard'
 import { Reveal } from './Reveal'
 import { Sparkle, WatercolorFlowerSvg } from './Doodles'
+import { FaqSection } from './FaqSection'
+import { dailyFaqs } from '../lib/faq'
 
 const copy = {
   intro: {
@@ -79,6 +81,7 @@ export function DailyPage({ lang }: { lang: Lang }) {
           />
         </div>
       </Reveal>
+      <FaqSection faqs={dailyFaqs} lang={lang} ldId="ld-daily-faq" />
     </section>
   )
 }

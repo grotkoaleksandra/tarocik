@@ -1788,3 +1788,82 @@ main {
     min-height: min(calc(100svh - 120px), 880px);
   }
 }
+
+/* ---------- FAQ blocks (answer-engine friendly, plain text, no accordion) ---------- */
+
+.faq {
+  position: relative;
+  max-width: 44rem;
+  margin: 5rem auto 0;
+  padding-top: 2.6rem;
+  border-top: 1px solid var(--line);
+}
+
+.faq-title {
+  position: relative;
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 460;
+  color: var(--ink);
+  line-height: 1.15;
+  margin-bottom: 1.8rem;
+}
+
+.hd-faq-spark {
+  position: absolute;
+  width: 22px;
+  left: -34px;
+  top: -6px;
+  color: var(--marigold);
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.faq-q {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.faq-a {
+  margin-top: 0.45rem;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* The one-sentence answer at the top of a card page. */
+.quick-answer {
+  margin-top: 1rem;
+  padding: 0.9rem 1.1rem;
+  border-left: 3px solid var(--rose);
+  background: var(--parchment);
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.spread-count {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rose-text);
+}
+
+@media (max-width: 640px) {
+  .faq {
+    margin-top: 3.4rem;
+    padding-top: 2rem;
+  }
+  .hd-faq-spark {
+    display: none;
+  }
+}

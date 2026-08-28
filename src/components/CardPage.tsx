@@ -9,6 +9,8 @@ import { setJsonLd } from '../lib/jsonld'
 import { SITE, cardMeta } from '../lib/meta'
 import { majorDetails } from '../data/majorDetails'
 import { minorDetails } from '../data/minorDetails'
+import { cardFaqs, cardQuickAnswer } from '../lib/faq'
+import { LAST_UPDATED, publisher } from '../lib/schema'
 
 interface Props {
   card: TarotCard
@@ -43,8 +45,19 @@ export function CardPage({ card, lang, onOpenCard, onOpenLibrary, onOpenReading 
           description: desc,
           inLanguage: lang,
           mainEntityOfPage: url,
-          author: { '@type': 'Organization', name: 'Tarocik', url: SITE },
-          publisher: { '@type': 'Organization', name: 'Tarocik', url: SITE },
+          datePublished: '2026-08-10',
+          dateModified: LAST_UPDATED,
+          author: publisher,
+          publisher,
+        },
+        {
+          '@type': 'FAQPage',
+          inLanguage: lang,
+          mainEntity: cardFaqs(card).map((f) => ({
+            '@type': 'Question',
+            name: f.q[lang],
+            acceptedAnswer: { '@type': 'Answer', text: f.a[lang] },
+          })),
         },
         {
           '@type': 'BreadcrumbList',
@@ -99,6 +112,7 @@ export function CardPage({ card, lang, onOpenCard, onOpenLibrary, onOpenReading 
           <p className="modal-sub">
             {card.arcana === 'major' ? ui.majorArcana[lang] : ui.minorArcana[lang]}
           </p>
+          <p className="quick-answer">{cardQuickAnswer(card, lang)}</p>
           <section>
             <h2 className="card-page-h2">{ui.uprightMeaning[lang]}</h2>
             <p className="keywords">{card.keywordsUpright[lang]}</p>

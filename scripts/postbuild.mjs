@@ -11,7 +11,7 @@ const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const dist = path.join(root, 'dist')
 const SITE = 'https://tarocik.com'
 
-const { listRoutes, renderPage, listCards } = await import(
+const { listRoutes, renderPage, listCards, listFaqs, listSpreads } = await import(
   path.join(root, 'dist-server', 'entry-server.js')
 )
 
@@ -32,10 +32,10 @@ function buildPage(info) {
   html = html.replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${info.canonical}$2`)
   html = html.replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${info.canonical}$2`)
   html = html.replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(info.title)}$2`)
-  if (info.jsonld) {
+  for (const ld of info.jsonld ?? []) {
     html = html.replace(
       '</head>',
-      `<script type="application/ld+json" id="${info.jsonld.id}">${info.jsonld.json}</script></head>`,
+      `<script type="application/ld+json" id="${ld.id}">${ld.json}</script></head>`,
     )
   }
   html = html.replace('<div id="root"></div>', `<div id="root">${info.html}</div>`)
@@ -43,8 +43,10 @@ function buildPage(info) {
 }
 
 const routes = listRoutes()
+let ldCount = 0
 for (const route of routes) {
   const info = renderPage(route)
+  ldCount += info.jsonld?.length ?? 0
   const out = buildPage(info)
   if (route === '/') {
     writeFileSync(path.join(dist, 'index.html'), out)
@@ -75,6 +77,8 @@ const sitemap = [
 writeFileSync(path.join(dist, 'sitemap.xml'), sitemap)
 
 // --- llms.txt: a plain-markdown map of the site for AI crawlers ---
+const faqs = listFaqs()
+const spreadLines = listSpreads().map((s) => `${s.name} (${s.cards})`)
 const llms = [
   '# Tarocik',
   '',
@@ -91,6 +95,20 @@ const llms = [
   `- [Znaczenia kart / Card meanings](${SITE}/znaczenia-kart/): katalog wszystkich 78 kart`,
   `- [Jak czytać tarota / How to read tarot](${SITE}/przewodnik/): przewodnik dla początkujących`,
   '',
+  '## Kluczowe fakty / Key facts',
+  '',
+  '- Tarocik to darmowy serwis tarota online; nie wymaga rejestracji ani logowania i nie ma treści płatnych.',
+  '- Dostępne są 22 karty Wielkich Arkanów i 56 kart Małych Arkanów (Buławy, Kielichy, Miecze, Pentakle) — łącznie 78 kart, każda z osobną stroną.',
+  `- Sześć rozkładów: ${spreadLines.join('; ')}.`,
+  '- Każdy rozkład kończy się narracyjną interpretacją całości („Jak to rozumieć”) oraz podsumowaniem motywów.',
+  '- Karta dnia jest wspólna dla wszystkich odwiedzających i zmienia się raz na dobę.',
+  '- Serwis jest dwujęzyczny: polski (domyślny) i angielski, przełącznik PL/EN w nagłówku.',
+  '- Tarocik jest projektem autorskim; projekt i wykonanie: cotoaleksandra (https://cotoaleksandra.com).',
+  '- Serwis służy rozrywce i refleksji, nie udziela porad medycznych ani finansowych.',
+  '',
+  '## Częste pytania / FAQ',
+  '',
+  ...faqs.flatMap((f) => [`### ${f.q}`, '', f.a, '', `_EN: ${f.qEn}_ — ${f.aEn}`, '']),
   '## Znaczenia kart / Card meanings (78)',
   '',
   ...cards.map(
@@ -101,5 +119,5 @@ const llms = [
 writeFileSync(path.join(dist, 'llms.txt'), llms)
 
 console.log(
-  `postbuild: prerendered ${routes.length} routes, sitemap (${cards.length + 5} URLs), llms.txt, 404.html`,
+  `postbuild: prerendered ${routes.length} routes, ${ldCount} JSON-LD blocks, sitemap (${cards.length + 5} URLs), llms.txt (${faqs.length} Q&A), 404.html`,
 )

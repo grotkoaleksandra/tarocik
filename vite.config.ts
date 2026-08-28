@@ -8,4 +8,7 @@ export default defineConfig({
   base: '/',
   plugins: [react()],
   server: { port: 5174 },
+  // Baked into the structured data as dateModified — a freshness signal for
+  // search and answer engines.
+  define: { __BUILD_DATE__: JSON.stringify(new Date().toISOString().slice(0, 10)) },
 })

@@ -14,6 +14,8 @@ import {
   WatercolorFlowerSvg,
 } from './Doodles'
 import { Reveal } from './Reveal'
+import { FaqSection } from './FaqSection'
+import { homeFaqs } from '../lib/faq'
 
 interface Props {
   lang: Lang
@@ -120,6 +122,8 @@ export function Home({ lang, onNavigate }: Props) {
           />
         </Reveal>
       </section>
+
+      <FaqSection faqs={homeFaqs} lang={lang} ldId="ld-home-faq" />
     </>
   )
 }

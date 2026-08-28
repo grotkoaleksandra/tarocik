@@ -21,11 +21,39 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Tarocik",
-        "url": "https://tarocik.com/",
-        "description": "Tarot online: karta dnia, rozkłady i znaczenia wszystkich 78 kart tarota.",
-        "inLanguage": ["pl", "en"]
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://tarocik.com/#website",
+            "name": "Tarocik",
+            "alternateName": "Tarocik — tarot online",
+            "url": "https://tarocik.com/",
+            "description": "Darmowy tarot online: karta dnia, interaktywne rozkłady i znaczenia wszystkich 78 kart tarota, po polsku i angielsku.",
+            "inLanguage": ["pl", "en"],
+            "publisher": { "@id": "https://tarocik.com/#organization" }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://tarocik.com/#organization",
+            "name": "Tarocik",
+            "url": "https://tarocik.com/",
+            "logo": "https://tarocik.com/og.png",
+            "description": "Darmowy tarot online po polsku i angielsku: karta dnia, interaktywne rozkłady i znaczenia wszystkich 78 kart tarota.",
+            "founder": {
+              "@type": "Person",
+              "name": "cotoaleksandra",
+              "url": "https://cotoaleksandra.com",
+              "sameAs": [
+                "https://cotoaleksandra.com",
+                "https://www.instagram.com/cotoaleksandra/"
+              ]
+            },
+            "sameAs": [
+              "https://cotoaleksandra.com",
+              "https://www.instagram.com/cotoaleksandra/"
+            ]
+          }
+        ]
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />

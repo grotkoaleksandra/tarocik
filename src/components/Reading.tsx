@@ -7,6 +7,14 @@ import { explainReading, summarizeReading } from '../lib/summary'
 import { FlipCard } from './FlipCard'
 import { Reveal } from './Reveal'
 import { MoonDoodle, Sparkle } from './Doodles'
+import { FaqSection } from './FaqSection'
+import { readingFaqs } from '../lib/faq'
+import { cardsLabel } from '../lib/plural'
+
+const pickLead = {
+  pl: 'Sześć darmowych rozkładów tarota online — od jednej karty po pełny krzyż celtycki. Wybierz rozkład, pomyśl o pytaniu i odkryj karty: każda dostanie znaczenie w swojej pozycji, a na końcu przeczytasz interpretację całości i podsumowanie.',
+  en: 'Six free online tarot spreads — from a single card to the full Celtic cross. Choose a spread, hold your question in mind, and reveal the cards: each is read in its own position, and at the end you get an interpretation of the whole reading and a summary.',
+}
 
 type Phase = 'pick' | 'shuffle' | 'board'
 
@@ -99,6 +107,7 @@ export function Reading({ lang }: { lang: Lang }) {
             <span className="page-index" aria-hidden="true">02</span>
             <Sparkle className="hd hd-head-spark" />
             <h1 className="page-title">{ui.chooseSpread[lang]}</h1>
+            <p className="page-sub">{pickLead[lang]}</p>
           </header>
         </Reveal>
         <Reveal className="spread-picker" delay={100}>
@@ -110,11 +119,13 @@ export function Reading({ lang }: { lang: Lang }) {
               onClick={() => startReading(s)}
             >
               <span className="spread-name">{s.name[lang]}</span>
+              <span className="spread-count">{cardsLabel(s.cards, lang)}</span>
               <span className="spread-desc">{s.description[lang]}</span>
               <span className="spread-go" aria-hidden="true">→</span>
             </button>
           ))}
         </Reveal>
+        <FaqSection faqs={readingFaqs} lang={lang} ldId="ld-reading-faq" />
       </section>
     )
   }
