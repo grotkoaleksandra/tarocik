@@ -4,7 +4,6 @@ import { allCards } from '../data/cards'
 import { ui } from '../lib/i18n'
 import { cardSlug } from '../lib/slugs'
 import { CardArt } from './CardArt'
-import { Sparkle } from './Doodles'
 import { setJsonLd } from '../lib/jsonld'
 import { SITE, cardMeta } from '../lib/meta'
 import { majorDetails } from '../data/majorDetails'
@@ -107,7 +106,6 @@ export function CardPage({ card, lang, onOpenCard, onOpenLibrary, onOpenReading 
           <CardArt card={card} lang={lang} />
         </div>
         <div className="card-page-text">
-          <Sparkle className="hd hd-card-spark" />
           <h1 className="card-page-title">{card.name[lang]}</h1>
           <p className="modal-sub">
             {card.arcana === 'major' ? ui.majorArcana[lang] : ui.minorArcana[lang]}

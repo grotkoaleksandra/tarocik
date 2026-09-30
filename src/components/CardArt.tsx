@@ -1,66 +1,18 @@
 import type { ComponentType, ReactNode } from 'react'
 import type { Lang, Suit, TarotCard } from '../types'
 import { cardLabel } from '../lib/draw'
-import { FlowerShape } from './Doodles'
+import { STAR8 } from './Ornaments'
 
-const INK = '#3b3733'
-const PAPER = '#fffdf6'
-const HAND = "'Patrick Hand', 'Comic Sans MS', cursive"
+const INK = '#000'
+const PAPER = '#fff'
+const RED = '#c00'
+const SERIF = "'Times New Roman', Times, serif"
 
-/** Risograph spot color per suit (majors get pink). */
-const SPOT: Record<string, string> = {
-  major: '#ec6a8d',
-  wands: '#f2a541',
-  cups: '#6d87e0',
-  swords: '#93b8d8',
-  pentacles: '#8bbf78',
-}
+/** The arched window every card's image sits in. */
+const ARCH = 'M40 222 V110 A60 30 0 0 1 160 110 V222 Z'
 
-/** Organic blob printed behind the card's artwork. */
-const BLOB =
-  'M -42 4 C -46 -18 -28 -38 -2 -40 C 26 -42 44 -26 45 -2 C 46 24 28 40 0 41 C -26 42 -38 26 -42 4 Z'
-
-/* ---------- wobbly hand-drawn rectangles ---------- */
-
-function hashString(s: string): number {
-  let h = 2166136261
-  for (let i = 0; i < s.length; i++) {
-    h ^= s.charCodeAt(i)
-    h = Math.imul(h, 16777619)
-  }
-  return h >>> 0
-}
-
-function makeRand(seed: number) {
-  let a = seed || 1
-  return () => {
-    a = (Math.imul(a, 1103515245) + 12345) & 0x7fffffff
-    return (a / 0x7fffffff) * 2 - 1
-  }
-}
-
-/** A rectangle drawn by an unsteady hand: jittered corners, gently bowed edges. */
-function sketchRect(x: number, y: number, w: number, h: number, seed: number, amp = 2.2): string {
-  const rand = makeRand(seed)
-  const pt = (px: number, py: number): [number, number] => [
-    +(px + rand() * amp).toFixed(1),
-    +(py + rand() * amp).toFixed(1),
-  ]
-  const [ax, ay] = pt(x, y)
-  const [bx, by] = pt(x + w, y)
-  const [cx, cy] = pt(x + w, y + h)
-  const [dx, dy] = pt(x, y + h)
-  const edge = (x2: number, y2: number, mx: number, my: number) =>
-    `Q ${+(mx + rand() * amp * 1.4).toFixed(1)} ${+(my + rand() * amp * 1.4).toFixed(1)} ${x2} ${y2}`
-  return [
-    `M ${ax} ${ay}`,
-    edge(bx, by, (ax + bx) / 2, (ay + by) / 2),
-    edge(cx, cy, (bx + cx) / 2, (by + cy) / 2),
-    edge(dx, dy, (cx + dx) / 2, (cy + dy) / 2),
-    edge(ax, ay, (dx + ax) / 2, (dy + ay) / 2),
-    'Z',
-  ].join(' ')
-}
+/** The name plate at the foot of the card: a box with notched ends. */
+const CARTOUCHE = 'M34 236 H166 L160 252 L166 268 H34 L40 252 Z'
 
 /* ---------- suit glyphs (local coords, ~40 units tall, centred on 0,0) ---------- */
 
@@ -345,29 +297,20 @@ function MajorIcon({ n }: { n: number }) {
 
 /* ---------- the card faces ---------- */
 
-function CardChrome({ seed, children }: { seed: number; children?: ReactNode }) {
+function CardChrome({ children }: { children?: ReactNode }) {
   return (
     <>
-      <defs>
-        {/* Rough marker texture: every stroke gets nudged by fractal noise. */}
-        <filter id="markerRough" x="-5%" y="-5%" width="110%" height="110%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.6" />
-        </filter>
-      </defs>
-      <rect x="0" y="0" width="200" height="320" rx="10" fill={PAPER} />
+      <rect x="0" y="0" width="200" height="320" rx="8" fill={PAPER} />
       <g
         stroke={INK}
         color={INK}
-        strokeWidth="3.4"
-        strokeOpacity="0.92"
+        strokeWidth="2.2"
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"
-        filter="url(#markerRough)"
       >
-        <path d={sketchRect(7, 7, 186, 306, seed, 3.2)} />
-        <path d={sketchRect(17, 17, 166, 286, seed + 1, 2.6)} strokeWidth="2.8" />
+        <rect x="9" y="9" width="182" height="302" strokeWidth="2.6" />
+        <rect x="15" y="15" width="170" height="290" strokeWidth="0.9" />
         {children}
       </g>
     </>
@@ -375,32 +318,21 @@ function CardChrome({ seed, children }: { seed: number; children?: ReactNode }) 
 }
 
 export function CardArt({ card, lang }: { card: TarotCard; lang: Lang }) {
-  const seed = hashString(card.id)
   const label = cardLabel(card, lang)
-  const name = card.name[lang]
-  const nameSize = name.length >= 17 ? 12.5 : name.length >= 13 ? 14.5 : 16.5
-  const spot = SPOT[card.arcana === 'major' ? 'major' : (card.suit as string)]
-  // vary the blob a little per card so the print feels hand-pulled
-  const blobRotate = (seed % 60) - 30
-  const blobStretch = card.arcana === 'minor' && (card.rank ?? 0) >= 7 && (card.rank ?? 0) <= 10 ? 1.35 : 1.12
+  const name = card.name[lang].toUpperCase()
+  const nameSize = name.length >= 18 ? 8.5 : name.length >= 15 ? 9.5 : name.length >= 12 ? 10.5 : 12
 
   return (
     <svg viewBox="0 0 200 320" className="card-art" aria-hidden="true">
-      <CardChrome seed={seed}>
-        <path
-          d={BLOB}
-          transform={`translate(100 150) rotate(${blobRotate}) scale(1.05 ${blobStretch})`}
-          fill={spot}
-          fillOpacity="0.5"
-          stroke="none"
-        />
+      <CardChrome>
+        <path d={ARCH} strokeWidth="1.2" />
         {card.arcana === 'major' ? (
           <MajorIcon n={card.number ?? 0} />
         ) : card.rank && card.rank <= 10 ? (
           pipLayouts[card.rank].map(([x, y, s], i) => {
             const Glyph = suitGlyph[card.suit as Suit]
             return (
-              <g key={i} transform={`translate(${x} ${y}) scale(${s})`} strokeWidth={(3.2 / s).toFixed(2)}>
+              <g key={i} transform={`translate(${x} ${y}) scale(${s})`} strokeWidth={(2 / s).toFixed(2)}>
                 <Glyph />
               </g>
             )
@@ -408,7 +340,7 @@ export function CardArt({ card, lang }: { card: TarotCard; lang: Lang }) {
         ) : (
           <>
             <CourtMarker rank={card.rank ?? 11} />
-            <g transform="translate(100 152) scale(1.5)" strokeWidth="2.2">
+            <g transform="translate(100 152) scale(1.5)" strokeWidth="1.5">
               {(() => {
                 const Glyph = suitGlyph[card.suit as Suit]
                 return <Glyph />
@@ -416,25 +348,31 @@ export function CardArt({ card, lang }: { card: TarotCard; lang: Lang }) {
             </g>
           </>
         )}
-        <path d={sketchRect(32, 234, 136, 36, seed + 2, 1.8)} fill={spot} fillOpacity="0.26" />
+        <path d={CARTOUCHE} fill={PAPER} strokeWidth="1.2" />
+        <path d="M30 44 H74 M126 44 H170" strokeWidth="0.8" />
       </CardChrome>
       <text
         x="100"
-        y="47"
+        y="50"
         textAnchor="middle"
         fill={INK}
-        fontSize="19"
-        fontFamily={HAND}
+        fontSize="17"
+        fontWeight="700"
+        fontFamily={SERIF}
+        style={{ fontVariantNumeric: 'lining-nums' }}
+        letterSpacing="1.5"
       >
         {label}
       </text>
       <text
         x="100"
-        y="259"
+        y="256.5"
         textAnchor="middle"
         fill={INK}
         fontSize={nameSize}
-        fontFamily={HAND}
+        fontWeight="600"
+        fontFamily={SERIF}
+        letterSpacing="0.9"
       >
         {name}
       </text>
@@ -442,26 +380,23 @@ export function CardArt({ card, lang }: { card: TarotCard; lang: Lang }) {
   )
 }
 
+/** Card back: a red lattice under a double frame, like a playing-card back, with the star in a medallion. */
 export function CardBack() {
   return (
     <svg viewBox="0 0 200 320" className="card-art" aria-hidden="true">
-      <CardChrome seed={77}>
-        <path d={BLOB} transform="translate(100 110) scale(1.15)" fill="#ec6a8d" fillOpacity="0.42" stroke="none" />
-        <path d={BLOB} transform="translate(64 218) rotate(40) scale(0.72)" fill="#6d87e0" fillOpacity="0.38" stroke="none" />
-        <path d={BLOB} transform="translate(142 248) rotate(-25) scale(0.55)" fill="#f2a541" fillOpacity="0.45" stroke="none" />
-        <g transform="translate(100 108) scale(1.08)">
-          <FlowerShape petals={6} seed={5} />
-        </g>
-        <g transform="translate(59 213) scale(0.8)">
-          <FlowerShape petals={5} seed={13} />
-        </g>
-        <g transform="translate(143 245) scale(0.64)">
-          <FlowerShape petals={6} seed={29} />
-        </g>
-        <circle cx="150" cy="160" r="2" fill={INK} stroke="none" />
-        <circle cx="54" cy="126" r="2" fill={INK} stroke="none" />
-        <circle cx="104" cy="288" r="2" fill={INK} stroke="none" />
-        <circle cx="42" cy="286" r="1.6" fill={INK} stroke="none" />
+      <defs>
+        <pattern id="backLattice" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="translate(100 160)">
+          <path d="M10 0 L20 10 L10 20 L0 10 Z" fill="none" stroke={RED} strokeWidth="1" />
+          <circle cx="10" cy="10" r="1.3" fill={RED} />
+        </pattern>
+      </defs>
+      <CardChrome>
+        <rect x="22" y="22" width="156" height="276" fill="url(#backLattice)" stroke="none" />
+        <rect x="22" y="22" width="156" height="276" strokeWidth="1.2" />
+        <circle cx="100" cy="160" r="40" fill={PAPER} strokeWidth="1.6" />
+        <circle cx="100" cy="160" r="34" strokeWidth="0.7" />
+        <path d={STAR8} transform="translate(100 160) scale(2.6)" fill={INK} stroke="none" />
+        <circle cx="100" cy="160" r="4.5" fill={PAPER} stroke="none" />
       </CardChrome>
     </svg>
   )

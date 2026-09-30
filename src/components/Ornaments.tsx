@@ -1,0 +1,16 @@
+/* The few drawn marks the site uses. */
+
+/** Eight-pointed star, as cut in old woodblock tarot decks. Centred on 0,0, radius ~10. */
+export const STAR8 =
+  'M0 -10 L2.2 -5.3 L7.1 -7.1 L5.3 -2.2 L10 0 L5.3 2.2 L7.1 7.1 L2.2 5.3 L0 10 L-2.2 5.3 L-7.1 7.1 L-5.3 2.2 L-10 0 L-5.3 -2.2 L-7.1 -7.1 L-2.2 -5.3 Z'
+
+/** Logo mark: a card in a double frame bearing the eight-pointed star. */
+export function LogoMark({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 40 58" className={className} aria-hidden="true">
+      <rect x="2" y="2" width="36" height="54" rx="1.5" fill="none" stroke="currentColor" strokeWidth="2" />
+      <rect x="6" y="6" width="28" height="46" fill="none" stroke="currentColor" strokeWidth="0.9" />
+      <path d={STAR8} transform="translate(20 29) scale(1.05)" fill="currentColor" />
+    </svg>
+  )
+}

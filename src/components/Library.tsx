@@ -4,7 +4,6 @@ import { allCards } from '../data/cards'
 import { ui } from '../lib/i18n'
 import { CardArt } from './CardArt'
 import { Reveal } from './Reveal'
-import { Sparkle } from './Doodles'
 import { cardSlug } from '../lib/slugs'
 import { FaqSection } from './FaqSection'
 import { libraryFaqs } from '../lib/faq'
@@ -40,13 +39,12 @@ export function Library({ lang, onOpenCard }: { lang: Lang; onOpenCard: (card: T
     <section className="library">
       <Reveal>
         <header className="page-head">
-          <span className="page-index" aria-hidden="true">03</span>
-          <Sparkle className="hd hd-head-spark" />
+          <span className="page-index" aria-hidden="true">III</span>
           <h1 className="page-title">{ui.libraryTitle[lang]}</h1>
           <p className="page-sub">{ui.libraryIntro[lang]}</p>
         </header>
       </Reveal>
-      <Reveal className="library-controls" delay={80}>
+      <Reveal className="library-controls">
         <input
           type="search"
           className="search-input"
@@ -75,7 +73,7 @@ export function Library({ lang, onOpenCard }: { lang: Lang; onOpenCard: (card: T
       {visible.length === 0 ? (
         <p className="section-sub">{ui.noResults[lang]}</p>
       ) : (
-        <Reveal className="card-grid" delay={140}>
+        <Reveal className="card-grid">
           {visible.map((c) => (
             <a
               key={c.id}

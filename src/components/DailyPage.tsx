@@ -4,7 +4,6 @@ import { ui } from '../lib/i18n'
 import { cardOfTheDay } from '../lib/draw'
 import { FlipCard } from './FlipCard'
 import { Reveal } from './Reveal'
-import { Sparkle, WatercolorFlowerSvg } from './Doodles'
 import { FaqSection } from './FaqSection'
 import { dailyFaqs } from '../lib/faq'
 
@@ -33,13 +32,12 @@ export function DailyPage({ lang }: { lang: Lang }) {
     <section className="daily-page">
       <Reveal>
         <header className="page-head">
-          <span className="page-index" aria-hidden="true">01</span>
-          <Sparkle className="hd hd-head-spark" />
+          <span className="page-index" aria-hidden="true">I</span>
           <h1 className="page-title">{ui.cardOfTheDay[lang]}</h1>
           <p className="page-sub">{copy.intro[lang]}</p>
         </header>
       </Reveal>
-      <Reveal className="daily" delay={100}>
+      <Reveal className="daily">
         <div className="daily-info">
           <p className="eyebrow">{dateLabel}</p>
           <p className="daily-sub">{ui.cardOfTheDayIntro[lang]}</p>
@@ -70,7 +68,6 @@ export function DailyPage({ lang }: { lang: Lang }) {
           </p>
         </div>
         <div className="daily-stage">
-          <WatercolorFlowerSvg petals={5} seed={21} className="daily-flower" />
           <FlipCard
             card={daily.card}
             lang={lang}

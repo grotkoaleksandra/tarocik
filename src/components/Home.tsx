@@ -4,15 +4,6 @@ import { ui } from '../lib/i18n'
 import { cardOfTheDay } from '../lib/draw'
 import { FlipCard } from './FlipCard'
 import { CardBack } from './CardArt'
-import {
-  ArrowDoodle,
-  BlobShape,
-  EyeDoodle,
-  MoonDoodle,
-  Sparkle,
-  Squiggle,
-  WatercolorFlowerSvg,
-} from './Doodles'
 import { Reveal } from './Reveal'
 import { FaqSection } from './FaqSection'
 import { homeFaqs } from '../lib/faq'
@@ -35,12 +26,6 @@ export function Home({ lang, onNavigate }: Props) {
   return (
     <>
       <section className="hero">
-        <Sparkle className="hd hd-spark-1" />
-        <Sparkle className="hd hd-spark-2" />
-        <Sparkle className="hd hd-spark-3" />
-        <MoonDoodle className="hd hd-moon" />
-        <EyeDoodle className="hd hd-eye" />
-        <ArrowDoodle className="hd hd-arrow" />
         <Reveal className="hero-text">
           <p className="eyebrow">{ui.heroEyebrow[lang]}</p>
           <h1 className="display">
@@ -51,42 +36,27 @@ export function Home({ lang, onNavigate }: Props) {
           <p className="hero-sub">{ui.tagline[lang]}</p>
           <div className="hero-ctas">
             <button type="button" className="btn-ink" onClick={() => onNavigate('reading')}>
-              {ui.ctaReading[lang]} <span aria-hidden="true">→</span>
+              {ui.ctaReading[lang]}
             </button>
             <button type="button" className="btn-ghost" onClick={() => onNavigate('library')}>
               {ui.ctaLibrary[lang]}
             </button>
           </div>
         </Reveal>
-        <Reveal className="hero-stage" delay={150} aria-hidden="true">
-          <BlobShape color="#f2a541" className="hero-blob" />
-          <WatercolorFlowerSvg petals={6} seed={9} accent className="hero-flower" />
+        <Reveal className="hero-stage" aria-hidden="true">
           <div className="hero-fan">
             <div className="fan-card fan-1"><CardBack /></div>
             <div className="fan-card fan-2"><CardBack /></div>
             <div className="fan-card fan-3"><CardBack /></div>
           </div>
         </Reveal>
-        <button
-          type="button"
-          className="scroll-cue"
-          onClick={() =>
-            document.querySelector('.daily')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          }
-        >
-          {ui.scrollDown[lang]} <span className="scroll-arrow" aria-hidden="true">↓</span>
-        </button>
       </section>
 
-      <div className="squiggle-divider" aria-hidden="true">
-        <Squiggle className="squiggle" />
-      </div>
+      <hr />
 
       <section className="daily">
-        <Sparkle className="hd hd-daily-spark" />
-        <MoonDoodle className="hd hd-daily-moon" />
         <Reveal className="daily-info">
-          <p className="eyebrow">01 · {dateLabel}</p>
+          <p className="eyebrow">{dateLabel}</p>
           <h2 className="daily-title">{ui.cardOfTheDay[lang]}</h2>
           <p className="daily-sub">{ui.cardOfTheDayIntro[lang]}</p>
           {!revealed ? (
@@ -110,8 +80,7 @@ export function Home({ lang, onNavigate }: Props) {
             </div>
           )}
         </Reveal>
-        <Reveal className="daily-stage" delay={120}>
-          <WatercolorFlowerSvg petals={5} seed={21} className="daily-flower" />
+        <Reveal className="daily-stage">
           <FlipCard
             card={daily.card}
             lang={lang}

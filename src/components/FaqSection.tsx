@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import type { Lang } from '../types'
 import type { Faq } from '../lib/faq'
 import { Reveal } from './Reveal'
-import { Sparkle } from './Doodles'
 import { setJsonLd } from '../lib/jsonld'
 import { faqPageLd } from '../lib/schema'
 
@@ -33,13 +32,12 @@ export function FaqSection({ faqs, lang, ldId }: Props) {
     <section className="faq" aria-labelledby="faq-heading">
       <Reveal>
         <h2 className="faq-title" id="faq-heading">
-          <Sparkle className="hd hd-faq-spark" />
           {heading[lang]}
         </h2>
       </Reveal>
       <div className="faq-list">
-        {faqs.map((f, i) => (
-          <Reveal key={f.q.en} className="faq-item" delay={i * 50}>
+        {faqs.map((f) => (
+          <Reveal key={f.q.en} className="faq-item">
             <h3 className="faq-q">{f.q[lang]}</h3>
             <p className="faq-a">{f.a[lang]}</p>
           </Reveal>

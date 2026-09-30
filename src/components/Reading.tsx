@@ -6,7 +6,6 @@ import { drawCards } from '../lib/draw'
 import { explainReading, summarizeReading } from '../lib/summary'
 import { FlipCard } from './FlipCard'
 import { Reveal } from './Reveal'
-import { MoonDoodle, Sparkle } from './Doodles'
 import { FaqSection } from './FaqSection'
 import { readingFaqs } from '../lib/faq'
 import { cardsLabel } from '../lib/plural'
@@ -104,13 +103,12 @@ export function Reading({ lang }: { lang: Lang }) {
       <section className="reading">
         <Reveal>
           <header className="page-head">
-            <span className="page-index" aria-hidden="true">02</span>
-            <Sparkle className="hd hd-head-spark" />
+            <span className="page-index" aria-hidden="true">II</span>
             <h1 className="page-title">{ui.chooseSpread[lang]}</h1>
             <p className="page-sub">{pickLead[lang]}</p>
           </header>
         </Reveal>
-        <Reveal className="spread-picker" delay={100}>
+        <Reveal className="spread-picker">
           {spreads.map((s) => (
             <button
               key={s.id}
@@ -121,7 +119,6 @@ export function Reading({ lang }: { lang: Lang }) {
               <span className="spread-name">{s.name[lang]}</span>
               <span className="spread-count">{cardsLabel(s.cards, lang)}</span>
               <span className="spread-desc">{s.description[lang]}</span>
-              <span className="spread-go" aria-hidden="true">→</span>
             </button>
           ))}
         </Reveal>
@@ -133,9 +130,6 @@ export function Reading({ lang }: { lang: Lang }) {
   if (phase === 'shuffle') {
     return (
       <section className="reading shuffle-screen" aria-live="polite">
-        <MoonDoodle className="hd hd-shuffle-moon" />
-        <Sparkle className="hd hd-shuffle-spark-1" />
-        <Sparkle className="hd hd-shuffle-spark-2" />
         <div className="shuffle-cards">
           <span /><span /><span />
         </div>
@@ -232,11 +226,11 @@ export function Reading({ lang }: { lang: Lang }) {
                 </article>
               ))}
               <article className="result-card summary-card">
-                <h3>✦ {ui.explanationTitle[lang]}</h3>
+                <h3>{ui.explanationTitle[lang]}</h3>
                 <p>{explainReading(spread, drawn, lang)}</p>
               </article>
               <article className="result-card summary-card">
-                <h3>✦ {ui.summaryTitle[lang]}</h3>
+                <h3>{ui.summaryTitle[lang]}</h3>
                 <p>{summarizeReading(drawn, lang)}</p>
               </article>
               <p className="personal-cta">

@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import type { Lang, TarotCard } from '../types'
 import { Reveal } from './Reveal'
-import { MoonDoodle, Sparkle, Squiggle } from './Doodles'
 import { setJsonLd } from '../lib/jsonld'
 import { cardBySlug } from '../lib/slugs'
 
@@ -84,17 +83,16 @@ export function Guide({ lang, onOpenCard }: GuideProps) {
     <section className="guide">
       <Reveal>
         <header className="page-head">
-          <span className="page-index" aria-hidden="true">04</span>
-          <Sparkle className="hd hd-head-spark" />
+          <span className="page-index" aria-hidden="true">IV</span>
           <h1 className="page-title">{intro.title[lang]}</h1>
           <p className="page-sub">{intro.lead[lang]}</p>
         </header>
       </Reveal>
       <div className="guide-body">
         {guideSections.map((s, i) => (
-          <Reveal key={s.title.en} className="guide-section" delay={i * 60}>
+          <Reveal key={s.title.en} className="guide-section">
             <h3 className="guide-heading">
-              <span className="guide-num">{String(i + 1).padStart(2, '0')}</span>
+              <span className="guide-num">{i + 1}.</span>
               {s.title[lang]}
             </h3>
             <p>{s.body[lang]}</p>
@@ -123,10 +121,7 @@ export function Guide({ lang, onOpenCard }: GuideProps) {
             )}
           </Reveal>
         ))}
-        <div className="squiggle-divider" aria-hidden="true">
-          <Squiggle className="squiggle" />
-        </div>
-        <MoonDoodle className="hd hd-guide-moon" />
+        <hr />
       </div>
     </section>
   )

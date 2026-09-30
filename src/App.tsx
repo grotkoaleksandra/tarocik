@@ -7,7 +7,7 @@ import { Library } from './components/Library'
 import { Guide } from './components/Guide'
 import { DailyPage } from './components/DailyPage'
 import { CardPage } from './components/CardPage'
-import { LogoMark, WatercolorFlowerSvg } from './components/Doodles'
+import { LogoMark } from './components/Ornaments'
 import { cardBySlug, cardSlug } from './lib/slugs'
 import { cardById } from './data/cards'
 import { SITE, viewPaths, viewTitles, viewDescriptions } from './lib/meta'
@@ -120,14 +120,6 @@ export default function App({ ssrPath }: { ssrPath?: string } = {}) {
 
   return (
     <div className="app">
-      <div className="stars-bg" aria-hidden="true" />
-      {view !== 'home' && (
-        <div className="doodles" aria-hidden="true">
-          <WatercolorFlowerSvg petals={5} seed={4} accent className="doodle doodle-a" />
-          <WatercolorFlowerSvg petals={6} seed={17} className="doodle doodle-b" />
-          <WatercolorFlowerSvg petals={5} seed={31} className="doodle doodle-c" />
-        </div>
-      )}
       <header className="site-header">
         <a className="brand" href="/" onClick={navigate('home')}>
           <LogoMark className="brand-mark" />
