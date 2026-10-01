@@ -3,10 +3,9 @@ import type { Lang, Suit, TarotCard } from '../types'
 import { cardLabel } from '../lib/draw'
 import { STAR8 } from './Ornaments'
 
-const INK = '#000'
-const PAPER = '#fff'
-const RED = '#c00'
-const SERIF = "'Times New Roman', Times, serif"
+const INK = '#1c1814'
+const PAPER = '#f4ecd6'
+const SERIF = "'Libre Caslon Text', 'Caslon', Georgia, serif"
 
 /** The arched window every card's image sits in. */
 const ARCH = 'M40 222 V110 A60 30 0 0 1 160 110 V222 Z'
@@ -297,20 +296,32 @@ function MajorIcon({ n }: { n: number }) {
 
 /* ---------- the card faces ---------- */
 
+/** Engraver's cross-hatching, shared by every card on the page. */
+function HatchDefs() {
+  return (
+    <defs>
+      <pattern id="woodcutHatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <path d="M0 0 V5" stroke={INK} strokeWidth="1.1" />
+      </pattern>
+    </defs>
+  )
+}
+
 function CardChrome({ children }: { children?: ReactNode }) {
   return (
     <>
-      <rect x="0" y="0" width="200" height="320" rx="8" fill={PAPER} />
+      <HatchDefs />
+      <rect x="0" y="0" width="200" height="320" rx="4" fill={PAPER} />
       <g
         stroke={INK}
         color={INK}
-        strokeWidth="2.2"
+        strokeWidth="2.6"
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <rect x="9" y="9" width="182" height="302" strokeWidth="2.6" />
-        <rect x="15" y="15" width="170" height="290" strokeWidth="0.9" />
+        <rect x="8" y="8" width="184" height="304" strokeWidth="4" />
+        <rect x="15" y="15" width="170" height="290" strokeWidth="1.2" />
         {children}
       </g>
     </>
@@ -320,19 +331,23 @@ function CardChrome({ children }: { children?: ReactNode }) {
 export function CardArt({ card, lang }: { card: TarotCard; lang: Lang }) {
   const label = cardLabel(card, lang)
   const name = card.name[lang].toUpperCase()
-  const nameSize = name.length >= 18 ? 8.5 : name.length >= 15 ? 9.5 : name.length >= 12 ? 10.5 : 12
+  // leave room between the side rules for the top label
+  const labelHalf = Math.max(24, label.length * 6 + 8)
+  const nameSize = name.length >= 18 ? 7.2 : name.length >= 15 ? 8.2 : name.length >= 12 ? 9.4 : 11
 
   return (
     <svg viewBox="0 0 200 320" className="card-art" aria-hidden="true">
       <CardChrome>
-        <path d={ARCH} strokeWidth="1.2" />
+        <rect x="24" y="64" width="152" height="164" fill="url(#woodcutHatch)" stroke="none" />
+        <rect x="24" y="64" width="152" height="164" strokeWidth="1.2" />
+        <path d={ARCH} fill={PAPER} strokeWidth="2" />
         {card.arcana === 'major' ? (
           <MajorIcon n={card.number ?? 0} />
         ) : card.rank && card.rank <= 10 ? (
           pipLayouts[card.rank].map(([x, y, s], i) => {
             const Glyph = suitGlyph[card.suit as Suit]
             return (
-              <g key={i} transform={`translate(${x} ${y}) scale(${s})`} strokeWidth={(2 / s).toFixed(2)}>
+              <g key={i} transform={`translate(${x} ${y}) scale(${s})`} strokeWidth={(2.6 / s).toFixed(2)}>
                 <Glyph />
               </g>
             )
@@ -340,7 +355,7 @@ export function CardArt({ card, lang }: { card: TarotCard; lang: Lang }) {
         ) : (
           <>
             <CourtMarker rank={card.rank ?? 11} />
-            <g transform="translate(100 152) scale(1.5)" strokeWidth="1.5">
+            <g transform="translate(100 152) scale(1.5)" strokeWidth="1.9">
               {(() => {
                 const Glyph = suitGlyph[card.suit as Suit]
                 return <Glyph />
@@ -349,7 +364,7 @@ export function CardArt({ card, lang }: { card: TarotCard; lang: Lang }) {
           </>
         )}
         <path d={CARTOUCHE} fill={PAPER} strokeWidth="1.2" />
-        <path d="M30 44 H74 M126 44 H170" strokeWidth="0.8" />
+        <path d={`M30 44 H${100 - labelHalf} M${100 + labelHalf} 44 H170`} strokeWidth="1" />
       </CardChrome>
       <text
         x="100"
@@ -370,9 +385,9 @@ export function CardArt({ card, lang }: { card: TarotCard; lang: Lang }) {
         textAnchor="middle"
         fill={INK}
         fontSize={nameSize}
-        fontWeight="600"
+        fontWeight="700"
         fontFamily={SERIF}
-        letterSpacing="0.9"
+        letterSpacing="0.5"
       >
         {name}
       </text>
@@ -380,23 +395,24 @@ export function CardArt({ card, lang }: { card: TarotCard; lang: Lang }) {
   )
 }
 
-/** Card back: a red lattice under a double frame, like a playing-card back, with the star in a medallion. */
+/** Card back: a woodcut lattice under a heavy frame, the star in a medallion. */
 export function CardBack() {
   return (
     <svg viewBox="0 0 200 320" className="card-art" aria-hidden="true">
       <defs>
         <pattern id="backLattice" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="translate(100 160)">
-          <path d="M10 0 L20 10 L10 20 L0 10 Z" fill="none" stroke={RED} strokeWidth="1" />
-          <circle cx="10" cy="10" r="1.3" fill={RED} />
+          <path d="M10 0 L20 10 L10 20 L0 10 Z" fill="none" stroke={INK} strokeWidth="1.3" />
+          <path d={STAR8} transform="translate(10 10) scale(0.28)" fill={INK} />
         </pattern>
       </defs>
       <CardChrome>
         <rect x="22" y="22" width="156" height="276" fill="url(#backLattice)" stroke="none" />
-        <rect x="22" y="22" width="156" height="276" strokeWidth="1.2" />
-        <circle cx="100" cy="160" r="40" fill={PAPER} strokeWidth="1.6" />
-        <circle cx="100" cy="160" r="34" strokeWidth="0.7" />
-        <path d={STAR8} transform="translate(100 160) scale(2.6)" fill={INK} stroke="none" />
-        <circle cx="100" cy="160" r="4.5" fill={PAPER} stroke="none" />
+        <rect x="22" y="22" width="156" height="276" strokeWidth="1.6" />
+        <circle cx="100" cy="160" r="42" fill={PAPER} strokeWidth="2.4" />
+        <circle cx="100" cy="160" r="35" fill="url(#woodcutHatch)" strokeWidth="1" />
+        <circle cx="100" cy="160" r="27" fill={PAPER} strokeWidth="1" />
+        <path d={STAR8} transform="translate(100 160) scale(2.3)" fill={INK} stroke="none" />
+        <circle cx="100" cy="160" r="4" fill={PAPER} stroke="none" />
       </CardChrome>
     </svg>
   )

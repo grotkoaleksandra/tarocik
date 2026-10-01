@@ -7,7 +7,6 @@ import { Library } from './components/Library'
 import { Guide } from './components/Guide'
 import { DailyPage } from './components/DailyPage'
 import { CardPage } from './components/CardPage'
-import { LogoMark } from './components/Ornaments'
 import { cardBySlug, cardSlug } from './lib/slugs'
 import { cardById } from './data/cards'
 import { SITE, viewPaths, viewTitles, viewDescriptions } from './lib/meta'
@@ -118,13 +117,54 @@ export default function App({ ssrPath }: { ssrPath?: string } = {}) {
     { id: 'guide', label: ui.navGuide[lang] },
   ]
 
+  const today = new Date()
+  const longDate = today.toLocaleDateString(lang === 'pl' ? 'pl-PL' : 'en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+  // The day of the year stands in for the gazette's issue number.
+  const issueNumber = Math.floor(
+    (Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()) -
+      Date.UTC(today.getFullYear(), 0, 0)) /
+      86400000,
+  )
+
   return (
     <div className="app">
       <header className="site-header">
+        <div className="mast-top">
+          <span>{ui.mastEdition[lang]}</span>
+          <div className="lang-switch" role="group" aria-label="Language">
+            <button
+              type="button"
+              className={lang === 'pl' ? 'is-active' : ''}
+              onClick={() => switchLang('pl')}
+            >
+              PL
+            </button>
+            <span aria-hidden="true">·</span>
+            <button
+              type="button"
+              className={lang === 'en' ? 'is-active' : ''}
+              onClick={() => switchLang('en')}
+            >
+              EN
+            </button>
+          </div>
+        </div>
         <a className="brand" href="/" onClick={navigate('home')}>
-          <LogoMark className="brand-mark" />
-          <span className="brand-word">Tarocik</span>
+          Tarocik
         </a>
+        <p className="mast-motto">{ui.mastMotto[lang]}</p>
+        <div className="mast-dateline">
+          <span>
+            {ui.mastIssue[lang]} {issueNumber}
+          </span>
+          <span className="mast-date">{longDate}</span>
+          <span>{ui.mastPrice[lang]}</span>
+        </div>
         <nav className="site-nav">
           {navItems.map((item) => (
             <a
@@ -137,23 +177,6 @@ export default function App({ ssrPath }: { ssrPath?: string } = {}) {
             </a>
           ))}
         </nav>
-        <div className="lang-switch" role="group" aria-label="Language">
-          <button
-            type="button"
-            className={lang === 'pl' ? 'is-active' : ''}
-            onClick={() => switchLang('pl')}
-          >
-            PL
-          </button>
-          <span aria-hidden="true">·</span>
-          <button
-            type="button"
-            className={lang === 'en' ? 'is-active' : ''}
-            onClick={() => switchLang('en')}
-          >
-            EN
-          </button>
-        </div>
       </header>
       <main key={view + (route.cardId ?? '')}>
         {view === 'home' && <Home lang={lang} onNavigate={go} />}
@@ -172,8 +195,8 @@ export default function App({ ssrPath }: { ssrPath?: string } = {}) {
         )}
       </main>
       <footer className="site-footer">
-        <LogoMark className="footer-mark" />
         <p className="footer-brand">Tarocik</p>
+        <p className="footer-printed">{ui.mastPrinted[lang]}</p>
         <p className="footer-note">{ui.footerNote[lang]}</p>
         <p className="footer-credit">
           {ui.madeBy[lang]}:{' '}
