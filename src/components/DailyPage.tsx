@@ -4,6 +4,7 @@ import { ui } from '../lib/i18n'
 import { cardOfTheDay } from '../lib/draw'
 import { FlipCard } from './FlipCard'
 import { Reveal } from './Reveal'
+import { SupportNote } from './SupportNote'
 import { FaqSection } from './FaqSection'
 import { dailyFaqs } from '../lib/faq'
 
@@ -66,6 +67,7 @@ export function DailyPage({ lang }: { lang: Lang }) {
             {ui.personalReading[lang]}{' '}
             <a href="mailto:brzywczy@gmail.com">brzywczy@gmail.com</a>
           </p>
+          {revealed && <SupportNote lang={lang} />}
         </div>
         <div className="daily-stage">
           <FlipCard

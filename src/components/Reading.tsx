@@ -6,6 +6,7 @@ import { drawCards } from '../lib/draw'
 import { explainReading, summarizeReading } from '../lib/summary'
 import { FlipCard } from './FlipCard'
 import { Reveal } from './Reveal'
+import { SupportNote } from './SupportNote'
 import { FaqSection } from './FaqSection'
 import { readingFaqs } from '../lib/faq'
 import { cardsLabel } from '../lib/plural'
@@ -237,6 +238,7 @@ export function Reading({ lang }: { lang: Lang }) {
                 {ui.personalReading[lang]}{' '}
                 <a href="mailto:brzywczy@gmail.com">brzywczy@gmail.com</a>
               </p>
+              <SupportNote lang={lang} />
               <button type="button" className="btn-gold" onClick={() => startReading(spread)}>
                 {ui.drawAgain[lang]}
               </button>

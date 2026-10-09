@@ -5,6 +5,7 @@ import { cardOfTheDay } from '../lib/draw'
 import { FlipCard } from './FlipCard'
 import { CardBack } from './CardArt'
 import { Reveal } from './Reveal'
+import { SupportNote } from './SupportNote'
 import { FaqSection } from './FaqSection'
 import { homeFaqs } from '../lib/faq'
 
@@ -77,6 +78,7 @@ export function Home({ lang, onNavigate }: Props) {
               <p className="daily-text">
                 {daily.reversed ? daily.card.reversed[lang] : daily.card.upright[lang]}
               </p>
+              <SupportNote lang={lang} />
             </div>
           )}
         </Reveal>

@@ -14,6 +14,13 @@ export const ui = {
     pl: 'Gazeta o kartach, losie i duszy ludzkiej',
     en: 'A gazette of cards, fortune & the human soul',
   },
+  supportHead: { pl: 'Podoba Ci się Tarocik?', en: 'Enjoying Tarocik?' },
+  supportBody: {
+    pl: 'Strona jest darmowa i bez reklam. Jeśli chcesz podziękować, możesz postawić autorce kawę.',
+    en: 'The site is free and ad-free. If you would like to say thanks, you can buy the author a coffee.',
+  },
+  supportCta: { pl: 'Postaw kawę', en: 'Buy me a coffee' },
+  supportFooter: { pl: 'Wesprzyj Tarocik', en: 'Support Tarocik' },
   mastEdition: { pl: 'Wydanie internetowe', en: 'Online edition' },
   mastIssue: { pl: 'Nr', en: 'No.' },
   mastPrice: { pl: 'Cena: darmo', en: 'Price: free' },

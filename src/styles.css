@@ -1231,6 +1231,38 @@ a:focus-visible {
   text-align: left;
 }
 
+/* ---------- support notice: a boxed advertisement ---------- */
+
+.support-note {
+  margin: 1.6rem 0 0;
+  padding: 1rem 1.3rem 1.1rem;
+  max-width: 30rem;
+  border: 1px solid var(--rule);
+  outline: 1px solid var(--rule);
+  outline-offset: 3px;
+  background: var(--paper-light);
+}
+
+.reading-results .support-note {
+  margin: 1.4rem auto 0;
+  text-align: center;
+}
+
+.support-head {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.support-body {
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+.support-link {
+  margin-top: 0.7rem;
+  text-decoration: none;
+}
+
 /* ---------- FAQ: columns of short notices ---------- */
 
 .faq {

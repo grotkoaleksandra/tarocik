@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import type { Lang } from './types'
 import { loadLang, saveLang, ui } from './lib/i18n'
 import { Home } from './components/Home'
+import { SUPPORT_URL } from './components/SupportNote'
 import { Reading } from './components/Reading'
 import { Library } from './components/Library'
 import { Guide } from './components/Guide'
@@ -211,6 +212,12 @@ export default function App({ ssrPath }: { ssrPath?: string } = {}) {
           </a>
           {' · '}
           <a href="mailto:cotoaleksandra@gmail.com">cotoaleksandra@gmail.com</a>
+        </p>
+        <p className="footer-credit">
+          ☞{' '}
+          <a href={SUPPORT_URL} target="_blank" rel="noopener">
+            {ui.supportFooter[lang]}
+          </a>
         </p>
         <p className="footer-meta">© 2026 Tarocik · {ui.disclaimerShort[lang]}</p>
       </footer>
