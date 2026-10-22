@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import type { Lang, TarotCard } from '../types'
 import { Reveal } from './Reveal'
+import { Divider } from './Ornaments'
 import { setJsonLd } from '../lib/jsonld'
 import { cardBySlug } from '../lib/slugs'
 
@@ -121,7 +122,7 @@ export function Guide({ lang, onOpenCard }: GuideProps) {
             )}
           </Reveal>
         ))}
-        <hr />
+        <Divider />
       </div>
     </section>
   )

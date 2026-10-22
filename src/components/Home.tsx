@@ -5,6 +5,7 @@ import { cardOfTheDay } from '../lib/draw'
 import { FlipCard } from './FlipCard'
 import { CardBack } from './CardArt'
 import { Reveal } from './Reveal'
+import { Divider, Glory } from './Ornaments'
 import { SupportNote } from './SupportNote'
 import { FaqSection } from './FaqSection'
 import { homeFaqs } from '../lib/faq'
@@ -45,6 +46,7 @@ export function Home({ lang, onNavigate }: Props) {
           </div>
         </Reveal>
         <Reveal className="hero-stage" aria-hidden="true">
+          <Glory className="hero-glory" />
           <div className="hero-fan">
             <div className="fan-card fan-1"><CardBack /></div>
             <div className="fan-card fan-2"><CardBack /></div>
@@ -53,7 +55,7 @@ export function Home({ lang, onNavigate }: Props) {
         </Reveal>
       </section>
 
-      <hr />
+      <Divider />
 
       <section className="daily">
         <Reveal className="daily-info">

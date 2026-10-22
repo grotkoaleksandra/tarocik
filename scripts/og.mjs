@@ -6,28 +6,38 @@ import path from 'node:path'
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 
-const INK = '#1c1814'
-const PAPER = '#ece2c9'
-const CARD = '#f4ecd6'
+const INK = '#0b0a09'
+const PAPER = '#fbfaf6'
+const CARD = '#fbfaf6'
 const SERIF = "'Libre Caslon Text', 'Big Caslon', Georgia, serif"
 
-// Eight-pointed star, radius ~10 (same as src/components/Ornaments.tsx).
-const STAR8 =
-  'M0 -10 L2.2 -5.3 L7.1 -7.1 L5.3 -2.2 L10 0 L5.3 2.2 L7.1 7.1 L2.2 5.3 L0 10 L-2.2 5.3 L-7.1 7.1 L-5.3 2.2 L-10 0 L-5.3 -2.2 L-7.1 -7.1 L-2.2 -5.3 Z'
+// Engraved rays radiating from a centre, alternating long and short.
+const rays = (cx, cy, inner, outer, count) => {
+  let d = ''
+  for (let i = 0; i < count; i++) {
+    const t = (i / count) * Math.PI * 2
+    const r2 = i % 2 === 0 ? outer : outer * 0.78
+    d += `M${cx + Math.cos(t) * inner} ${cy + Math.sin(t) * inner} L${cx + Math.cos(t) * r2} ${cy + Math.sin(t) * r2} `
+  }
+  return d
+}
 
-// A card back like the site's: double frame, red lattice, star medallion. 200x320 units.
+// The site's card back: eye of providence in a triangle, rays on black. 200x320 units.
 const cardBack = (x, y, rot, scale) => `
   <g transform="translate(${x} ${y}) rotate(${rot}) scale(${scale}) translate(-100 -160)">
-    <rect width="200" height="320" fill="${CARD}" stroke="${INK}" stroke-width="1.5"/>
+    <rect width="200" height="320" fill="${CARD}"/>
     <g fill="none" stroke="${INK}">
-      <rect x="9" y="9" width="182" height="302" stroke-width="2.6"/>
-      <rect x="15" y="15" width="170" height="290" stroke-width="0.9"/>
+      <rect x="7" y="7" width="186" height="306" stroke-width="5"/>
+      <rect x="14" y="14" width="172" height="292" stroke-width="1.2"/>
     </g>
-    <rect x="22" y="22" width="156" height="276" fill="url(#lattice)" stroke="${INK}" stroke-width="1.2"/>
-    <circle cx="100" cy="160" r="40" fill="${CARD}" stroke="${INK}" stroke-width="1.6"/>
-    <circle cx="100" cy="160" r="34" fill="none" stroke="${INK}" stroke-width="0.7"/>
-    <path d="${STAR8}" transform="translate(100 160) scale(2.6)" fill="${INK}"/>
-    <circle cx="100" cy="160" r="4.5" fill="${CARD}"/>
+    <rect x="22" y="22" width="156" height="276" fill="${INK}"/>
+    <svg x="22" y="22" width="156" height="276" viewBox="22 22 156 276">
+      <path d="${rays(100, 160, 46, 150, 64)}" stroke="${CARD}" stroke-width="1.1"/>
+    </svg>
+    <circle cx="100" cy="160" r="44" fill="${INK}" stroke="${CARD}" stroke-width="1.4"/>
+    <path d="M100 130 L127 176 L73 176 Z" fill="none" stroke="${CARD}" stroke-width="2"/>
+    <path d="M84 162 Q100 148 116 162 Q100 176 84 162 Z" fill="${CARD}"/>
+    <circle cx="100" cy="162" r="5.2" fill="${INK}"/>
   </g>`
 
 const og = `
@@ -39,29 +49,28 @@ const og = `
     </pattern>
   </defs>
   <rect width="1200" height="630" fill="${PAPER}"/>
-  <rect x="30" y="30" width="1140" height="570" fill="none" stroke="${INK}" stroke-width="5"/>
-  <rect x="42" y="42" width="1116" height="546" fill="none" stroke="${INK}" stroke-width="1.5"/>
-  ${cardBack(830, 330, -8, 1.2)}
-  ${cardBack(960, 322, 8, 1.2)}
-  <g font-family="${SERIF}" fill="${INK}" text-anchor="middle">
-    <text x="360" y="170" font-size="104" font-style="italic">Tarocik</text>
-    <text x="360" y="215" font-size="24" font-style="italic">Gazeta o kartach, losie i duszy ludzkiej</text>
-    <rect x="110" y="240" width="500" height="4" fill="${INK}"/>
-    <rect x="110" y="248" width="500" height="1.5" fill="${INK}"/>
-    <text x="360" y="330" font-size="58">ZAPYTAJ KARTY,</text>
-    <text x="360" y="395" font-size="50" font-style="italic">posłuchaj siebie.</text>
-    <text x="360" y="470" font-size="26">KARTA DNIA · ROZKŁADY · ZNACZENIA 78 KART</text>
-    <text x="360" y="530" font-size="28" font-style="italic">☞ tarocik.com</text>
+  <path d="${rays(890, 315, 120, 420, 96)}" stroke="${INK}" stroke-width="1.4"/>
+  ${cardBack(820, 325, -9, 1.15)}
+  ${cardBack(960, 318, 9, 1.15)}
+  <rect x="0" y="0" width="640" height="630" fill="${PAPER}"/>
+  <g font-family="Georgia, serif" fill="${INK}">
+    <text x="80" y="170" font-size="100" font-weight="bold">Tarocik</text>
+    <rect x="80" y="200" width="460" height="3" fill="${INK}"/>
+    <text x="80" y="300" font-size="62" font-weight="bold">Zapytaj karty,</text>
+    <text x="80" y="375" font-size="62" font-weight="bold">posłuchaj siebie.</text>
+    <text x="80" y="450" font-size="28" font-style="italic">Karta dnia · rozkłady · znaczenia 78 kart</text>
+    <text x="80" y="520" font-size="28">tarocik.com</text>
   </g>
 </svg>`
 
 const icon = `
 <svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
-  <rect width="180" height="180" fill="${PAPER}"/>
+  <rect width="180" height="180" fill="${INK}"/>
+  <path d="${rays(90, 90, 34, 96, 40)}" stroke="${PAPER}" stroke-width="2"/>
   <g transform="translate(90 90)">
-    <rect x="-44" y="-66" width="88" height="132" fill="${CARD}" stroke="${INK}" stroke-width="6"/>
-    <rect x="-34" y="-56" width="68" height="112" fill="none" stroke="${INK}" stroke-width="2"/>
-    <path d="${STAR8}" transform="scale(2.7)" fill="${INK}"/>
+    <path d="M0 -30 L30 22 L-30 22 Z" fill="${INK}" stroke="${PAPER}" stroke-width="4"/>
+    <path d="M-17 4 Q0 -12 17 4 Q0 20 -17 4 Z" fill="${PAPER}"/>
+    <circle cy="4" r="6" fill="${INK}"/>
   </g>
 </svg>`
 

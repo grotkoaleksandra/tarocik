@@ -10,10 +10,6 @@ export const ui = {
     en: 'Your little guide to tarot — a card of the day, spreads, and meanings for all 78 cards.',
   },
   heroEyebrow: { pl: 'tarot online', en: 'tarot online' },
-  mastMotto: {
-    pl: 'Gazeta o kartach, losie i duszy ludzkiej',
-    en: 'A gazette of cards, fortune & the human soul',
-  },
   supportHead: { pl: 'Podoba Ci się Tarocik?', en: 'Enjoying Tarocik?' },
   supportBody: {
     pl: 'Strona jest darmowa i bez reklam. Jeśli chcesz podziękować, możesz postawić autorce kawę.',
@@ -21,10 +17,6 @@ export const ui = {
   },
   supportCta: { pl: 'Postaw kawę', en: 'Buy me a coffee' },
   supportFooter: { pl: 'Wesprzyj Tarocik', en: 'Support Tarocik' },
-  mastEdition: { pl: 'Wydanie internetowe', en: 'Online edition' },
-  mastIssue: { pl: 'Nr', en: 'No.' },
-  mastPrice: { pl: 'Cena: darmo', en: 'Price: free' },
-  mastPrinted: { pl: 'Drukowano w Tarociku', en: 'Printed at Tarocik' },
   heroLine1: { pl: 'Zapytaj karty,', en: 'Ask the cards,' },
   heroLine2: { pl: 'posłuchaj siebie.', en: 'listen to yourself.' },
   ctaReading: { pl: 'Rozłóż karty', en: 'Draw a spread' },
