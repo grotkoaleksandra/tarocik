@@ -6,8 +6,8 @@ import path from 'node:path'
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 
-const INK = '#0b0a09'
-const PAPER = '#fbfaf6'
+const INK = '#1d1a16'
+const PAPER = '#efe9d7'
 
 const og = `
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
@@ -32,6 +32,7 @@ const etching = await sharp(path.join(root, 'public', 'etchings', 'hero.png'))
 // Phone icon: Dürer's etched sun from the card back, in a black square.
 const sun = await sharp(path.join(root, 'public', 'etchings', 'back.png'))
   .resize(150, 150)
+  .flatten({ background: PAPER })
   .composite([
     {
       input: Buffer.from('<svg width="150" height="150"><circle cx="75" cy="75" r="75" fill="#fff"/></svg>'),

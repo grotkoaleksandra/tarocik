@@ -3,8 +3,8 @@ import type { Lang, Suit, TarotCard } from '../types'
 import { cardLabel } from '../lib/draw'
 import { STAR8, rays } from './Ornaments'
 
-const INK = '#0b0a09'
-const PAPER = '#fbfaf6'
+const INK = '#1d1a16'
+const PAPER = '#efe9d7'
 const GOTHIC = "'Grenze Gotisch', 'Libre Caslon Text', Georgia, serif"
 const SERIF = "'Libre Caslon Text', Georgia, serif"
 

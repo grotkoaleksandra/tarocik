@@ -5,11 +5,11 @@
    ========================================================= */
 
 :root {
-  --paper: #fbfaf6;
-  --ink: #0b0a09;
-  --ink-soft: #1f1c19;
-  --ink-dim: #4a4642;
-  --line: #0b0a09;
+  --paper: #efe9d7;
+  --ink: #1d1a16;
+  --ink-soft: #2f2a24;
+  --ink-dim: #5a5248;
+  --line: #1d1a16;
   --gothic: 'Grenze Gotisch', 'Libre Caslon Text', Georgia, serif;
   --text: 'Libre Caslon Text', Georgia, serif;
 }
@@ -901,7 +901,7 @@ a:focus-visible {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(11, 10, 9, 0.6);
+  background: rgba(29, 26, 22, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;

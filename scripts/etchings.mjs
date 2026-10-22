@@ -1,7 +1,7 @@
 // Builds the etched card illustrations in public/etchings/ from public-domain
 // prints on Wikimedia Commons (Dürer's woodcuts and engravings, Doré's Tower
 // of Babel, a Rijksmuseum Justitia). Each print is cropped to the card's arched window and
-// reduced to pure black ink on white.
+// reduced to solid ink on a transparent ground.
 //
 //   node scripts/etchings.mjs [cacheDir]
 //
@@ -14,6 +14,8 @@ import { fileURLToPath } from 'node:url'
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const cache = path.resolve(process.argv[2] ?? path.join(root, 'node_modules/.cache/etchings'))
 const out = path.join(root, 'public', 'etchings')
+/** Ink colour of the printed etchings (matches --ink in styles.css). */
+const INK = '#1d1a16'
 const UA = { 'User-Agent': 'TarocikSite/1.0 (https://tarocik.com; build script)' }
 
 /** Width / height of the card's image window (see CardArt.tsx). */
@@ -80,14 +82,21 @@ for (const [id, title, fx, fy, fw, { ink = 132, aspect: aspectScale = 1 } = {}] 
   const w = Math.round(fw * width)
   const h = Math.min(Math.round(w / aspect), height - Math.round(fy * height))
   const outWidth = id === 'hero' ? 900 : 480
-  await sharp(file)
+  // Ink becomes opaque, paper transparent, so the page colour shows through.
+  const { data: ink8, info } = await sharp(file)
     .extract({ left: Math.round(fx * width), top: Math.round(fy * height), width: w, height: h })
     .grayscale()
     .normalise({ lower: 2, upper: 98 })
     .resize({ width: outWidth })
     .sharpen()
     .threshold(ink)
-    .png({ palette: true, colours: 2, compressionLevel: 9 })
+    .negate()
+    .extractChannel(0)
+    .raw()
+    .toBuffer({ resolveWithObject: true })
+  await sharp({ create: { width: info.width, height: info.height, channels: 3, background: INK } })
+    .joinChannel(ink8, { raw: { width: info.width, height: info.height, channels: 1 } })
+    .png({ compressionLevel: 9, palette: true })
     .toFile(path.join(out, `${id}.png`))
   console.log(id)
 }
