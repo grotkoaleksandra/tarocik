@@ -366,40 +366,24 @@ a:focus-visible {
 }
 
 .hero-stage {
-  position: relative;
-  display: grid;
-  place-items: center;
-  min-height: 420px;
+  display: flex;
+  justify-content: center;
 }
 
-.hero-glory {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 480px;
-  max-width: 120%;
-  transform: translate(-50%, -50%);
-  color: var(--ink);
-  pointer-events: none;
+.hero-etching {
+  width: min(100%, 400px);
+  padding: 10px;
+  border: 4px solid var(--ink);
+  outline: 1px solid var(--ink);
+  outline-offset: -11px;
+  background: var(--paper);
 }
 
-.hero-fan {
-  position: relative;
-  display: grid;
-  width: max-content;
+.hero-etching img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
-
-.fan-card {
-  grid-area: 1 / 1;
-  width: 150px;
-  transition: transform 0.4s ease;
-}
-
-.fan-1 { transform: rotate(-11deg) translate(-50px, 12px); }
-.fan-3 { transform: rotate(11deg) translate(50px, 12px); }
-
-.hero-stage:hover .fan-1 { transform: rotate(-14deg) translate(-62px, 16px); }
-.hero-stage:hover .fan-3 { transform: rotate(14deg) translate(62px, 16px); }
 
 .daily {
   display: grid;
@@ -1248,6 +1232,14 @@ a:focus-visible {
   margin-top: 0.3rem;
 }
 
+.footer-art {
+  margin: 0.8rem auto 0;
+  max-width: 34rem;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--ink-dim);
+}
+
 .footer-meta {
   margin-top: 0.8rem;
   font-size: 0.8rem;
@@ -1282,18 +1274,9 @@ a:focus-visible {
     min-height: 0;
   }
 
-  .hero-stage {
-    min-height: 330px;
-    overflow: hidden;
+  .hero-etching {
+    width: min(100%, 320px);
   }
-
-  .hero-glory {
-    width: 380px;
-  }
-
-  .fan-card { width: 118px; }
-  .fan-1 { transform: rotate(-11deg) translate(-38px, 10px); }
-  .fan-3 { transform: rotate(11deg) translate(38px, 10px); }
 
   .spread-picker {
     grid-template-columns: 1fr;
@@ -1309,8 +1292,7 @@ a:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .flip-inner,
-  .fan-card {
+  .flip-inner {
     transition: none;
   }
 

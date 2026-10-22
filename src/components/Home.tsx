@@ -3,9 +3,8 @@ import type { Lang } from '../types'
 import { ui } from '../lib/i18n'
 import { cardOfTheDay } from '../lib/draw'
 import { FlipCard } from './FlipCard'
-import { CardBack } from './CardArt'
 import { Reveal } from './Reveal'
-import { Divider, Glory } from './Ornaments'
+import { Divider } from './Ornaments'
 import { SupportNote } from './SupportNote'
 import { FaqSection } from './FaqSection'
 import { homeFaqs } from '../lib/faq'
@@ -46,12 +45,14 @@ export function Home({ lang, onNavigate }: Props) {
           </div>
         </Reveal>
         <Reveal className="hero-stage" aria-hidden="true">
-          <Glory className="hero-glory" />
-          <div className="hero-fan">
-            <div className="fan-card fan-1"><CardBack /></div>
-            <div className="fan-card fan-2"><CardBack /></div>
-            <div className="fan-card fan-3"><CardBack /></div>
-          </div>
+          <figure className="hero-etching">
+            <img
+              src="/etchings/hero.png"
+              alt=""
+              width="900"
+              height="1392"
+            />
+          </figure>
         </Reveal>
       </section>
 

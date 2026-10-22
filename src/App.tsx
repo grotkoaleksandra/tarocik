@@ -193,6 +193,7 @@ export default function App({ ssrPath }: { ssrPath?: string } = {}) {
             {ui.supportFooter[lang]}
           </a>
         </p>
+        <p className="footer-credit footer-art">{ui.artCredit[lang]}</p>
         <p className="footer-meta">© 2026 Tarocik · {ui.disclaimerShort[lang]}</p>
       </footer>
     </div>

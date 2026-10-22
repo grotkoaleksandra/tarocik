@@ -11,6 +11,10 @@ const SERIF = "'Libre Caslon Text', Georgia, serif"
 /** The arched window every card's image sits in. */
 const ARCH = 'M40 222 V110 A60 30 0 0 1 160 110 V222 Z'
 
+/** The taller arched window that holds a major arcana etching (148 × 172,
+ *  the crop shape scripts/etchings.mjs cuts). */
+const ETCH_ARCH = 'M26 230 V112 A74 54 0 0 1 174 112 V230 Z'
+
 /** The name plate at the foot of the card: a box with notched ends. */
 const CARTOUCHE = 'M34 236 H166 L160 252 L166 268 H34 L40 252 Z'
 
@@ -115,194 +119,21 @@ function CourtMarker({ rank }: { rank: number }) {
   }
 }
 
-/* ---------- major arcana doodles ---------- */
-
-function MajorIcon({ n }: { n: number }) {
-  switch (n) {
-    case 0: // The Fool — a bindle on a stick
-      return (
-        <g>
-          <path d="M82 186 L126 122" />
-          <circle cx="131" cy="116" r="11" />
-          <path d="M78 190 L88 190 M94 190 L102 190" />
-        </g>
-      )
-    case 1: // The Magician — a wand and sparkles
-      return (
-        <g>
-          <path d="M80 182 L120 122" />
-          <path d="M128 106 L128 122 M120 114 L136 114" />
-          <path d="M108 98 L108 108 M103 103 L113 103" />
-        </g>
-      )
-    case 2: // The High Priestess — an open book
-      return (
-        <g>
-          <path d="M70 160 C 82 152 94 152 100 158 C 106 152 118 152 130 160 L130 128 C 118 120 106 120 100 126 C 94 120 82 120 70 128 Z" />
-          <path d="M100 126 L100 158" />
-        </g>
-      )
-    case 3: // The Empress — venus symbol
-      return (
-        <g>
-          <circle cx="100" cy="132" r="16" />
-          <path d="M100 148 L100 176 M88 162 L112 162" />
-        </g>
-      )
-    case 4: // The Emperor — a shield
-      return (
-        <g>
-          <path d="M80 118 L120 118 L120 150 C 120 168 110 178 100 182 C 90 178 80 168 80 150 Z" />
-          <path d="M100 126 L100 172 M86 142 L114 142" />
-        </g>
-      )
-    case 5: // The Hierophant — a key
-      return (
-        <g>
-          <circle cx="100" cy="124" r="11" />
-          <path d="M100 135 L100 180 M100 172 L110 172 M100 162 L107 162" />
-        </g>
-      )
-    case 6: // The Lovers — a heart
-      return (
-        <g>
-          <path d="M100 172 C 76 152 70 132 81 121 C 90 112 100 119 100 130 C 100 119 110 112 119 121 C 130 132 124 152 100 172 Z" />
-        </g>
-      )
-    case 7: // The Chariot — a little cart
-      return (
-        <g>
-          <path d="M78 134 L122 134 L122 156 L78 156 Z" />
-          <path d="M78 134 L85 118 L115 118 L122 134" />
-          <circle cx="87" cy="166" r="8" />
-          <circle cx="113" cy="166" r="8" />
-        </g>
-      )
-    case 8: // Strength — infinity
-      return (
-        <g>
-          <path d="M78 146 C 78 134 93 134 100 146 C 107 158 122 158 122 146 C 122 134 107 134 100 146 C 93 158 78 158 78 146 Z" />
-        </g>
-      )
-    case 9: // The Hermit — a lantern
-      return (
-        <g>
-          <path d="M92 114 C 92 105 108 105 108 114" />
-          <path d="M88 116 L112 116 L110 152 L90 152 Z" />
-          <path d="M100 127 L105 135 L100 143 L95 135 Z" />
-          <path d="M82 134 L74 134 M118 134 L126 134 M100 158 L100 165" />
-        </g>
-      )
-    case 10: // Wheel of Fortune — a wheel with a pointer
-      return (
-        <g>
-          <circle cx="100" cy="148" r="26" />
-          <path d="M100 122 L100 174 M74 148 L126 148 M82 130 L118 166 M118 130 L82 166" />
-          <circle cx="100" cy="148" r="4" />
-          <path d="M95 112 L105 112 L100 119 Z" />
-        </g>
-      )
-    case 11: // Justice — scales
-      return (
-        <g>
-          <path d="M100 116 L100 172 M74 124 L126 124" />
-          <path d="M74 124 L64 142 M74 124 L84 142 M63 143 C 68 151 80 151 85 143" />
-          <path d="M126 124 L116 142 M126 124 L136 142 M115 143 C 120 151 132 151 137 143" />
-          <path d="M90 178 L110 178" />
-        </g>
-      )
-    case 12: // The Hanged Man — upside-down figure
-      return (
-        <g>
-          <path d="M76 112 L124 112 M100 112 L100 124" />
-          <path d="M100 124 L100 140 M100 128 L110 137" />
-          <path d="M100 140 L100 156 M100 145 L90 157 M100 145 L110 157" />
-          <circle cx="100" cy="165" r="8" />
-        </g>
-      )
-    case 13: // Death — a scythe
-      return (
-        <g>
-          <path d="M93 112 L105 190" />
-          <path d="M93 112 C 105 100 124 98 138 106 C 124 108 106 112 96 118" />
-        </g>
-      )
-    case 14: // Temperance — water poured between cups
-      return (
-        <g>
-          <path d="M72 116 L92 110 L94 122 L76 127 Z" />
-          <path d="M90 122 C 94 132 98 138 103 146" />
-          <path d="M94 150 C 94 160 100 165 107 165 C 114 165 120 160 120 150 M94 150 L120 150" />
-        </g>
-      )
-    case 15: // The Devil — a pitchfork
-      return (
-        <g>
-          <path d="M100 118 L100 182" />
-          <path d="M88 116 L88 128 C 88 135 94 138 100 138" />
-          <path d="M112 116 L112 128 C 112 135 106 138 100 138" />
-          <path d="M85 119 L88 113 L91 119 M109 119 L112 113 L115 119 M97 121 L100 115 L103 121" />
-        </g>
-      )
-    case 16: // The Tower — struck by lightning
-      return (
-        <g>
-          <path d="M87 122 L87 182 L113 182 L113 122" />
-          <path d="M85 122 L87 122 L87 115 L93 115 L93 122 L97 122 L97 115 L103 115 L103 122 L107 122 L107 115 L113 115 L113 122 L115 122" />
-          <path d="M124 102 L112 118 L120 120 L106 138" />
-          <circle cx="100" cy="152" r="3" />
-        </g>
-      )
-    case 17: // The Star — with little rays
-      return (
-        <g>
-          <path d="M100 119 L105.9 136.9 L124.7 137 L109.5 148.1 L115.3 166 L100 155 L84.7 166 L90.5 148.1 L75.3 137 L94.1 136.9 Z" />
-          <path d="M100 108 L100 102 M126 122 L131 118 M74 122 L69 118 M124 158 L129 162 M76 158 L71 162" />
-        </g>
-      )
-    case 18: // The Moon — a crescent
-      return (
-        <g>
-          <path d="M110 114 A 34 34 0 1 0 110 178 A 27 27 0 1 1 110 114 Z" />
-        </g>
-      )
-    case 19: // The Sun — with rays
-      return (
-        <g>
-          <circle cx="100" cy="146" r="21" />
-          <path d="M100 115 L100 107 M100 177 L100 185 M69 146 L61 146 M131 146 L139 146 M78 124 L72 118 M122 124 L128 118 M78 168 L72 174 M122 168 L128 174" />
-        </g>
-      )
-    case 20: // Judgement — a trumpet
-      return (
-        <g>
-          <path d="M78 164 L118 132 M84 172 L120 144" />
-          <path d="M118 132 C 124 134 126 140 120 144" />
-          <circle cx="79" cy="167" r="3.5" />
-          <path d="M128 122 C 134 126 136 134 133 140 M135 113 C 143 119 145 131 141 139" />
-        </g>
-      )
-    case 21: // The World — a little globe
-      return (
-        <g>
-          <circle cx="100" cy="146" r="24" />
-          <ellipse cx="100" cy="146" rx="10" ry="24" />
-          <path d="M76 146 L124 146" />
-        </g>
-      )
-    default:
-      return null
-  }
-}
-
 /* ---------- the card faces ---------- */
 
-/** Clip for the glory rays inside each card's arched window. */
+/** Clips for the arched windows: the small one (minors) and the tall one
+ *  that frames each major arcana etching. */
 function ArchClip() {
   return (
     <defs>
       <clipPath id="archClip">
         <path d={ARCH} />
+      </clipPath>
+      <clipPath id="etchClip">
+        <path d={ETCH_ARCH} />
+      </clipPath>
+      <clipPath id="sunClip">
+        <circle cx="100" cy="160" r="60" />
       </clipPath>
     </defs>
   )
@@ -352,23 +183,38 @@ export function CardArt({ card, lang }: { card: TarotCard; lang: Lang }) {
   // leave room between the side rules for the top label
   const labelHalf = Math.max(22, label.length * 6 + 8)
   const nameSize = name.length >= 18 ? 13 : name.length >= 14 ? 14.5 : 16.5
-  // pips are busy enough on their own; only majors, aces and courts get the glory
-  const glorious = card.arcana === 'major' || (card.rank ?? 0) === 1 || (card.rank ?? 0) > 10
+  // pips are busy enough on their own; only aces and courts get the glory
+  const glorious = card.arcana === 'minor' && ((card.rank ?? 0) === 1 || (card.rank ?? 0) > 10)
 
   return (
     <svg viewBox="0 0 200 320" className="card-art" aria-hidden="true">
       <CardChrome>
-        <rect x="24" y="62" width="152" height="166" fill={INK} stroke="none" />
-        <path d={ARCH} fill={PAPER} strokeWidth="1.5" />
+        {card.arcana === 'major' ? (
+          <>
+            <image
+              href={`/etchings/major-${String(card.number ?? 0).padStart(2, '0')}.png`}
+              x="26"
+              y="58"
+              width="148"
+              height="172"
+              preserveAspectRatio="xMidYMid slice"
+              clipPath="url(#etchClip)"
+            />
+            <path d={ETCH_ARCH} strokeWidth="2.2" />
+          </>
+        ) : (
+          <>
+            <rect x="24" y="62" width="152" height="166" fill={INK} stroke="none" />
+            <path d={ARCH} fill={PAPER} strokeWidth="1.5" />
+          </>
+        )}
         {glorious && (
           <g clipPath="url(#archClip)">
             <path d={rays(100, 150, 34, 110, 48)} strokeWidth="0.9" />
             <circle cx="100" cy="150" r="31" fill={PAPER} strokeWidth="1" strokeDasharray="0.5 3.2" />
           </g>
         )}
-        {card.arcana === 'major' ? (
-          <MajorIcon n={card.number ?? 0} />
-        ) : card.rank && card.rank <= 10 ? (
+        {card.arcana === 'major' ? null : card.rank && card.rank <= 10 ? (
           pipLayouts[card.rank].map(([x, y, s], i) => {
             const Glyph = suitGlyph[card.suit as Suit]
             return (
@@ -419,22 +265,28 @@ export function CardArt({ card, lang }: { card: TarotCard; lang: Lang }) {
   )
 }
 
-/** Card back: the eye of providence in a triangle, rays bursting out on black. */
+/** Card back: Dürer's etched sun in a medallion, set in a black field. */
 export function CardBack() {
   return (
     <svg viewBox="0 0 200 320" className="card-art" aria-hidden="true">
       <CardChrome>
         <rect x="22" y="22" width="156" height="276" fill={INK} stroke="none" />
-        <path d={rays(100, 160, 46, 150, 64)} stroke={PAPER} strokeWidth="1.1" />
-        <circle cx="100" cy="160" r="44" fill={INK} stroke={PAPER} strokeWidth="1.4" />
-        <circle cx="100" cy="160" r="38" stroke={PAPER} strokeWidth="0.8" strokeDasharray="0.5 3" />
-        <path d="M100 130 L127 176 L73 176 Z" stroke={PAPER} strokeWidth="2" />
-        <path d="M84 162 Q100 148 116 162 Q100 176 84 162 Z" fill={PAPER} stroke="none" />
-        <circle cx="100" cy="162" r="5.2" fill={INK} stroke="none" />
-        <circle cx="101.6" cy="160.4" r="1.4" fill={PAPER} stroke="none" />
+        <rect x="28" y="28" width="144" height="264" stroke={PAPER} strokeWidth="0.9" />
+        <circle cx="100" cy="160" r="60" fill={PAPER} stroke="none" />
+        <image
+          href="/etchings/back.png"
+          x="40"
+          y="100"
+          width="120"
+          height="120"
+          preserveAspectRatio="xMidYMid slice"
+          clipPath="url(#sunClip)"
+        />
+        <circle cx="100" cy="160" r="60" stroke={PAPER} strokeWidth="3" />
+        <circle cx="100" cy="160" r="66" stroke={PAPER} strokeWidth="1" />
         <g fill={PAPER} stroke="none">
-          <path d={STAR8} transform="translate(100 52) scale(0.8)" />
-          <path d={STAR8} transform="translate(100 268) scale(0.8)" />
+          <path d={STAR8} transform="translate(100 60) scale(0.9)" />
+          <path d={STAR8} transform="translate(100 260) scale(0.9)" />
         </g>
       </CardChrome>
     </svg>

@@ -10,6 +10,10 @@ export const ui = {
     en: 'Your little guide to tarot — a card of the day, spreads, and meanings for all 78 cards.',
   },
   heroEyebrow: { pl: 'tarot online', en: 'tarot online' },
+  artCredit: {
+    pl: 'Ilustracje: drzeworyty i miedzioryty Albrechta Dürera (XV–XVI w.), Gustave’a Doré i ze zbiorów Rijksmuseum — domena publiczna.',
+    en: 'Illustrations: woodcuts and engravings by Albrecht Dürer (15th–16th c.), Gustave Doré and the Rijksmuseum collection — public domain.',
+  },
   supportHead: { pl: 'Podoba Ci się Tarocik?', en: 'Enjoying Tarocik?' },
   supportBody: {
     pl: 'Strona jest darmowa i bez reklam. Jeśli chcesz podziękować, możesz postawić autorce kawę.',

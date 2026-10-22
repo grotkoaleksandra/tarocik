@@ -22,16 +22,6 @@ export function rays(cx: number, cy: number, inner: number, outer: number, count
   return parts.join(' ')
 }
 
-/** A large glory of rays, drawn behind the hero cards. */
-export function Glory({ className }: { className?: string }) {
-  return (
-    <svg viewBox="-200 -200 400 400" className={className} aria-hidden="true">
-      <path d={rays(0, 0, 70, 196, 72)} stroke="currentColor" strokeWidth="1.1" fill="none" />
-      <circle r="62" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="1 5" strokeLinecap="round" />
-    </svg>
-  )
-}
-
 /** Section divider: a rule broken by a star between two dots. */
 export function Divider({ className = '' }: { className?: string }) {
   return (
